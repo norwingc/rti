@@ -22,7 +22,7 @@
 					<div class="form-group">
 						<label class="col-sm-3">Template Factura SIRIUS <span class="required">*</span></label>
 						<div class="col-sm-9">
-							<input type="file" name="first_report" accept=".xlsx, .xls">
+							<input type="file" name="first_report" accept=".xlsx, .xls" required>
 						</div>
 					</div>
 				</div>
@@ -30,7 +30,7 @@
 					<div class="form-group">
 						<label class="col-sm-3">Template Recibo Caja SIRIUS <span class="required">*</span></label>
 						<div class="col-sm-9">
-							<input type="file" name="second_report" accept=".xlsx, .xls">
+							<input type="file" name="second_report" accept=".xlsx, .xls" required>
 						</div>
 					</div>
 				</div>
@@ -38,22 +38,8 @@
 					<button type="submit" class="btn btn btn-success">Subir</button>					
 				</div>
 			{{ Form::close() }}	
-		</div>
-
-
-		<div style="overflow: scroll;">
-			@if($result1 && $result2)
-				<p>Factura</p>
-				<p>{{ $result1 }}</p>
-
-				<p>Caja	</p>
-				<p>{{ $result2 }}</p>
-			@endif
-		</div>
-	</div>	
-
-
-	
+		</div>		
+	</div>		
 </section>
 <!-- /.content -->
 
