@@ -1,5 +1,17 @@
 @extends('templates.maintemplate')
 
+@section('css')
+	<style type="text/css">
+		th{
+			text-transform: uppercase;
+			text-align: center;
+		}
+		li{
+			list-style: none;
+		}
+	</style>
+@stop
+
 @section('contenido')
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -23,47 +35,115 @@
 				<table id="table" class="table table-bordered table-hover">
 					<thead>
 			            <tr>
-			            	<th width="5%">Numbero Comprobante</th>								
-							<th width="10%">Clasificacion</th>
-							<th>Fecha</th>
-							<th>Tipo de Cambio</th>
-							<th>Documento</th>
-							<th>Concepto</th>
-							<th>Cuenta Contable</th>
-							<th>Descripcion</th>
-							<th>Monto</th>
-							<th>Movimiento</th>							
-							<th>Monto en U$</th>
+			            	<th>Fecha</th>								
+							<th>clasif ventas</th>
+							<th>Factura</th>
+							<th>Codigo</th>
+							<th>Cliente</th>							
+							<th>subtotal</th>
+							<th>flete</th>
+							<th>descuento</th>
+							<th>iva</th>							
+							<th>ret ir</th>
+							<th>ret alma</th>							
+							<th>pago neto</th>
+							<th>cxc</th>
+							<th>forma de pago</th>
 			            </tr>
 			        </thead>
 			        <tbody>
-			        	<tr>
-			        		<td>001</td>
-			        		<td>
-			        			<select class="form-control">
-			        				<option value="Primera">Primera</option>
-			        				<option value="Segunda">Segunda</option>
-			        				<option value="Tercera">Tercera</option>
-			        			</select>
-			        		</td>
-			        		<td>{{ date('Y-m-d') }}</td>
-			        		<td>29.30</td>
-			        		<td>VARIOS</td>
-			        		<td><input type="text" class="form-control"></td>
-			        		<td>Caja</td>
-			        		<td>Caja</td>
-			        		<td>200</td>
-			        		<td>Haber</td>			        		
-			        		<td>6000</td>
-			        	</tr> 
+			        	<?php
+			        		for ($i=0; $i < $result1->count(); $i++) { 
+			        			$row = IngresoController::addRow($result1[$i]);
+			        			echo $row;
+			        		}			        		
+			        	?>				        	
 			        </tbody>
 		        </table>
         	</div>
-			
-			<div style="overflow:scroll;">
-        		<p>{{ $result1 }}</p>
-        		<p>{{ $result2 }}</p>
+
+        	<div class="container">
+        		<div class="col-sm-3">
+					<h3>Clasif Ventas</h3>
+					<ul>
+						<li>Renta</li>
+						<li>REP Y ACC</li>
+						<li>EQ. NUEVO</li>
+						<li>EQ. USADO</li>
+						<li>REPUESTOS Y ACCES USADOS</li>
+						<li>FLETE</li>
+						<li>COMBUTIBLE</li>
+						<li>SERVICIO DE TALLER</li>
+						<li>PROYECTOS</li>
+						<li>ANULADO</li>						
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<h3>Totales</h3>
+					<ul>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<h3>Credito</h3>
+					<ul>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<h3>Contado</h3>
+					<ul>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+						<li>--</li>
+					</ul>
+				</div>
+			        		
+        	</div>	
+
+        	<h2>Recibos oficiales de caja</h2>
+
+        	<div class="table-responsive">
+				<table id="table" class="table table-bordered table-hover">
+					<thead>
+			            <tr>
+			            	<th>Fecha</th>								
+							<th>RECIBO</th>
+							<th>CODIGO</th>							
+							<th>Cliente</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        		        	
+			        </tbody>
+		        </table>
         	</div>
+		
 		</div>
 	</div>
 </section>
