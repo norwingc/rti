@@ -40,8 +40,7 @@
 							<th>Factura</th>
 							<th>Codigo</th>
 							<th>Cliente</th>							
-							<th>subtotal</th>
-							<th>flete</th>
+							<th>subtotal</th>							
 							<th>descuento</th>
 							<th>iva</th>							
 							<th>ret ir</th>
@@ -66,7 +65,7 @@
         		<div class="col-sm-3">
 					<h3>Clasif Ventas</h3>
 					<ul>
-						<li>Renta</li>
+						<li>RENTA</li>
 						<li>REP Y ACC</li>
 						<li>EQ. NUEVO</li>
 						<li>EQ. USADO</li>
