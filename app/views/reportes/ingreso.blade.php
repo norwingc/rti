@@ -9,6 +9,15 @@
 		li{
 			list-style: none;
 		}
+		td{
+			text-align: center;
+		}
+		.totales_factura {
+			text-align: center;
+		}
+		ul{
+			padding:  0
+		}
 	</style>
 @stop
 
@@ -53,18 +62,24 @@
 			        <tbody>
 			        	<?php
 			        		for ($i=0; $i < $result1->count(); $i++) { 
-			        			$row = IngresoController::addRow($result1[$i]);
+			        			$row = IngresoController::addRowFactura($result1[$i]);
 			        			echo $row;
 			        		}			        		
-			        	?>				        	
+			        	?>	
+			        	<tr>
+			        		<td colspan="10"><h4><strong>TOTAL</strong></h4></td>
+			        		<td id="pago_neto"><strong></strong></td>
+			        		<td id="c_c"><strong></strong></td>
+
+			        	</tr>			        	
 			        </tbody>
 		        </table>
         	</div>
 
-        	<div class="container">
+        	<div class="container totales_factura">
         		<div class="col-sm-3">
-					<h3>Clasif Ventas</h3>
-					<ul>
+					<h3 style="text-align: left;">Clasif Ventas</h3>
+					<ul style="text-align: left;">
 						<li>RENTA</li>
 						<li>REP Y ACC</li>
 						<li>EQ. NUEVO</li>
@@ -80,7 +95,7 @@
 				<div class="col-sm-3">
 					<h3>Totales</h3>
 					<ul>
-						<li>--</li>
+						<li id="renta_total"></li>
 						<li>--</li>
 						<li>--</li>
 						<li>--</li>
@@ -95,7 +110,7 @@
 				<div class="col-sm-3">
 					<h3>Credito</h3>
 					<ul>
-						<li>--</li>
+						<li id="renta_credito"></li>
 						<li>--</li>
 						<li>--</li>
 						<li>--</li>
@@ -110,7 +125,7 @@
 				<div class="col-sm-3">
 					<h3>Contado</h3>
 					<ul>
-						<li>--</li>
+						<li id="renta_contado"></li>
 						<li>--</li>
 						<li>--</li>
 						<li>--</li>
@@ -131,14 +146,23 @@
 				<table id="table" class="table table-bordered table-hover">
 					<thead>
 			            <tr>
-			            	<th>Fecha</th>								
-							<th>RECIBO</th>
-							<th>CODIGO</th>							
-							<th>Cliente</th>
+			            	<th>No. Cliente</th>								
+							<th>Descripcion</th>
+							<th>Fecha</th>							
+							<th>Referencia</th>
+							<th>pago</th>
+							<th>No. Factura</th>
+							<th>ret ir</th>
+							<th>ret alma</th>
 			            </tr>
 			        </thead>
 			        <tbody>
-			        		        	
+			        	<?php
+			        		for ($i=0; $i < $result2->count(); $i++) { 
+			        			$row = IngresoController::addRowCaja($result2[$i]);
+			        			echo $row;
+			        		}			        		
+			        	?>		        	
 			        </tbody>
 		        </table>
         	</div>
@@ -147,4 +171,42 @@
 	</div>
 </section>
 
-@stop		
+@stop	
+
+@section('js')
+	<script type="text/javascript">
+		
+		$(document).ready(function(){
+			var pago = 0;
+			var cxc = 0;
+			var renta_total = 0;
+			var renta_credito = 0;
+			var renta_contado = 0;
+
+			$('.pago_neto').each(function(){
+				pago = pago + Number($(this).html());
+			});
+			$('.c_c').each(function(){
+				cxc += Number($(this).html());
+			});	
+
+			$('.RENTA').each(function(){
+				renta_total += Number($(this).html());			
+			});
+			$('.pago_neto.RENTA').each(function(){
+				renta_credito += Number($(this).html());			
+			});
+			$('.c_c.RENTA').each(function(){
+				renta_contado += Number($(this).html());
+			});	
+
+
+			$('#pago_neto strong').html(Math.round(pago * 100) / 100);
+			$('#c_c strong').html(Math.round(cxc * 100) / 100);
+			$('#renta_total').html(Math.round(renta_total * 100) / 100);
+			$('#renta_credito').html(Math.round(renta_credito * 100) / 100);
+			$('#renta_contado').html(Math.round(renta_contado * 100) / 100);
+		});
+
+	</script>
+@stop	

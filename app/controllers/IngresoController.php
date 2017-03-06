@@ -2,13 +2,13 @@
 
 class IngresoController extends BaseController {
 
-		
-	public static function addRow($result)
-	{
-		//cuando hay varias formas de pago		
-		//pago neto
+	/**
+	 * @param [type]
+	 */
+	public static function addRowFactura($result)
+	{		
 		$texto = "";
-		$flag = false; //false es alquiler, true es otro
+		$clasificacion = "";
 		
 		$data = array(
 			'fecha_transaccion'  => $result['fecha_transaccion'],
@@ -28,31 +28,46 @@ class IngresoController extends BaseController {
 	
 	
 		if($result['aqui'] != '') {
-			$flag                 = false;
+			$clasificacion         = 'RENTA';
 			$data['clasif_ventas'] = 'RENTA';
 			$data['descuento']     = $result['desc_alqui'];
 			$data['sub_total']     = $result['aqui'];	
-			$data['iva']           = ($result['aqui'])*.15;
-			$data['pago_neto']     = ($data['sub_total'] - $data['descuento']) + $data['iva'];		
-			$texto                 .= IngresoController::fila($data, $flag);
+			//$data['iva']           = round(($result['aqui'])*.15, 2);
+			if($data['cxc'] != ''){
+				$data['pago_neto'] = null;
+				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
+			}else {
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];			
+			}
+			
+			$texto .= IngresoController::filaFactura($data, $clasificacion);
 		}
 
 		if($result['ventas'] != '') {
-			$flag                 = true;
+			$clasificacion         = $result['enviado_a_3'];
 			$data['clasif_ventas'] = $result['enviado_a_3'];
 			$data['descuento']     = $result['desc_vtas'];
 			$data['sub_total']     = $result['ventas'];	
-			$data['iva']           = ($result['ventas'])*.15;	
-			$data['pago_neto']     = ($data['sub_total'] - $data['descuento']) + $data['iva'];	
-			$texto                 .= IngresoController::fila($data, $flag);
+			//$data['iva']           = round(($result['ventas'])*.15, 2);	
+			if($data['cxc'] != ''){
+				$data['pago_neto'] = null;
+				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
+			}else {
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];			
+			}	
+			
+			$texto .= IngresoController::filaFactura($data, $clasificacion);
 		}		
 	
 		return $texto;			
 	}
+	
 	/**
-	 * 
+	 * @param  [type]
+	 * @param  [type]
+	 * @return [type]
 	 */
-	public static function fila($data, $flag)
+	public static function filaFactura($data, $clasificacion)
 	{		
 		return
 		"<tr>".
@@ -86,10 +101,10 @@ class IngresoController extends BaseController {
 				"<td>".
 					"<input type='text' class='form-control'>".
 				"</td>".				
-				"<td>".
-					$data['pago_neto'].//calcular pago neto
+				"<td class='pago_neto " .$clasificacion. "'>".
+					$data['pago_neto'].
 				"</td>".
-				"<td>".
+				"<td class='c_c " .$clasificacion. "'>".
 					$data['cxc'].
 				"</td>".
 				"<td>".
@@ -98,4 +113,60 @@ class IngresoController extends BaseController {
 		."</td></tr>";
 	}
 
+	/**
+	 * @param [type]
+	 */
+	public static function addRowCaja($result)
+	{
+		$text = "";
+		$data = array(
+			'no_cliente'  => $result['no_cliente'],
+			'descripcion' => $result['descripcion'],
+			'fecha'       => $result['fecha'],
+			'referencia'  => $result['referencia'],
+			'pago'        => $result['pago'],			
+			'no_factura'  => $result['no_factura'],			
+			
+		);		
+
+		$texto = IngresoController::filaCaja($data);
+
+		return $texto;
+	}
+
+	/**
+	 * @param  [type]
+	 * @param  [type]
+	 * @return [type]
+	 */
+	public static function filaCaja($data, $clasificacion = null)
+	{
+		return
+		"<tr>".
+				"<td>".
+					$data['no_cliente'].
+				"</td>".
+				"<td>".
+					$data['descripcion'].
+				"</td>".
+				"<td>".
+					$data['fecha'].
+				"</td>".
+				"<td>".
+					$data['referencia'].
+				"</td>".
+				"<td>".
+					$data['pago'].
+				"</td>".
+				"<td>".
+					$data['no_factura'].
+				"</td>".
+				"<td>".
+					"<input type='text' class='form-control'>".
+				"</td>".
+				"<td>".
+					"<input type='text' class='form-control'>".
+				"</td>"				
+		."</td></tr>";	
+	}
 }
