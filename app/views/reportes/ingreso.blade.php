@@ -65,7 +65,7 @@
 							<th>pago neto</th>
 							<th>cxc</th>
 							<th>forma de pago</th>
-							<th>Retancion %</th>
+							<th>Ret ir 1.5%</th>
 							<th>Comision %</th>
 			            </tr>
 			        </thead>
@@ -130,46 +130,46 @@
 				<div class="col-sm-3">
 					<h3>Totales</h3>
 					<ul>
-						<li id="renta_total"></li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
+						<li id="re_total"></li>
+						<li id="ra_total"></li>
+						<li id="en_total"></li>
+						<li id="eu_total"></li>
+						<li id="ru_total"></li>
+						<li id="fl_total"></li>
+						<li id="co_total"></li>
+						<li id="st_total"></li>
+						<li id="pr_total"></li>
+						<li id="cv_total"></li>
 					</ul>
 				</div>
 				<div class="col-sm-3">
 					<h3>Credito</h3>
 					<ul>
-						<li id="renta_credito"></li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
+						<li id="re_credito"></li>
+						<li id="ra_credito"></li>
+						<li id="en_credito"></li>
+						<li id="eu_credito"></li>
+						<li id="ru_credito"></li>
+						<li id="fl_credito"></li>
+						<li id="co_credito"></li>
+						<li id="st_credito"></li>
+						<li id="pr_credito"></li>
+						<li id="cv_credito"></li>
 					</ul>
 				</div>
 				<div class="col-sm-3">
 					<h3>Contado</h3>
 					<ul>
-						<li id="renta_contado"></li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
-						<li>--</li>
+						<li id="re_contado"></li>
+						<li id="ra_contado"></li>
+						<li id="en_contado"></li>
+						<li id="eu_contado"></li>
+						<li id="ru_contado"></li>
+						<li id="fl_contado"></li>
+						<li id="co_contado"></li>
+						<li id="st_contado"></li>
+						<li id="pr_contado"></li>
+						<li id="cv_contado"></li>
 					</ul>
 				</div>
 			        		
@@ -178,7 +178,7 @@
         	<h2>Recibos oficiales de caja</h2>
 
         	<div class="table-responsive">
-				<table id="table" class="table table-bordered table-hover myTable">
+				<table id="table" class="table table-bordered table-hover myTable table_caja">
 					<thead>
 			            <tr>
 			            	<th>accion</th>
@@ -191,6 +191,9 @@
 							<th>ret ir</th>
 							<th>ret alma</th>
 							<th>FORMA DE PAGO</th>
+							<th>pago neto</th>
+							<th>ret tarjeta 1.5%</th>
+							<th>comision</th>
 			            </tr>
 			        </thead>
 			        <tbody>
@@ -269,7 +272,7 @@
 				'ST',
 				'PR',
 				'CV'			
-			]
+			];
 
 			calculoTotales();
 
@@ -294,6 +297,53 @@
 			$('.valor_ret_alma').focusout(function(){
 				calculoPagoNeto($(this));
 			});
+			$('.comision_tarjeta').focusout(function(){
+				calculoTotales();
+				var row = $(this).parent(0).parent(0);				
+
+				var pago = $(row).find('.pago_neto').html();
+				var pago_resta = Number(pago) * ($(this).val() / 100);				
+
+				pago = Math.round((pago - pago_resta) * 100) / 100;			
+
+				$(row).find('.pago_neto').html(pago);
+
+				calculoTotales();
+			});
+
+			$('.forma_pago_caja').change(function(){
+				var row = $(this).parent(0).parent(0);	
+				var pago = $(row).find('.pago_neto_caja').html();
+
+				if($(this).val() == 'TARJETA DE CREDITO'){								
+
+					var ret_tarjeta = Math.round((Number(pago) * .015) *100) / 100;
+
+					$(row).find('.ret_tarjeta_caja').html(ret_tarjeta);
+				}else{
+					$(row).find('.ret_tarjeta_caja').html('0');
+				}
+			});
+
+			$('.comision_tarjeta_caja').focusout(function(){
+				
+				var row = $(this).parent(0).parent(0);				
+
+				var pago = $(row).find('.pago_neto_caja').html();
+				var pago_resta = Number(pago) * ($(this).val() / 100);			
+
+				pago = Math.round((pago - pago_resta) * 100) / 100;			
+
+				$(row).find('.pago_neto_caja').html(pago);				
+			});
+
+
+			$('.valor_ret_ir_caja').focusout(function(){
+				calculoPagoNeto_caja($(this));
+			});
+			$('.valor_ret_alma_caja').focusout(function(){
+				calculoPagoNeto_caja($(this));
+			});
 
 
 
@@ -303,14 +353,18 @@
 				$('.modal-title').html(title);
 				$('#tbody_referencia').html('');
 				var html = "";
+				var referencia_edit = "";
 
 				var referencia = $(this).data('referencia').split('/');	
-				//console.log(referencia)		
+				if(referencia.length ==1){
+					referencia_edit = referencia[0];					
+				}else{
+					referencia_edit = referencia[0] +'-'+ referencia[1];					
+				}				
 
 
-				$.get('{{ URL() }}/Ingreso/Referencia/'+ referencia[0] +'-'+ referencia[1], function(data){
-					//console.log(data);	
-					for(var i=0; i<data.datas.length; i++){
+				$.get('{{ URL() }}/Ingreso/Referencia/'+ referencia_edit, function(data){						
+					for(var i=0; i< data.datas.length; i++){
 						html = html + "<tr>"+
 							"<td>"+data.datas[i].no_cliente+"</td>"+
 	       		        	"<td>"+data.datas[i].descripcion+"</td>"+
@@ -331,24 +385,31 @@
 		});
 
 		function calculoTotales() {
-			var pago          = 0;
-			var cxc           = 0;
+			var pago_neto          = 0;
+			var c_c           = 0;
 			var subtotal      = 0;
 			var descuento     = 0;
-			var iva           = 0;
-			var renta_total   = 0;
-			var renta_credito = 0;
-			var renta_contado = 0;
+			var iva           = 0;		
 			
 			var ret_ir        = 0;
-			var ret_alma      = 0;
+			var ret_alma      = 0;	
+
+			$('.table_factura').find('.pago_neto:not(.anul)').each(function(){
+				var este = $(this);				
+				var row = este.parent(0);				
+				var ret_actual = $(row).find('.ret_tarjeta').html();
+
+				var ret_tarjeta = Math.round((Number(este.html()) * .015) *100) / 100;
+
+				$(row).find('.ret_tarjeta').html(ret_tarjeta);
+			});
 
 
 			$('.pago_neto:not(.anul)').each(function(){
-				pago = pago + Number($(this).html());
+				pago_neto = pago_neto + Number($(this).html());
 			});
 			$('.c_c:not(.anul)').each(function(){
-				cxc += Number($(this).html());
+				c_c += Number($(this).html());
 			});	
 			$('.subtotal:not(.anul)').each(function(){
 				subtotal += Number($(this).html());
@@ -364,30 +425,199 @@
 			});
 			$('.valor_ret_alma:not(.anul)').each(function(){
 				ret_alma += Number($(this).val());
-			});
+			});			
 
-			$('.RE:not(.anul)').each(function(){
-				renta_total += Number($(this).html());			
-			});
-			$('.pago_neto.RE:not(.anul)').each(function(){
-				renta_credito += Number($(this).html());			
-			});
-			$('.c_c.RE:not(.anul)').each(function(){
-				renta_contado += Number($(this).html());
-			});	
-
-
-			$('#pago_neto strong').html(Math.round(pago * 100) / 100);
-			$('#c_c strong').html(Math.round(cxc * 100) / 100);
+			$('#pago_neto strong').html(Math.round(pago_neto * 100) / 100);
+			$('#c_c strong').html(Math.round(c_c * 100) / 100);
 			$('#subtotal strong').html(Math.round(subtotal * 100) / 100);
 			$('#descuento strong').html(Math.round(descuento * 100) / 100);
 			$('#iva strong').html(Math.round(iva * 100) / 100);
 			$('#ret_ir strong').html(Math.round(ret_ir * 100) / 100);
-			$('#ret_ir strong').html(Math.round(ret_ir * 100) / 100);
+			$('#ret_ir strong').html(Math.round(ret_ir * 100) / 100);			
 
-			$('#renta_total').html(Math.round(renta_total * 100) / 100);
-			$('#renta_credito').html(Math.round(renta_credito * 100) / 100);
-			$('#renta_contado').html(Math.round(renta_contado * 100) / 100);
+			clasificacion_ventas();
+		}
+
+		function clasificacion_ventas(){
+			var re_total   = 0;
+			var re_credito = 0;
+			var re_contado = 0;
+
+			$('.RE:not(.anul)').each(function(){
+				re_total += Number($(this).html());			
+			});
+			$('.pago_neto.RE:not(.anul)').each(function(){
+				re_contado += Number($(this).html());			
+			});
+			$('.c_c.RE:not(.anul)').each(function(){
+				re_credito += Number($(this).html());
+			});	
+
+			$('#re_total').html(Math.round(re_total * 100) / 100);
+			$('#re_credito').html(Math.round(re_credito * 100) / 100);
+			$('#re_contado').html(Math.round(re_contado * 100) / 100);
+
+			var ra_total   = 0;
+			var ra_credito = 0;
+			var ra_contado = 0;
+			
+			$('.RA:not(.anul)').each(function(){
+				ra_total += Number($(this).html());			
+			});
+			$('.pago_neto.RA:not(.anul)').each(function(){
+				ra_contado += Number($(this).html());			
+			});
+			$('.c_c.RA:not(.anul)').each(function(){
+				ra_credito += Number($(this).html());
+			});	
+
+			$('#ra_total').html(Math.round(ra_total * 100) / 100);
+			$('#ra_credito').html(Math.round(ra_credito * 100) / 100);
+			$('#ra_contado').html(Math.round(ra_contado * 100) / 100);
+
+			var en_total   = 0;
+			var en_credito = 0;
+			var en_contado = 0;
+			
+			$('.EN:not(.anul)').each(function(){
+				en_total += Number($(this).html());			
+			});
+			$('.pago_neto.EN:not(.anul)').each(function(){
+				en_contado += Number($(this).html());			
+			});
+			$('.c_c.EN:not(.anul)').each(function(){
+				en_credito += Number($(this).html());
+			});	
+
+			$('#en_total').html(Math.round(en_total * 100) / 100);
+			$('#en_credito').html(Math.round(en_credito * 100) / 100);
+			$('#en_contado').html(Math.round(en_contado * 100) / 100);
+
+			var eu_total   = 0;
+			var eu_credito = 0;
+			var eu_contado = 0;
+			
+			$('.EU:not(.anul)').each(function(){
+				eu_total += Number($(this).html());			
+			});
+			$('.pago_neto.EU:not(.anul)').each(function(){
+				eu_contado += Number($(this).html());			
+			});
+			$('.c_c.EU:not(.anul)').each(function(){
+				eu_credito += Number($(this).html());
+			});	
+
+			$('#eu_total').html(Math.round(eu_total * 100) / 100);
+			$('#eu_credito').html(Math.round(eu_credito * 100) / 100);
+			$('#eu_contado').html(Math.round(eu_contado * 100) / 100);
+
+			var ru_total   = 0;
+			var ru_credito = 0;
+			var ru_contado = 0;
+			
+			$('.RU:not(.anul)').each(function(){
+				ru_total += Number($(this).html());			
+			});
+			$('.pago_neto.RU:not(.anul)').each(function(){
+				ru_contado += Number($(this).html());			
+			});
+			$('.c_c.RU:not(.anul)').each(function(){
+				ru_credito += Number($(this).html());
+			});	
+
+			$('#ru_total').html(Math.round(ru_total * 100) / 100);
+			$('#ru_credito').html(Math.round(ru_credito * 100) / 100);
+			$('#ru_contado').html(Math.round(ru_contado * 100) / 100);
+
+			var fl_total   = 0;
+			var fl_credito = 0;
+			var fl_contado = 0;
+			
+			$('.FL:not(.anul)').each(function(){
+				fl_total += Number($(this).html());			
+			});
+			$('.pago_neto.FL:not(.anul)').each(function(){
+				fl_contado += Number($(this).html());			
+			});
+			$('.c_c.FL:not(.anul)').each(function(){
+				fl_credito += Number($(this).html());
+			});	
+
+			$('#fl_total').html(Math.round(fl_total * 100) / 100);
+			$('#fl_credito').html(Math.round(fl_credito * 100) / 100);
+			$('#fl_contado').html(Math.round(fl_contado * 100) / 100);
+
+			var co_total   = 0;
+			var co_credito = 0;
+			var co_contado = 0;
+			
+			$('.CO:not(.anul)').each(function(){
+				co_total += Number($(this).html());			
+			});
+			$('.pago_neto.CO:not(.anul)').each(function(){
+				co_contado += Number($(this).html());			
+			});
+			$('.c_c.CO:not(.anul)').each(function(){
+				co_credito += Number($(this).html());
+			});	
+
+			$('#co_total').html(Math.round(co_total * 100) / 100);
+			$('#co_credito').html(Math.round(co_credito * 100) / 100);
+			$('#co_contado').html(Math.round(co_contado * 100) / 100);
+
+			var st_total   = 0;
+			var st_credito = 0;
+			var st_contado = 0;
+			
+			$('.ST:not(.anul)').each(function(){
+				st_total += Number($(this).html());			
+			});
+			$('.pago_neto.ST:not(.anul)').each(function(){
+				st_contado += Number($(this).html());			
+			});
+			$('.c_c.ST:not(.anul)').each(function(){
+				st_credito += Number($(this).html());
+			});	
+
+			$('#st_total').html(Math.round(st_total * 100) / 100);
+			$('#st_credito').html(Math.round(st_credito * 100) / 100);
+			$('#st_contado').html(Math.round(st_contado * 100) / 100);
+
+			var pr_total   = 0;
+			var pr_credito = 0;
+			var pr_contado = 0;
+			
+			$('.PR:not(.anul)').each(function(){
+				pr_total += Number($(this).html());			
+			});
+			$('.pago_neto.PR:not(.anul)').each(function(){
+				pr_contado += Number($(this).html());			
+			});
+			$('.c_c.PR:not(.anul)').each(function(){
+				pr_credito += Number($(this).html());
+			});	
+
+			$('#pr_total').html(Math.round(pr_total * 100) / 100);
+			$('#pr_credito').html(Math.round(pr_credito * 100) / 100);
+			$('#pr_contado').html(Math.round(pr_contado * 100) / 100);
+
+			var cv_total   = 0;
+			var cv_credito = 0;
+			var cv_contado = 0;
+			
+			$('.CV:not(.anul)').each(function(){
+				cv_total += Number($(this).html());			
+			});
+			$('.pago_neto.CV:not(.anul)').each(function(){
+				cv_contado += Number($(this).html());			
+			});
+			$('.c_c.CV:not(.anul)').each(function(){
+				cv_credito += Number($(this).html());
+			});	
+
+			$('#cv_total').html(Math.round(cv_total * 100) / 100);
+			$('#cv_credito').html(Math.round(cv_credito * 100) / 100);
+			$('#cv_contado').html(Math.round(cv_contado * 100) / 100);
 		}
 
 		function anul(este) {
@@ -432,6 +662,19 @@
 
 			calculoTotales();
 			
+		}
+
+		function calculoPagoNeto_caja(este){
+			var row = $(este).parent(0).parent(0);
+			console.log(row);
+
+			var pago = $(row).find('.pago_neto_caja').html();
+			var pago_resta = $(este).val();				
+
+			pago = Math.round((pago - pago_resta) * 100) / 100;			
+
+			$(row).find('.pago_neto_caja').html(pago);
+
 		}
 
 	</script>

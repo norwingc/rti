@@ -1,14 +1,17 @@
- ✔ cuando es cxc quit input de ret amla @done (17-03-11 11:51)
- ☐ las retenciones se les reta al pago neto
- ✔ formato de la fecha, solo fecha @done (17-03-11 11:43)
- ✔ todo en mayuscula @done (17-03-11 11:44)
- ✔ agregar dropdown de tipo de pago en caja @done (17-03-11 11:44)
- ✔ agregar sumatorias @done (17-03-11 11:44)
- ☐ agregar pago neto a caja, pago total menos retenciones
- ☐ agregar modal con descripcion de cada importe x recibo, factura cacelada y el importe
  ☐ agregar otra tabla con las notas de credito mismos campos de caja, agregar subtotal, iva, referencia es n/c, calculadoy se pueda modifcar
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ agregar pago neto a caja, pago total menos retenciones @done (17-03-11 16:49)
+ ✔ pago neto se calcula ahora subtotal - descuento + iva - descuento_nuevo - retencion_tarjeta - ret_ir @done (17-03-11 16:21)
+ ✔ pago nego los que tengan que ver con tarjeta restarle retencion y comision @done (17-03-11 16:21)
+ ✔ las retenciones se les reta al pago neto @done (17-03-11 16:20)
+ ✔ cuando sea tarjeta de credito, agregar dos campos de comision y retencion, retencion es el 1.5% del total de la factura (subtotal-descuento+iva) y para comision agregar input con el porcentaje @done (17-03-11 16:20)
+ ✔ agregar modal con descripcion de cada importe x recibo, factura cacelada y el importe @done (17-03-11 15:15)
  ✔ agregar check en factura, las que esten checked no tomarlas en cuenta @done (17-03-11 12:21)
+ ✔ cuando es cxc quit input de ret amla @done (17-03-11 11:51)
+ ✔ todo en mayuscula @done (17-03-11 11:44)
+ ✔ agregar sumatorias @done (17-03-11 11:44)
+ ✔ agregar dropdown de tipo de pago en caja @done (17-03-11 11:44)
  ✔ agregar datatable a todas las tablas @done (17-03-11 11:44)
- ☐ cuando sea tarjeta de credito, agregar dos campos de comision y retencion, retencion es el 1.5% del total de la factura (subtotal-descuento+iva) y para comision agregar input con el porcentaje
- ☐ pago nego los que tengan que ver con tarjeta restarle retencion y comision 
- ☐ pago neto se calcula ahora subtotal - descuento + iva - descuento_nuevo - retencion_tarjeta - ret_ir
+ ✔ formato de la fecha, solo fecha @done (17-03-11 11:43)

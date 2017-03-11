@@ -24,6 +24,7 @@ class IngresoController extends BaseController {
 			'cxc'                => $result['saldo_a_pagar'],
 			'forma_pago'         => $result['forma_de_pago_1'],
 			'pago_neto'          => null,
+			'ret_tarjeta'        => null
 		);		
 	
 	
@@ -37,7 +38,8 @@ class IngresoController extends BaseController {
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
 			}else {
-				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];			
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];	
+				$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);		
 			}
 			
 			$texto .= IngresoController::filaFactura($data, $clasificacion);
@@ -53,7 +55,8 @@ class IngresoController extends BaseController {
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
 			}else {
-				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];			
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];		
+				$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);	
 			}	
 			
 			$texto .= IngresoController::filaFactura($data, $clasificacion);
@@ -118,11 +121,11 @@ class IngresoController extends BaseController {
 					"<td>".
 						$data['forma_pago'].
 					"</td>".
-					"<td>".
-						"<input type='text' class='form-control'>".
+					"<td class='ret_tarjeta'>".
+						$data['ret_tarjeta'].
 					"</td>".
 					"<td>".
-						"<input type='text' class='form-control'>".
+						"<input type='text' class='form-control comision_tarjeta'>".
 					"</td>"
 				."</td></tr>";
 		}else{
@@ -233,12 +236,21 @@ class IngresoController extends BaseController {
 					$data['no_factura'].
 				"</td>".			
 				"<td>".
-					"<input type='text' class='form-control'>".
+					"<input type='text' class='form-control valor_ret_ir_caja'>".
 				"</td>".
 				"<td>".
-					"<input type='text' class='form-control'>".
+					"<input type='text' class='form-control valor_ret_alma_caja'>".
 				"</td>".
-				"<td><select class='form-control'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option></select></td>"
+				"<td><select class='form-control forma_pago_caja'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option></select></td>".
+				"<td class='pago_neto_caja'>".
+					$data['pago'].
+				"</td>".
+				"<td class='ret_tarjeta_caja'>".
+					"0".
+				"</td>".
+				"<td>".
+					"<input type='text' class='form-control comision_tarjeta_caja'>".
+				"</td>"
 		."</td></tr>";	
 	}
 
