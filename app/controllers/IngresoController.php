@@ -28,11 +28,11 @@ class IngresoController extends BaseController {
 	
 	
 		if($result['aqui'] != '') {
-			$clasificacion         = 'RENTA';
-			$data['clasif_ventas'] = 'RENTA';
+			$clasificacion         = 'RE';
+			$data['clasif_ventas'] = 'RE';
 			$data['descuento']     = $result['desc_alqui'];
 			$data['sub_total']     = $result['aqui'];	
-			//$data['iva']           = round(($result['aqui'])*.15, 2);
+			$data['iva']           = round(($result['aqui'])*.15, 2);
 			if($data['cxc'] != ''){
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
@@ -48,7 +48,7 @@ class IngresoController extends BaseController {
 			$data['clasif_ventas'] = $result['enviado_a_3'];
 			$data['descuento']     = $result['desc_vtas'];
 			$data['sub_total']     = $result['ventas'];	
-			//$data['iva']           = round(($result['ventas'])*.15, 2);	
+			$data['iva']           = round(($result['ventas'])*.15, 2);	
 			if($data['cxc'] != ''){
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
@@ -68,68 +68,132 @@ class IngresoController extends BaseController {
 	 * @return [type]
 	 */
 	public static function filaFactura($data, $clasificacion)
-	{		
-		return
-		"<tr>".
-				"<td>".
-					$data['fecha_transaccion'].
-				"</td>".
-				"<td>".
-					$data['clasif_ventas'].
-				"</td>".
-				"<td>".
-					$data['no_factura'].
-				"</td>".
-				"<td>".
-					$data['codigo_cliente'].
-				"</td>".
-				"<td>".
-					$data['nombre'].
-				"</td>".
-				"<td>".
-					$data['sub_total'].
-				"</td>".				
-				"<td>".
-					$data['descuento'].
-				"</td>".
-				"<td>".
-					$data['iva'].
-				"</td>".
-				"<td>".
-					"<input type='text' class='form-control'>".
-				"</td>".
-				"<td>".
-					"<input type='text' class='form-control'>".
-				"</td>".				
-				"<td class='pago_neto " .$clasificacion. "'>".
-					$data['pago_neto'].
-				"</td>".
-				"<td class='c_c " .$clasificacion. "'>".
-					$data['cxc'].
-				"</td>".
-				"<td>".
-					$data['forma_pago'].
-				"</td>"
-		."</td></tr>";
+	{
+		$time = strtotime($data['fecha_transaccion']);
+		$fecha = date('Y-m-d', $time);
+
+
+		if($data['forma_pago'] == 'TARJETA DE CREDITO'){
+			return
+				"<tr>".
+					"<td>".
+						"<input type='checkbox' class='anul'>".
+					"</td>".					
+					"<td>".
+						$fecha.
+					"</td>".
+					"<td class='clasificacion'>".
+						$data['clasif_ventas'].
+					"</td>".
+					"<td>".
+						$data['no_factura'].
+					"</td>".
+					"<td>".
+						$data['codigo_cliente'].
+					"</td>".
+					"<td>".
+						$data['nombre'].
+					"</td>".
+					"<td class='subtotal'>".
+						$data['sub_total'].
+					"</td>".				
+					"<td class='descuento'>".
+						$data['descuento'].
+					"</td>".
+					"<td class='iva'>".
+						$data['iva'].
+					"</td>".
+					"<td class='ret_ir'>".
+						"<input type='text' class='form-control valor_ret_ir'>".
+					"</td>".
+					"<td>".
+						"<input type='text' class='form-control valor_ret_alma'>".
+					"</td>".			
+					"<td class='pago_neto " .$clasificacion. "'>".
+						$data['pago_neto'].
+					"</td>".
+					"<td class='c_c " .$clasificacion. "'>".
+						$data['cxc'].
+					"</td>".
+					"<td>".
+						$data['forma_pago'].
+					"</td>".
+					"<td>".
+						"<input type='text' class='form-control'>".
+					"</td>".
+					"<td>".
+						"<input type='text' class='form-control'>".
+					"</td>"
+				."</td></tr>";
+		}else{
+			return
+				"<tr>".
+						"<td>".
+							"<input type='checkbox' class='anul'>".
+						"</td>".					
+						"<td>".
+							$fecha.
+						"</td>".
+						"<td class='clasificacion'>".
+							$data['clasif_ventas'].
+						"</td>".
+						"<td>".
+							$data['no_factura'].
+						"</td>".
+						"<td>".
+							$data['codigo_cliente'].
+						"</td>".
+						"<td>".
+							$data['nombre'].
+						"</td>".
+						"<td class='subtotal'>".
+							$data['sub_total'].
+						"</td>".				
+						"<td class='descuento'>".
+							$data['descuento'].
+						"</td>".
+						"<td class='iva'>".
+							$data['iva'].
+						"</td>".
+						"<td class='ret_ir'>".
+							"&nbsp;&nbsp;".
+						"</td>".
+						"<td>".
+							"&nbsp;&nbsp;".
+						"</td>".			
+						"<td class='pago_neto " .$clasificacion. "'>".
+							$data['pago_neto'].
+						"</td>".
+						"<td class='c_c " .$clasificacion. "'>".
+							$data['cxc'].
+						"</td>".
+						"<td>".
+							$data['forma_pago'].
+						"</td>".
+						"<td>".
+							"&nbsp;&nbsp;".
+						"</td>".
+						"<td>".
+							"&nbsp;&nbsp;".
+						"</td>"
+				."</td></tr>";
+		}
+
+		
 	}
 
 	/**
 	 * @param [type]
 	 */
-	public static function addRowCaja($result)
+	public static function addRowCaja()
 	{
-		$text = "";
-		$data = array(
-			'no_cliente'  => $result['no_cliente'],
-			'descripcion' => $result['descripcion'],
-			'fecha'       => $result['fecha'],
-			'referencia'  => $result['referencia'],
-			'pago'        => $result['pago'],			
-			'no_factura'  => $result['no_factura'],			
-			
-		);		
+		$texto = "";
 
-		$texto = IngresoController::filaCaja($data);
+		$data = IngresoController::getReferencia();
+
+		for ($i=0; $i < count($data); $i++) { 
+			$texto .= IngresoController::filaCaja($data[$i]);
+		}		
 
 		return $texto;
 	}
@@ -141,8 +205,15 @@ class IngresoController extends BaseController {
 	 */
 	public static function filaCaja($data, $clasificacion = null)
 	{
+
+		$time = strtotime($data['fecha']);
+		$fecha = date('Y-m-d', $time);
+
 		return
 		"<tr>".
+				"<td>".
+					"<button class='btn btn-info btn_view_referencia' data-referencia='".$data['referencia']."'>Ver</button>".
+				"</td>".
 				"<td>".
 					$data['no_cliente'].
 				"</td>".
@@ -150,7 +221,7 @@ class IngresoController extends BaseController {
 					$data['descripcion'].
 				"</td>".
 				"<td>".
-					$data['fecha'].
+					$fecha.
 				"</td>".
 				"<td>".
 					$data['referencia'].
@@ -160,13 +231,42 @@ class IngresoController extends BaseController {
 				"</td>".
 				"<td>".
 					$data['no_factura'].
-				"</td>".
+				"</td>".			
 				"<td>".
 					"<input type='text' class='form-control'>".
 				"</td>".
 				"<td>".
 					"<input type='text' class='form-control'>".
-				"</td>"				
+				"</td>".
+				"<td><select class='form-control'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option></select></td>"
 		."</td></tr>";	
+	}
+
+	public static function getReferencia()
+	{
+		$result = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
+		$referencia = array();
+		$datas = array();
+
+		for ($i=0; $i < $result->count(); $i++) { 
+
+			if (in_array($result[$i]['referencia'], $referencia) == false) {
+			  	array_push($referencia, $result[$i]['referencia']);
+			   	$data = array(
+					'no_cliente'  => $result[$i]['no_cliente'],
+					'descripcion' => $result[$i]['descripcion'],
+					'fecha'       => $result[$i]['fecha'],
+					'referencia'  => $result[$i]['referencia'],
+					'pago'        => $result[$i]['pago'],			
+					'no_factura'  => $result[$i]['no_factura'],	
+					'importe'     => $result[$i]['importe']		
+					
+				);	
+
+				array_push($datas, $data);
+			}
+			
+		}
+		return $datas;
 	}
 }

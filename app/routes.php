@@ -59,6 +59,42 @@ Route::get('Ingreso', function(){
 	return View::make('reportes.ingreso', compact('result1', 'result2'));
 });
 
+Route::get('Ingreso/Referencia/{nombre}', function($referencia){
+
+	$result = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
+	$datas = array();
+
+	$referencia_edit = explode("-", $referencia);
+
+	if(count($referencia_edit) == 1){
+		$referencia_edit = $referencia_edit[0];	
+	}else{
+		$referencia_edit = $referencia_edit[0] .'/'. $referencia_edit[1];
+	}
+
+	for ($i=0; $i < $result->count(); $i++) { 
+		if ($result[$i]['referencia'] == $referencia_edit) {
+			$time = strtotime($result[$i]['fecha']);
+			$fecha = date('Y-m-d', $time);
+			$data = array(
+				'no_cliente'  => $result[$i]['no_cliente'],
+				'descripcion' => $result[$i]['descripcion'],
+				'fecha'       => $fecha,
+				'referencia'  => $result[$i]['referencia'],
+				'pago'        => $result[$i]['pago'],			
+				'no_factura'  => $result[$i]['no_factura'],	
+				'importe'     => $result[$i]['importe']					
+			);	
+			array_push($datas, $data);
+		}
+	}
+	
+	return Response::json(array(
+		'datas' => $datas
+
+	));
+});
+
 
 Route::get('CatalogoCuentas', function(){
 	return View::make('cuentas.catalogo');
