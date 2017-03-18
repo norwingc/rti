@@ -23,6 +23,9 @@
 		.dataTables_info{
 			display: none;
 		}
+		table:not(.table_modal){
+			width: 1500px !important;
+		}
 	</style>
 
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
@@ -51,7 +54,7 @@
 				<table id="table" class="table table-bordered table-hover myTable table_factura">
 					<thead>
 			            <tr>
-			            	<th width="10%">Select</th>
+			            	<th>Select</th>
 			            	<th>Fecha</th>								
 							<th>clasif ventas</th>
 							<th>Factura</th>
@@ -60,13 +63,14 @@
 							<th>subtotal</th>							
 							<th>descuento</th>
 							<th>iva</th>							
-							<th width="20%">ret ir C$</th>
-							<th width="20%">ret alma C$</th>							
+							<th>ret ir C$</th>
+							<th>ret alma C$</th>							
 							<th>pago neto</th>
 							<th>cxc</th>
 							<th>forma de pago</th>
 							<th>Ret ir 1.5%</th>
 							<th>Comision %</th>
+							<th>Comision C$</th>
 			            </tr>
 			        </thead>
 			        <tbody>			        	
@@ -175,6 +179,28 @@
 			        		
         	</div>	
 
+
+        	<div class="container totales_forma_pago">
+        		<div class="col-sm-3">
+					<h3 style="text-align: left;">Forma de Pago</h3>
+					<ul style="text-align: left;">
+						<li>TARJETA DE CREDITO</li>
+						<li>CHEQUE</li>
+						<li>EFECTIVO</li>
+						<li>TRANSFERENCIA</li>											
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<h3>Total</h3>
+					<ul>
+						<li id="forma_pago_tarjeta"></li>
+						<li id="forma_pago_cheque"></li>
+						<li id="forma_pago_efectivo"></li>
+						<li id="forma_pago_transferncia"></li>
+					</ul>
+				</div>
+			</div>	
+
         	<h2>Recibos oficiales de caja</h2>
 
         	<div class="table-responsive">
@@ -194,6 +220,7 @@
 							<th>pago neto</th>
 							<th>ret tarjeta 1.5%</th>
 							<th>comision</th>
+							<th>Comision C$</th>
 			            </tr>
 			        </thead>
 			        <tbody>
@@ -204,6 +231,27 @@
 			        </tbody>
 		        </table>
         	</div>
+
+        	<div class="container totales_forma_pago">
+        		<div class="col-sm-3">
+					<h3 style="text-align: left;">Forma de Pago</h3>
+					<ul style="text-align: left;">
+						<li>TARJETA DE CREDITO</li>
+						<li>CHEQUE</li>
+						<li>EFECTIVO</li>
+						<li>TRANSFERENCIA</li>											
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<h3>Total</h3>
+					<ul>
+						<li id="forma_pago_tarjeta_caja"></li>
+						<li id="forma_pago_cheque_caja"></li>
+						<li id="forma_pago_efectivo_caja"></li>
+						<li id="forma_pago_transferncia_caja"></li>
+					</ul>
+				</div>
+			</div>	
 		
 		</div>
 	</div>
@@ -217,7 +265,7 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-            	<table class="table table-bordered">
+            	<table class="table table-bordered table_modal">
 					<thead>
 			            <tr>			            	
 			            	<th>No. Cliente</th>								
@@ -298,46 +346,16 @@
 				calculoPagoNeto($(this));
 			});
 			$('.comision_tarjeta').focusout(function(){
-				calculoTotales();
-				var row = $(this).parent(0).parent(0);				
-
-				var pago = $(row).find('.pago_neto').html();
-				var pago_resta = Number(pago) * ($(this).val() / 100);				
-
-				pago = Math.round((pago - pago_resta) * 100) / 100;			
-
-				$(row).find('.pago_neto').html(pago);
-
-				calculoTotales();
+				calculoPagoNeto($(this));
 			});
+
 
 			$('.forma_pago_caja').change(function(){
-				var row = $(this).parent(0).parent(0);	
-				var pago = $(row).find('.pago_neto_caja').html();
-
-				if($(this).val() == 'TARJETA DE CREDITO'){								
-
-					var ret_tarjeta = Math.round((Number(pago) * .015) *100) / 100;
-
-					$(row).find('.ret_tarjeta_caja').html(ret_tarjeta);
-				}else{
-					$(row).find('.ret_tarjeta_caja').html('0');
-				}
+				calculoPagoNeto_caja($(this));
 			});
-
-			$('.comision_tarjeta_caja').focusout(function(){
-				
-				var row = $(this).parent(0).parent(0);				
-
-				var pago = $(row).find('.pago_neto_caja').html();
-				var pago_resta = Number(pago) * ($(this).val() / 100);			
-
-				pago = Math.round((pago - pago_resta) * 100) / 100;			
-
-				$(row).find('.pago_neto_caja').html(pago);				
+			$('.comision_tarjeta_caja').focusout(function(){				
+				calculoPagoNeto_caja($(this));
 			});
-
-
 			$('.valor_ret_ir_caja').focusout(function(){
 				calculoPagoNeto_caja($(this));
 			});
@@ -385,24 +403,14 @@
 		});
 
 		function calculoTotales() {
-			var pago_neto          = 0;
+			var pago_neto     = 0;
 			var c_c           = 0;
 			var subtotal      = 0;
 			var descuento     = 0;
 			var iva           = 0;		
 			
 			var ret_ir        = 0;
-			var ret_alma      = 0;	
-
-			$('.table_factura').find('.pago_neto:not(.anul)').each(function(){
-				var este = $(this);				
-				var row = este.parent(0);				
-				var ret_actual = $(row).find('.ret_tarjeta').html();
-
-				var ret_tarjeta = Math.round((Number(este.html()) * .015) *100) / 100;
-
-				$(row).find('.ret_tarjeta').html(ret_tarjeta);
-			});
+			var ret_alma      = 0;		
 
 
 			$('.pago_neto:not(.anul)').each(function(){
@@ -618,6 +626,38 @@
 			$('#cv_total').html(Math.round(cv_total * 100) / 100);
 			$('#cv_credito').html(Math.round(cv_credito * 100) / 100);
 			$('#cv_contado').html(Math.round(cv_contado * 100) / 100);
+
+			formaPago();
+		}
+
+		function formaPago() {
+			var forma_pago_transferncia = 0,  forma_pago_efectivo = 0, forma_pago_cheque = 0, forma_pago_tarjeta = 0;
+
+			$('.table_factura').find('.TARJETA').each(function(){
+				var row = $(this).parent(0);
+				forma_pago_tarjeta += Number($(row).find('.pago_neto').html());				
+			});
+
+			$('.table_factura').find('.TRANSFERENCIA').each(function(){
+				var row = $(this).parent(0);
+				forma_pago_transferncia += Number($(row).find('.pago_neto').html());				
+			});
+
+			$('.table_factura').find('.CHEQUE').each(function(){
+				var row = $(this).parent(0);
+				forma_pago_cheque += Number($(row).find('.pago_neto').html());				
+			});
+
+			$('.table_factura').find('.EFECTIVO').each(function(){
+				var row = $(this).parent(0);
+				forma_pago_efectivo += Number($(row).find('.pago_neto').html());				
+			});
+
+			$('#forma_pago_tarjeta').html(Math.round( forma_pago_tarjeta * 100   ) / 100);
+			$('#forma_pago_transferncia').html(Math.round( forma_pago_transferncia * 100   ) / 100);
+			$('#forma_pago_efectivo').html(Math.round( forma_pago_efectivo * 100   ) / 100);
+			$('#forma_pago_cheque').html(Math.round( forma_pago_cheque * 100   ) / 100);
+
 		}
 
 		function anul(este) {
@@ -650,31 +690,155 @@
 
 		function calculoPagoNeto(este) {
 
-			calculoTotales();
+			//calculoTotales();			
 			var row = $(este).parent(0).parent(0);
+			var no_factura = $(row).find('.no_factura').html();			
+			var clasificacion = $(row).find('.clasificacion').html(); 
+			var url = '{{URL()}}/getFactura/' +no_factura+'/' + clasificacion;			
 
-			var pago = $(row).find('.pago_neto').html();
-			var pago_resta = $(este).val();				
-
-			pago = Math.round((pago - pago_resta) * 100) / 100;			
-
-			$(row).find('.pago_neto').html(pago);
-
-			calculoTotales();
+			var pago_neto = 0;
+			var pago = 0;
+			var ret_ir = 0;
+			var ret_alma = 0;
+			var ret_tarjeta = 0;
+			var comision = 0;	
+			var comision_tarjeta_valor = 0;	
 			
+			$.get(url, function(data){						
+
+				pago = data.data['pago_neto'];
+
+				if($(row).find('.valor_ret_ir').val() != ''){
+					ret_ir = $(row).find('.valor_ret_ir').val();	
+				}
+
+				if($(row).find('.valor_ret_alma').val() != ''){
+					ret_alma = $(row).find('.valor_ret_alma').val();	
+				}	
+
+				if($(row).find('.comision_tarjeta').val() != ''){
+
+					comision_tarjeta_valor = Math.round(((pago * $(row).find('.comision_tarjeta').val())/100)*100)/100;
+
+					$(row).find('.comision_tarjeta_valor').html(comision_tarjeta_valor);
+
+					comision = comision_tarjeta_valor;
+				}else{
+					$(row).find('.comision_tarjeta_valor').html('');
+				}			
+				
+				ret_tarjeta = Number($(row).find('.ret_tarjeta').html());				
+
+				pago_neto = pago - ret_ir - ret_alma - ret_tarjeta - comision;
+
+				pago_neto = Math.round((pago_neto) * 100) / 100;
+
+				$(row).find('.pago_neto').html(pago_neto);	
+			});			
+			
+			calculoTotales();
 		}
 
 		function calculoPagoNeto_caja(este){
+			
 			var row = $(este).parent(0).parent(0);
-			console.log(row);
+			var referencia = $(row).find('.no_referencia').html();	
+			var referencia_edit = null;
 
-			var pago = $(row).find('.pago_neto_caja').html();
-			var pago_resta = $(este).val();				
+			referencia = referencia.split('/');
 
-			pago = Math.round((pago - pago_resta) * 100) / 100;			
+			if(referencia.length ==1){
+				referencia_edit = referencia[0];					
+			}else{
+				referencia_edit = referencia[0] +'-'+ referencia[1];					
+			}
 
-			$(row).find('.pago_neto_caja').html(pago);
+			var pago_neto = 0;
+			var pago = 0;
+			var ret_ir = 0;
+			var ret_alma = 0;
+			var ret_tarjeta = 0;
+			var comision = 0;	
+			var comision_tarjeta_valor = 0;		
 
+			$.get('{{URL()}}/getCaja/'+referencia_edit, function(data){
+				pago = data.data['pago'];
+
+				if($(row).find('.valor_ret_ir_caja').val() != ''){
+					ret_ir = $(row).find('.valor_ret_ir_caja').val();	
+				}
+
+				if($(row).find('.valor_ret_alma_caja').val() != ''){
+					ret_alma = $(row).find('.valor_ret_alma_caja').val();	
+				}
+
+				if($(row).find('.comision_tarjeta_caja').val() != ''){
+
+					comision_tarjeta_valor = Math.round(((pago * $(row).find('.comision_tarjeta_caja').val())/100)*100)/100;
+
+					$(row).find('.comision_tarjeta_valor_caja').html(comision_tarjeta_valor);
+
+					comision = comision_tarjeta_valor;
+				}else{
+					$(row).find('.comision_tarjeta_valor_caja').html('');
+				}
+
+				if($(row).find('.forma_pago_caja').val() == 'TARJETA DE CREDITO'){
+
+					var retencion_tarjeta = Math.round(( pago * 0.015) * 100 )/100;
+
+					ret_tarjeta = retencion_tarjeta;	
+
+					$(row).find('.ret_tarjeta_caja').html(ret_tarjeta);	
+				}else{
+					$(row).find('.ret_tarjeta_caja').html('0');	
+				}
+
+				pago_neto = pago - ret_ir - ret_alma - ret_tarjeta - comision;
+
+				pago_neto = Math.round((pago_neto) * 100) / 100;
+
+
+				$(row).find('.pago_neto_caja').html(pago_neto);	
+			});	
+
+			formaPagoCaja();
+
+		}
+
+		function formaPagoCaja() {
+
+			var forma_pago_transferncia = 0,  forma_pago_efectivo = 0, forma_pago_cheque = 0, forma_pago_tarjeta = 0;
+
+			$('.table_caja').find('.forma_pago_caja').each(function(){
+				var select = $(this).val().trim();
+				var row = $(this).parent(0).parent(0);
+
+				console.log(select);
+
+				if(select == 'TARJETA DE CREDITO'){					
+					forma_pago_tarjeta += Number($(row).find('.pago_neto_caja').html());	
+				}
+
+				if(select == 'CHEQUE'){
+					forma_pago_cheque += Number($(row).find('.pago_neto_caja').html());	
+				}
+
+				if(select == 'EFECTIVO'){
+					forma_pago_efectivo += Number($(row).find('.pago_neto_caja').html());	
+				}
+
+				 if(select == 'TRANSFERENCIA'){
+					forma_pago_transferncia += Number($(row).find('.pago_neto_caja').html());	
+				}
+							
+			});
+
+
+			$('#forma_pago_tarjeta_caja').html(Math.round( forma_pago_tarjeta * 100   ) / 100);
+			$('#forma_pago_transferncia_caja').html(Math.round( forma_pago_transferncia * 100   ) / 100);
+			$('#forma_pago_efectivo_caja').html(Math.round( forma_pago_efectivo * 100   ) / 100);
+			$('#forma_pago_cheque_caja').html(Math.round( forma_pago_cheque * 100   ) / 100);
 		}
 
 	</script>

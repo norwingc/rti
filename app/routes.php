@@ -99,3 +99,6 @@ Route::get('Ingreso/Referencia/{nombre}', function($referencia){
 Route::get('CatalogoCuentas', function(){
 	return View::make('cuentas.catalogo');
 });
+
+Route::get('getFactura/{factura}/{clasificacion}', 'IngresoController@getFactura');
+Route::get('getCaja/{referencia}', 'IngresoController@getCaja');

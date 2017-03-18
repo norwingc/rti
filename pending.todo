@@ -1,7 +1,15 @@
- ☐ agregar otra tabla con las notas de credito mismos campos de caja, agregar subtotal, iva, referencia es n/c, calculadoy se pueda modifcar
+ ☐ comienza con n/d n/C
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ tabla con forma de pago para las tablas @done (17-03-18 15:37)
+ ✔ comision resta caja @done (17-03-18 15:13)
+ ✔ actualizar los pagos @done (17-03-18 14:06)
+ ✔ ver el varlor de la comision @done (17-03-18 14:05)
+ ✔ restar la ret de ir tarjeta @done (17-03-18 14:05)
+ ✔ cargar el pago neto anterior @done (17-03-18 14:05)
+ ✔ agregar forma de pago transferencia @done (17-03-18 14:05)
+ ✔ formago de moneda @done (17-03-18 11:04)
  ✔ agregar pago neto a caja, pago total menos retenciones @done (17-03-11 16:49)
  ✔ pago neto se calcula ahora subtotal - descuento + iva - descuento_nuevo - retencion_tarjeta - ret_ir @done (17-03-11 16:21)
  ✔ pago nego los que tengan que ver con tarjeta restarle retencion y comision @done (17-03-11 16:21)

@@ -7,6 +7,7 @@ class IngresoController extends BaseController {
 	 */
 	public static function addRowFactura($result)
 	{		
+		//ret de tarjeta se hacen antes o despude de ivay descuento
 		$texto = "";
 		$clasificacion = "";
 		
@@ -37,9 +38,10 @@ class IngresoController extends BaseController {
 			if($data['cxc'] != ''){
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
-			}else {
-				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];	
+			}else {				
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
 				$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);		
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'] - $data['ret_tarjeta'];
 			}
 			
 			$texto .= IngresoController::filaFactura($data, $clasificacion);
@@ -54,9 +56,10 @@ class IngresoController extends BaseController {
 			if($data['cxc'] != ''){
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
-			}else {
-				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];		
+			}else {				
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];					
 				$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);	
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'] - $data['ret_tarjeta'];					
 			}	
 			
 			$texto .= IngresoController::filaFactura($data, $clasificacion);
@@ -88,7 +91,7 @@ class IngresoController extends BaseController {
 					"<td class='clasificacion'>".
 						$data['clasif_ventas'].
 					"</td>".
-					"<td>".
+					"<td class='no_factura'>".
 						$data['no_factura'].
 					"</td>".
 					"<td>".
@@ -118,7 +121,7 @@ class IngresoController extends BaseController {
 					"<td class='c_c " .$clasificacion. "'>".
 						$data['cxc'].
 					"</td>".
-					"<td>".
+					"<td class='TARJETA'>".
 						$data['forma_pago'].
 					"</td>".
 					"<td class='ret_tarjeta'>".
@@ -126,8 +129,11 @@ class IngresoController extends BaseController {
 					"</td>".
 					"<td>".
 						"<input type='text' class='form-control comision_tarjeta'>".
+					"</td>".
+					"<td class='comision_tarjeta_valor'>".
+						"&nbsp;&nbsp;".
 					"</td>"
-				."</td></tr>";
+				."</tr>";
 		}else{
 			return
 				"<tr>".
@@ -140,7 +146,7 @@ class IngresoController extends BaseController {
 						"<td class='clasificacion'>".
 							$data['clasif_ventas'].
 						"</td>".
-						"<td>".
+						"<td class='no_factura'>".
 							$data['no_factura'].
 						"</td>".
 						"<td>".
@@ -170,7 +176,7 @@ class IngresoController extends BaseController {
 						"<td class='c_c " .$clasificacion. "'>".
 							$data['cxc'].
 						"</td>".
-						"<td>".
+						"<td class='" . $data['forma_pago'] ." '>".
 							$data['forma_pago'].
 						"</td>".
 						"<td>".
@@ -178,8 +184,11 @@ class IngresoController extends BaseController {
 						"</td>".
 						"<td>".
 							"&nbsp;&nbsp;".
-						"</td>"
-				."</td></tr>";
+						"</td>".
+						"<td>".
+							"&nbsp;&nbsp;".
+						"</td>"	
+				."</tr>";
 		}
 
 		
@@ -226,10 +235,10 @@ class IngresoController extends BaseController {
 				"<td>".
 					$fecha.
 				"</td>".
-				"<td>".
+				"<td class='no_referencia'>".
 					$data['referencia'].
 				"</td>".
-				"<td>".
+				"<td class='pago_caja'>".
 					$data['pago'].
 				"</td>".
 				"<td>".
@@ -241,7 +250,7 @@ class IngresoController extends BaseController {
 				"<td>".
 					"<input type='text' class='form-control valor_ret_alma_caja'>".
 				"</td>".
-				"<td><select class='form-control forma_pago_caja'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option></select></td>".
+				"<td><select class='form-control forma_pago_caja'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option><option value='TRANSFERENCIA'>TRANSFERENCIA</option></select></td>".
 				"<td class='pago_neto_caja'>".
 					$data['pago'].
 				"</td>".
@@ -250,10 +259,17 @@ class IngresoController extends BaseController {
 				"</td>".
 				"<td>".
 					"<input type='text' class='form-control comision_tarjeta_caja'>".
-				"</td>"
-		."</td></tr>";	
+				"</td>".
+				"<td class='comision_tarjeta_valor_caja'>".
+					"&nbsp;&nbsp;".
+				"</td>"	
+		."</tr>";	
 	}
 
+	/**
+	 * [getReferencia description]
+	 * @return [type] [description]
+	 */
 	public static function getReferencia()
 	{
 		$result = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
@@ -280,5 +296,114 @@ class IngresoController extends BaseController {
 			
 		}
 		return $datas;
+	}
+
+	/**
+	 * [getFactura description]
+	 * @param  [type] $factura       [description]
+	 * @param  [type] $clasificacion [description]
+	 * @return [type]                [description]
+	 */
+	public function getFactura($factura, $clasificacion)
+	{
+		$data = null;		
+		$result_factura = false;
+		$result = Excel::selectSheets('FacturaSirius')->load('files/FacturaSirius.xlsx',function($reader){})->get();
+
+		for ($i=0; $i < $result->count(); $i++) { 
+			if($result[$i]['no_factura'] == $factura){
+				$result_factura = $result[$i];
+
+				$data = array(
+					'fecha_transaccion'  => $result_factura['fecha_transaccion'],
+					'clasif_ventas'      => null,
+					'no_factura'         => $result_factura['no_factura'],
+					'codigo_cliente'     => $result_factura['codigo_de_cliente'],
+					'nombre'             => $result_factura['nombre'],
+					'sub_total'          => $result_factura['subtotal'],
+					'flete'              => null,
+					'descuento_venta'    => null,
+					'descuento_alquiler' => null,
+					'iva'                => $result_factura['impuesto_1'],
+					'cxc'                => $result_factura['saldo_a_pagar'],
+					'forma_pago'         => $result_factura['forma_de_pago_1'],
+					'pago_neto'          => null,
+					'ret_tarjeta'        => null
+				);	
+
+				if($clasificacion == 'RE'){
+
+					$data['descuento']     = $result_factura['desc_alqui'];
+					$data['sub_total']     = $result_factura['aqui'];	
+					$data['iva']           = round(($result_factura['aqui'])*.15, 2);	
+
+					if($data['cxc'] != ''){
+						$data['pago_neto'] = null;
+						$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
+					}else {
+						$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];	
+						$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);		
+					}	
+					
+				}else{					
+					$data['descuento']     = $result_factura['desc_vtas'];
+					$data['sub_total']     = $result_factura['ventas'];	
+					$data['iva']           = round(($result_factura['ventas'])*.15, 2);		
+
+					if($data['cxc'] != ''){
+						$data['pago_neto'] = null;
+						$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
+					}else {
+						$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];		
+						$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);	
+					}						
+				}				
+			}
+		}
+
+		return Response::json(array(
+			'data' =>     $data
+		));	
+		
+	}
+
+	/**
+	 * [getCaja description]
+	 * @param  [type] $referencia [description]
+	 * @return [type]             [description]
+	 */
+	public function getCaja($referencia)
+	{
+		$data = null;		
+		$referencia_edit = explode("-", $referencia);
+		$result_caja = null; 
+		$result = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
+
+
+		if(count($referencia_edit) == 1){
+			$referencia_edit = $referencia_edit[0];	
+		}else{
+			$referencia_edit = $referencia_edit[0] .'/'. $referencia_edit[1];
+		}		
+
+		for ($i=0; $i < $result->count(); $i++) { 
+			if($result[$i]['referencia'] == $referencia_edit){
+				$result_caja = $result[$i];
+
+				$data = array(
+					'no_cliente'  => $result_caja['no_cliente'],
+					'descripcion' => $result_caja['descripcion'],
+					'fecha'       => $result_caja['fecha'],
+					'referencia'  => $result_caja['referencia'],
+					'pago'        => $result_caja['pago'],			
+					'no_factura'  => $result_caja['no_factura'],	
+					'importe'     => $result_caja['importe']
+				);
+			}
+		}	
+
+		return Response::json(array(
+			'data' =>     $data
+		));		
 	}
 }
