@@ -7,7 +7,9 @@ class IngresoController extends BaseController {
 	 */
 	public static function addRowFactura($result)
 	{		
-		//ret de tarjeta se hacen antes o despude de ivay descuento
+		//ret de tarjeta se hacen antes o despude de iva y descuento
+		//que referencias en la segunda tabla de caja
+		//en la segunda tabla misma forma de pago? cual selecciona tarjeta de credito no hay comision ni retencion?
 		$texto = "";
 		$clasificacion = "";
 		
@@ -25,7 +27,7 @@ class IngresoController extends BaseController {
 			'cxc'                => $result['saldo_a_pagar'],
 			'forma_pago'         => $result['forma_de_pago_1'],
 			'pago_neto'          => null,
-			'ret_tarjeta'        => null
+			'ret_tarjeta'        => 0
 		);		
 	
 	
@@ -40,7 +42,9 @@ class IngresoController extends BaseController {
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
 			}else {				
 				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
-				$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);		
+				if($data['forma_pago'] == 'TARJETA DE CREDITO'){
+					$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);			
+				}				
 				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'] - $data['ret_tarjeta'];
 			}
 			
@@ -57,8 +61,10 @@ class IngresoController extends BaseController {
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
 			}else {				
-				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];					
-				$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);	
+				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];	
+				if($data['forma_pago'] == 'TARJETA DE CREDITO'){
+					$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);			
+				}									
 				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'] - $data['ret_tarjeta'];					
 			}	
 			
@@ -89,7 +95,7 @@ class IngresoController extends BaseController {
 						$fecha.
 					"</td>".
 					"<td class='clasificacion'>".
-						$data['clasif_ventas'].
+						"<input type='text' value='". $data['clasif_ventas'] ."' class='form-control select_clasificacion'>".
 					"</td>".
 					"<td class='no_factura'>".
 						$data['no_factura'].
@@ -107,7 +113,7 @@ class IngresoController extends BaseController {
 						$data['descuento'].
 					"</td>".
 					"<td class='iva'>".
-						$data['iva'].
+						"<input type='text' value='". $data['iva'] ."' class='form-control'>".
 					"</td>".
 					"<td class='ret_ir'>".
 						"<input type='text' class='form-control valor_ret_ir'>".
@@ -144,7 +150,7 @@ class IngresoController extends BaseController {
 							$fecha.
 						"</td>".
 						"<td class='clasificacion'>".
-							$data['clasif_ventas'].
+							"<input type='text' value='". $data['clasif_ventas'] ."' class='form-control select_clasificacion'>".
 						"</td>".
 						"<td class='no_factura'>".
 							$data['no_factura'].
@@ -162,14 +168,14 @@ class IngresoController extends BaseController {
 							$data['descuento'].
 						"</td>".
 						"<td class='iva'>".
-							$data['iva'].
+							"<input type='text' value='". $data['iva'] ."' class='form-control'>".
 						"</td>".
 						"<td class='ret_ir'>".
-							"&nbsp;&nbsp;".
+						"<input type='text' class='form-control valor_ret_ir'>".
 						"</td>".
 						"<td>".
-							"&nbsp;&nbsp;".
-						"</td>".			
+							"<input type='text' class='form-control valor_ret_alma'>".
+						"</td>".	
 						"<td class='pago_neto " .$clasificacion. "'>".
 							$data['pago_neto'].
 						"</td>".
@@ -267,6 +273,70 @@ class IngresoController extends BaseController {
 	}
 
 	/**
+	 * [addRowCaja2 description]
+	 */
+	public static function addRowCaja2(){
+		$texto = "";
+
+		$data = IngresoController::getReferencia2();
+
+		for ($i=0; $i < count($data); $i++) { 
+			$texto .= IngresoController::filaCaja2($data[$i]);
+		}		
+
+		return $texto;
+	}
+
+	/**
+	 * [filaCaja2 description]
+	 * @param  [type] $data          [description]
+	 * @param  [type] $clasificacion [description]
+	 * @return [type]                [description]
+	 */
+	public static function filaCaja2($data, $clasificacion = null)
+	{
+
+		$time = strtotime($data['fecha']);
+		$fecha = date('Y-m-d', $time);
+
+		return
+		"<tr>".
+				"<td>".
+					"<button class='btn btn-info btn_view_referencia' data-referencia='".$data['referencia']."'>Ver</button>".
+				"</td>".
+				"<td>".
+					$data['no_cliente'].
+				"</td>".
+				"<td>".
+					$data['descripcion'].
+				"</td>".
+				"<td>".
+					$fecha.
+				"</td>".
+				"<td class='no_referencia'>".
+					$data['referencia'].
+				"</td>".
+				"<td class='pago_caja'>".
+					$data['pago'].
+				"</td>".
+				"<td>".
+					$data['no_factura'].
+				"</td>".			
+				"<td>".
+					$data['subtotal'].
+				"</td>".
+				"<td>".
+					$data['iva'].
+				"</td>".
+				"<td><select class='form-control forma_pago_caja'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option><option value='TRANSFERENCIA'>TRANSFERENCIA</option></select></td>".
+				"<td class='pago_neto_caja'>".
+					$data['pago'].
+				"</td>"			
+				
+		."</tr>";	
+	}
+
+	/**
 	 * [getReferencia description]
 	 * @return [type] [description]
 	 */
@@ -290,6 +360,43 @@ class IngresoController extends BaseController {
 					'importe'     => $result[$i]['importe']		
 					
 				);	
+
+				array_push($datas, $data);
+			}
+			
+		}
+		return $datas;
+	}
+
+	/**
+	 * [getReferencia2 description]
+	 * @return [type] [description]
+	 */
+	public static function getReferencia2()
+	{
+		$result = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
+		$referencia = array();
+		$datas = array();
+
+		for ($i=0; $i < $result->count(); $i++) { 
+
+			if (in_array($result[$i]['referencia'], $referencia) == false) {
+			  	array_push($referencia, $result[$i]['referencia']);
+			   	$data = array(
+					'no_cliente'  => $result[$i]['no_cliente'],
+					'descripcion' => $result[$i]['descripcion'],
+					'fecha'       => $result[$i]['fecha'],
+					'referencia'  => $result[$i]['referencia'],
+					'pago'        => $result[$i]['pago'],			
+					'no_factura'  => $result[$i]['no_factura'],	
+					'importe'     => $result[$i]['importe'],
+					'subtotal'    => null,
+					'iva'         => null	
+					
+				);	
+
+				$data['iva']      = round($data['pago'] * .15, 2);
+				$data['subtotal'] = round($data['pago'] - $data['iva'], 2);
 
 				array_push($datas, $data);
 			}

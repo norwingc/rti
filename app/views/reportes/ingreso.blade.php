@@ -232,6 +232,32 @@
 		        </table>
         	</div>
 
+        	<div class="table-responsive">
+				<table id="table" class="table table-bordered table-hover myTable table_caja">
+					<thead>
+			            <tr>
+			            	<th>accion</th>
+			            	<th>No. Cliente</th>								
+							<th>Descripcion</th>
+							<th>Fecha</th>							
+							<th>Referencia</th>
+							<th>pago</th>
+							<th>No. Factura</th>	
+							<th>subtotal</th>						
+							<th>iva</th>
+							<th>FORMA DE PAGO</th>
+							<th>pago neto</th>							
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	<?php			        		
+		        			$row = IngresoController::addRowCaja2();
+		        			echo $row;			        				        		
+			        	?>			        		        	
+			        </tbody>
+		        </table>
+        	</div>
+
         	<div class="container totales_forma_pago">
         		<div class="col-sm-3">
 					<h3 style="text-align: left;">Forma de Pago</h3>
@@ -307,37 +333,18 @@
 			$('.anul').click(function(){
 				var este = $(this);
 				anul(este);
-			});
+			});			
 			
-			var clasificacion = [
-				'RE',
-				'RA',
-				'EN',
-				'EU',
-				'RU',
-				'FL',
-				'CO',
-				'ST',
-				'PR',
-				'CV'			
-			];
 
 			calculoTotales();
 
+			findClasificacion();	
 
-			$('.table_factura .clasificacion').each(function(){
-				var no_clasificacion = false;
 
-				for(var i=0; i< clasificacion.length; i++){
-					if($(this).html() == clasificacion[i]){
-						no_clasificacion = true;						
-					}
-				}
-				if(no_clasificacion == false){					
-					var row = $(this).parent(0);
-					$(this).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});
-				}
+			$('.select_clasificacion').focusout(function(){
+				findClasificacion();
 			});
+			
 
 			$('.valor_ret_ir').focusout(function(){
 				calculoPagoNeto($(this));
@@ -402,13 +409,47 @@
 
 		});
 
+		function findClasificacion() {
+
+			var clasificacion = [
+				'RE',
+				'RA',
+				'EN',
+				'EU',
+				'RU',
+				'FL',
+				'CO',
+				'ST',
+				'PR',
+				'CV'			
+			];
+
+			$('.table_factura .clasificacion input').each(function(){
+				var no_clasificacion = false;
+
+				for(var i=0; i< clasificacion.length; i++){
+					if($(this).val() == clasificacion[i]){
+						no_clasificacion = true;						
+					}
+				}
+				if(no_clasificacion == false){					
+					var row = $(this).parent(0);
+					$(row).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});					
+
+				}else{
+					var row = $(this).parent(0);
+					$(row).removeAttr('style');
+				}
+			});
+		}
+
 		function calculoTotales() {
 			var pago_neto     = 0;
 			var c_c           = 0;
 			var subtotal      = 0;
 			var descuento     = 0;
-			var iva           = 0;		
-			
+			var iva           = 0;	
+
 			var ret_ir        = 0;
 			var ret_alma      = 0;		
 
@@ -425,8 +466,8 @@
 			$('.descuento:not(.anul)').each(function(){
 				descuento += Number($(this).html());
 			});
-			$('.iva:not(.anul)').each(function(){
-				iva += Number($(this).html());
+			$('.iva:not(.anul) input').each(function(){
+				iva += Number($(this).val());
 			});
 			$('.valor_ret_ir:not(.anul)').each(function(){
 				ret_ir += Number($(this).val());
@@ -718,16 +759,24 @@
 
 				if($(row).find('.comision_tarjeta').val() != ''){
 
-					comision_tarjeta_valor = Math.round(((pago * $(row).find('.comision_tarjeta').val())/100)*100)/100;
+					if($(row).find('.comision_tarjeta').val() != undefined){
 
-					$(row).find('.comision_tarjeta_valor').html(comision_tarjeta_valor);
+						comision_tarjeta_valor = Math.round(((pago * $(row).find('.comision_tarjeta').val())/100)*100)/100;
 
-					comision = comision_tarjeta_valor;
+						$(row).find('.comision_tarjeta_valor').html(comision_tarjeta_valor);
+
+						comision = comision_tarjeta_valor;
+					}
+					
 				}else{
 					$(row).find('.comision_tarjeta_valor').html('');
-				}			
+				}
+
+
+				if($(row).find('.ret_tarjeta').html() != undefined){
+					ret_tarjeta = Number($(row).find('.ret_tarjeta').html());				
+				}
 				
-				ret_tarjeta = Number($(row).find('.ret_tarjeta').html());				
 
 				pago_neto = pago - ret_ir - ret_alma - ret_tarjeta - comision;
 
