@@ -113,7 +113,7 @@ class IngresoController extends BaseController {
 						$data['descuento'].
 					"</td>".
 					"<td class='iva'>".
-						"<input type='text' value='". $data['iva'] ."' class='form-control'>".
+						"<input type='text' value='". $data['iva'] ."' class='form-control iva_input'>".
 					"</td>".
 					"<td class='ret_ir'>".
 						"<input type='text' class='form-control valor_ret_ir'>".
@@ -168,7 +168,7 @@ class IngresoController extends BaseController {
 							$data['descuento'].
 						"</td>".
 						"<td class='iva'>".
-							"<input type='text' value='". $data['iva'] ."' class='form-control'>".
+							"<input type='text' value='". $data['iva'] ."' class='form-control iva_input'>".
 						"</td>".
 						"<td class='ret_ir'>".
 						"<input type='text' class='form-control valor_ret_ir'>".
@@ -205,6 +205,7 @@ class IngresoController extends BaseController {
 	 */
 	public static function addRowCaja()
 	{
+		//referencia => R/C
 		$texto = "";
 
 		$data = IngresoController::getReferencia();
@@ -276,6 +277,7 @@ class IngresoController extends BaseController {
 	 * [addRowCaja2 description]
 	 */
 	public static function addRowCaja2(){
+		//referencia => N/C, N/D, A/N
 		$texto = "";
 
 		$data = IngresoController::getReferencia2();
@@ -327,8 +329,7 @@ class IngresoController extends BaseController {
 				"</td>".
 				"<td>".
 					$data['iva'].
-				"</td>".
-				"<td><select class='form-control forma_pago_caja'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option><option value='TRANSFERENCIA'>TRANSFERENCIA</option></select></td>".
+				"</td>".				
 				"<td class='pago_neto_caja'>".
 					$data['pago'].
 				"</td>"			
@@ -345,23 +346,27 @@ class IngresoController extends BaseController {
 		$result = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
 		$referencia = array();
 		$datas = array();
-
+		//solo referencia que comienzan con R/C
 		for ($i=0; $i < $result->count(); $i++) { 
 
 			if (in_array($result[$i]['referencia'], $referencia) == false) {
-			  	array_push($referencia, $result[$i]['referencia']);
-			   	$data = array(
-					'no_cliente'  => $result[$i]['no_cliente'],
-					'descripcion' => $result[$i]['descripcion'],
-					'fecha'       => $result[$i]['fecha'],
-					'referencia'  => $result[$i]['referencia'],
-					'pago'        => $result[$i]['pago'],			
-					'no_factura'  => $result[$i]['no_factura'],	
-					'importe'     => $result[$i]['importe']		
-					
-				);	
+				$referecnia_1 = $result[$i]['referencia'];
+				$referecnia_2 = $referecnia_1[0].$referecnia_1[1].$referecnia_1[2];
 
-				array_push($datas, $data);
+				if($referecnia_2 == 'R/C'){
+					array_push($referencia, $result[$i]['referencia']);
+				   	$data = array(
+						'no_cliente'  => $result[$i]['no_cliente'],
+						'descripcion' => $result[$i]['descripcion'],
+						'fecha'       => $result[$i]['fecha'],
+						'referencia'  => $result[$i]['referencia'],
+						'pago'        => $result[$i]['pago'],			
+						'no_factura'  => $result[$i]['no_factura'],	
+						'importe'     => $result[$i]['importe']							
+					);	
+
+					array_push($datas, $data);
+				}	
 			}
 			
 		}
@@ -377,28 +382,38 @@ class IngresoController extends BaseController {
 		$result = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
 		$referencia = array();
 		$datas = array();
+		//solo referencia diferentes a R/C
 
 		for ($i=0; $i < $result->count(); $i++) { 
 
 			if (in_array($result[$i]['referencia'], $referencia) == false) {
-			  	array_push($referencia, $result[$i]['referencia']);
-			   	$data = array(
-					'no_cliente'  => $result[$i]['no_cliente'],
-					'descripcion' => $result[$i]['descripcion'],
-					'fecha'       => $result[$i]['fecha'],
-					'referencia'  => $result[$i]['referencia'],
-					'pago'        => $result[$i]['pago'],			
-					'no_factura'  => $result[$i]['no_factura'],	
-					'importe'     => $result[$i]['importe'],
-					'subtotal'    => null,
-					'iva'         => null	
-					
-				);	
 
-				$data['iva']      = round($data['pago'] * .15, 2);
-				$data['subtotal'] = round($data['pago'] - $data['iva'], 2);
+				$referecnia_1 = $result[$i]['referencia'];
+				$referecnia_2 = $referecnia_1[0].$referecnia_1[1].$referecnia_1[2];
 
-				array_push($datas, $data);
+				if($referecnia_2 != 'R/C'){
+					array_push($referencia, $result[$i]['referencia']);
+				   	$data = array(
+						'no_cliente'  => $result[$i]['no_cliente'],
+						'descripcion' => $result[$i]['descripcion'],
+						'fecha'       => $result[$i]['fecha'],
+						'referencia'  => $result[$i]['referencia'],
+						'pago'        => $result[$i]['pago'],			
+						'no_factura'  => $result[$i]['no_factura'],	
+						'importe'     => $result[$i]['importe'],
+						'subtotal'    => null,
+						'iva'         => null	
+						
+					);	
+
+					$data['iva']      = round($data['pago'] * .15, 2);
+					$data['subtotal'] = round($data['pago'] - $data['iva'], 2);
+
+					array_push($datas, $data);
+
+				}
+
+			  
 			}
 			
 		}
@@ -411,15 +426,19 @@ class IngresoController extends BaseController {
 	 * @param  [type] $clasificacion [description]
 	 * @return [type]                [description]
 	 */
-	public function getFactura($factura, $clasificacion)
+	public function getFactura($factura, $clasificacion = 'RE')
 	{
 		$data = null;		
 		$result_factura = false;
 		$result = Excel::selectSheets('FacturaSirius')->load('files/FacturaSirius.xlsx',function($reader){})->get();
 
+
+
 		for ($i=0; $i < $result->count(); $i++) { 
 			if($result[$i]['no_factura'] == $factura){
 				$result_factura = $result[$i];
+
+				//return $result_factura;
 
 				$data = array(
 					'fecha_transaccion'  => $result_factura['fecha_transaccion'],
