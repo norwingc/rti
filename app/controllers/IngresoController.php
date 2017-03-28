@@ -27,7 +27,8 @@ class IngresoController extends BaseController {
 			'cxc'                => $result['saldo_a_pagar'],
 			'forma_pago'         => $result['forma_de_pago_1'],
 			'pago_neto'          => null,
-			'ret_tarjeta'        => 0
+			'ret_tarjeta'        => 0,
+			'tipo_pago'          => null
 		);		
 	
 	
@@ -40,12 +41,14 @@ class IngresoController extends BaseController {
 			if($data['cxc'] != ''){
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
-			}else {				
+				$data['tipo_pago'] = 'CREDITO';
+ 			}else {				
 				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
 				if($data['forma_pago'] == 'TARJETA DE CREDITO'){
 					$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);			
 				}				
 				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'] - $data['ret_tarjeta'];
+				$data['tipo_pago'] = 'CONTADO';
 			}
 			
 			$texto .= IngresoController::filaFactura($data, $clasificacion);
@@ -60,12 +63,14 @@ class IngresoController extends BaseController {
 			if($data['cxc'] != ''){
 				$data['pago_neto'] = null;
 				$data['cxc'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];
+				$data['tipo_pago'] = 'CREDITO';
 			}else {				
 				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'];	
 				if($data['forma_pago'] == 'TARJETA DE CREDITO'){
 					$data['ret_tarjeta'] = round(($data['pago_neto'])*.015, 2);			
 				}									
 				$data['pago_neto'] = ($data['sub_total'] - $data['descuento']) + $data['iva'] - $data['ret_tarjeta'];					
+				$data['tipo_pago'] = 'CONTADO';
 			}	
 			
 			$texto .= IngresoController::filaFactura($data, $clasificacion);
@@ -106,7 +111,7 @@ class IngresoController extends BaseController {
 					"<td>".
 						$data['nombre'].
 					"</td>".
-					"<td class='subtotal'>".
+					"<td class='subtotal ". $clasificacion . " " . $data['tipo_pago'] . "'>".
 						$data['sub_total'].
 					"</td>".				
 					"<td class='descuento'>".
@@ -161,7 +166,7 @@ class IngresoController extends BaseController {
 						"<td>".
 							$data['nombre'].
 						"</td>".
-						"<td class='subtotal'>".
+						"<td class='subtotal ". $clasificacion . " " . $data['tipo_pago'] . "'>".
 							$data['sub_total'].
 						"</td>".				
 						"<td class='descuento'>".

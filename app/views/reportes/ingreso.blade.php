@@ -541,13 +541,13 @@
 			var re_credito = 0;
 			var re_contado = 0;
 
-			$('.RE:not(.anul)').each(function(){
+			$('.subtotal.RE:not(.anul)').each(function(){
 				re_total += Number($(this).html());			
 			});
-			$('.pago_neto.RE:not(.anul)').each(function(){
+			$('.CONTADO.RE:not(.anul)').each(function(){
 				re_contado += Number($(this).html());			
 			});
-			$('.c_c.RE:not(.anul)').each(function(){
+			$('.CREDITO.RE:not(.anul)').each(function(){
 				re_credito += Number($(this).html());
 			});	
 
@@ -559,13 +559,13 @@
 			var ra_credito = 0;
 			var ra_contado = 0;
 			
-			$('.RA:not(.anul)').each(function(){
+			$('.subtotal.RA:not(.anul)').each(function(){
 				ra_total += Number($(this).html());			
 			});
-			$('.pago_neto.RA:not(.anul)').each(function(){
+			$('.CONTADO.RA:not(.anul)').each(function(){
 				ra_contado += Number($(this).html());			
 			});
-			$('.c_c.RA:not(.anul)').each(function(){
+			$('.CREDITO.RA:not(.anul)').each(function(){
 				ra_credito += Number($(this).html());
 			});	
 
@@ -577,13 +577,13 @@
 			var en_credito = 0;
 			var en_contado = 0;
 			
-			$('.EN:not(.anul)').each(function(){
+			$('.subtotal.EN:not(.anul)').each(function(){
 				en_total += Number($(this).html());			
 			});
-			$('.pago_neto.EN:not(.anul)').each(function(){
+			$('.CONTADO.EN:not(.anul)').each(function(){
 				en_contado += Number($(this).html());			
 			});
-			$('.c_c.EN:not(.anul)').each(function(){
+			$('.CREDITO.EN:not(.anul)').each(function(){
 				en_credito += Number($(this).html());
 			});	
 
@@ -595,13 +595,13 @@
 			var eu_credito = 0;
 			var eu_contado = 0;
 			
-			$('.EU:not(.anul)').each(function(){
+			$('.subtotal.EU:not(.anul)').each(function(){
 				eu_total += Number($(this).html());			
 			});
-			$('.pago_neto.EU:not(.anul)').each(function(){
+			$('.CONTADO.EU:not(.anul)').each(function(){
 				eu_contado += Number($(this).html());			
 			});
-			$('.c_c.EU:not(.anul)').each(function(){
+			$('.CREDITO.EU:not(.anul)').each(function(){
 				eu_credito += Number($(this).html());
 			});	
 
@@ -613,13 +613,13 @@
 			var ru_credito = 0;
 			var ru_contado = 0;
 			
-			$('.RU:not(.anul)').each(function(){
+			$('.subtotal.RU:not(.anul)').each(function(){
 				ru_total += Number($(this).html());			
 			});
-			$('.pago_neto.RU:not(.anul)').each(function(){
+			$('.CONTADO.RU:not(.anul)').each(function(){
 				ru_contado += Number($(this).html());			
 			});
-			$('.c_c.RU:not(.anul)').each(function(){
+			$('.CREDITO.RU:not(.anul)').each(function(){
 				ru_credito += Number($(this).html());
 			});	
 
@@ -631,13 +631,13 @@
 			var fl_credito = 0;
 			var fl_contado = 0;
 			
-			$('.FL:not(.anul)').each(function(){
+			$('.subtotal.FL:not(.anul)').each(function(){
 				fl_total += Number($(this).html());			
 			});
-			$('.pago_neto.FL:not(.anul)').each(function(){
+			$('.CONTADO.FL:not(.anul)').each(function(){
 				fl_contado += Number($(this).html());			
 			});
-			$('.c_c.FL:not(.anul)').each(function(){
+			$('.CREDITO.FL:not(.anul)').each(function(){
 				fl_credito += Number($(this).html());
 			});	
 
@@ -649,13 +649,13 @@
 			var co_credito = 0;
 			var co_contado = 0;
 			
-			$('.CO:not(.anul)').each(function(){
+			$('.subtotal.CO:not(.anul)').each(function(){
 				co_total += Number($(this).html());			
 			});
-			$('.pago_neto.CO:not(.anul)').each(function(){
+			$('.CONTADO.CO:not(.anul)').each(function(){
 				co_contado += Number($(this).html());			
 			});
-			$('.c_c.CO:not(.anul)').each(function(){
+			$('.CREDITO.CO:not(.anul)').each(function(){
 				co_credito += Number($(this).html());
 			});	
 
@@ -667,13 +667,13 @@
 			var st_credito = 0;
 			var st_contado = 0;
 			
-			$('.ST:not(.anul)').each(function(){
+			$('.subtotal.ST:not(.anul)').each(function(){
 				st_total += Number($(this).html());			
 			});
-			$('.pago_neto.ST:not(.anul)').each(function(){
+			$('.CONTADO.ST:not(.anul)').each(function(){
 				st_contado += Number($(this).html());			
 			});
-			$('.c_c.ST:not(.anul)').each(function(){
+			$('.CREDITO.ST:not(.anul)').each(function(){
 				st_credito += Number($(this).html());
 			});	
 
@@ -685,13 +685,13 @@
 			var pr_credito = 0;
 			var pr_contado = 0;
 			
-			$('.PR:not(.anul)').each(function(){
+			$('.subtotal.PR:not(.anul)').each(function(){
 				pr_total += Number($(this).html());			
 			});
-			$('.pago_neto.PR:not(.anul)').each(function(){
+			$('.CONTADO.PR:not(.anul)').each(function(){
 				pr_contado += Number($(this).html());			
 			});
-			$('.c_c.PR:not(.anul)').each(function(){
+			$('.CREDITO.PR:not(.anul)').each(function(){
 				pr_credito += Number($(this).html());
 			});	
 
@@ -703,13 +703,13 @@
 			var cv_credito = 0;
 			var cv_contado = 0;
 			
-			$('.CV:not(.anul)').each(function(){
+			$('.subtotal.CV:not(.anul)').each(function(){
 				cv_total += Number($(this).html());			
 			});
-			$('.pago_neto.CV:not(.anul)').each(function(){
+			$('.CONTADO.CV:not(.anul)').each(function(){
 				cv_contado += Number($(this).html());			
 			});
-			$('.c_c.CV:not(.anul)').each(function(){
+			$('.CREDITO.CV:not(.anul)').each(function(){
 				cv_credito += Number($(this).html());
 			});	
 
