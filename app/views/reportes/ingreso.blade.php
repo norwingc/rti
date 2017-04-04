@@ -97,7 +97,9 @@
 							<th>ret ir</th>
 							<th>ret alma</th>							
 							<th>pago neto</th>
-							<th>cxc</th>							
+							<th>cxc</th>
+							<th>Ret ir Tarjeta</th>
+							<th>Comision</th>							
 			            </tr>
 			        </thead>				        	        	
 		        	<tbody>			        	
@@ -110,6 +112,8 @@
 			        		<td id="ret_alma"><strong>0</strong></td>
 			        		<td id="pago_neto"><strong>0</strong></td>
 			        		<td id="c_c"><strong>0</strong></td>
+			        		<td id="ret_ir_tarjeta"><strong>0</strong></td>
+			        		<td id="comision_tarjeta"><strong>0</strong></td>
 			        	</tr>
 		        	</tbody>
 	        	</table>		
@@ -494,14 +498,17 @@
 
 		function calculoTotales() {			
 
-			var pago_neto = 0;
-			var c_c       = 0;
-			var subtotal  = 0;
-			var descuento = 0;			
-			var iva       = 0;	
+			var pago_neto              = 0;
+			var c_c                    = 0;
+			var subtotal               = 0;
+			var descuento              = 0;			
+			var iva                    = 0;	
 			
-			var ret_ir    = 0;
-			var ret_alma  = 0;
+			var ret_ir                 = 0;
+			var ret_alma               = 0;
+			
+			var ret_tarjeta_total      = 0;
+			var comision_tarjeta_total = 0; 
 
 			$('.pago_neto:not(.anul)').each(function(){
 				pago_neto = pago_neto + Number($(this).html());
@@ -523,7 +530,14 @@
 			});
 			$('.valor_ret_alma:not(.anul)').each(function(){
 				ret_alma += Number($(this).val());
-			});			
+			});	
+			$('.ret_tarjeta:not(.anul)').each(function(){
+				ret_tarjeta_total += Number($(this).val());
+			});	
+			$('.comision_tarjeta_valor:not(.anul)').each(function(){
+				comision_tarjeta_total += Number($(this).val());
+			});	
+					
 
 			$('#pago_neto strong').html(Math.round(pago_neto * 100) / 100);
 			$('#c_c strong').html(Math.round(c_c * 100) / 100);
@@ -531,7 +545,9 @@
 			$('#descuento strong').html(Math.round(descuento * 100) / 100);
 			$('#iva strong').html(Math.round(iva * 100) / 100);
 			$('#ret_ir strong').html(Math.round(ret_ir * 100) / 100);
-			$('#ret_ir strong').html(Math.round(ret_ir * 100) / 100);			
+			$('#ret_alma strong').html(Math.round(ret_alma * 100) / 100);
+			$('#ret_ir_tarjeta strong').html(Math.round(ret_tarjeta_total * 100) / 100);
+			$('#comision_tarjeta strong').html(Math.round(comision_tarjeta_total * 100) / 100);			
 
 			clasificacion_ventas();
 		}
