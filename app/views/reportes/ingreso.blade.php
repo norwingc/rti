@@ -245,7 +245,7 @@
 							<th>Descripcion</th>
 							<th>Fecha</th>							
 							<th>Referencia</th>
-							<th>pago</th>
+							<th>Importe</th>
 							<th>No. Factura</th>	
 							<th>subtotal</th>						
 							<th>iva</th>							
@@ -793,7 +793,7 @@
 			}
 
 			findClasificacion();
-			calculoTotales();
+			//calculoTotales();
 		}
 
 		function calculoPagoNeto(este) {

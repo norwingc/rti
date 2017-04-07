@@ -403,13 +403,17 @@ class IngresoController extends BaseController {
 						'descripcion' => $result[$i]['descripcion'],
 						'fecha'       => $result[$i]['fecha'],
 						'referencia'  => $result[$i]['referencia'],
-						'pago'        => $result[$i]['pago'],			
+						'pago'        => $result[$i]['importe'],			
 						'no_factura'  => $result[$i]['no_factura'],	
 						'importe'     => $result[$i]['importe'],
 						'subtotal'    => null,
 						'iva'         => null	
 						
 					);	
+
+					if($data['pago'] < 0){
+						$data['pago'] = $data['pago'] * -1;
+					}
 
 					$data['iva']      = round($data['pago'] * .15, 2);
 					$data['subtotal'] = round($data['pago'] - $data['iva'], 2);
