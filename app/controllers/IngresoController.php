@@ -143,62 +143,68 @@ class IngresoController extends BaseController {
 					"</td>".
 					"<td class='comision_tarjeta_valor'>".
 						"&nbsp;&nbsp;".
+					"</td>".
+					"<td>".
+						"<input type='text' class='form-control concepto_factura'>".
 					"</td>"
 				."</tr>";
 		}else{
 			return
 				"<tr>".
-						"<td>".
-							"<input type='checkbox' class='anul'>".
-						"</td>".					
-						"<td>".
-							$fecha.
-						"</td>".
-						"<td class='clasificacion'>".
-							"<input type='text' value='". $data['clasif_ventas'] ."' class='form-control select_clasificacion'>".
-						"</td>".
-						"<td class='no_factura'>".
-							$data['no_factura'].
-						"</td>".
-						"<td>".
-							$data['codigo_cliente'].
-						"</td>".
-						"<td>".
-							$data['nombre'].
-						"</td>".
-						"<td class='subtotal ". $clasificacion . " " . $data['tipo_pago'] . "'>".
-							$data['sub_total'].
-						"</td>".				
-						"<td class='descuento'>".
-							$data['descuento'].
-						"</td>".
-						"<td class='iva'>".
-							"<input type='text' value='". $data['iva'] ."' class='form-control iva_input'>".
-						"</td>".
-						"<td class='ret_ir'>".
-						"<input type='text' class='form-control valor_ret_ir'>".
-						"</td>".
-						"<td>".
-							"<input type='text' class='form-control valor_ret_alma'>".
-						"</td>".	
-						"<td class='pago_neto " .$clasificacion. "'>".
-							$data['pago_neto'].
-						"</td>".
-						"<td class='c_c " .$clasificacion. "'>".
-							$data['cxc'].
-						"</td>".
-						"<td class='" . $data['forma_pago'] ." '>".
-							$data['forma_pago'].
-						"</td>".
-						"<td>".
-							"&nbsp;&nbsp;".
-						"</td>".
-						"<td>".
-							"&nbsp;&nbsp;".
-						"</td>".
-						"<td>".
-							"&nbsp;&nbsp;".
-						"</td>"	
+					"<td>".
+						"<input type='checkbox' class='anul'>".
+					"</td>".					
+					"<td>".
+						$fecha.
+					"</td>".
+					"<td class='clasificacion'>".
+						"<input type='text' value='". $data['clasif_ventas'] ."' class='form-control select_clasificacion'>".
+					"</td>".
+					"<td class='no_factura'>".
+						$data['no_factura'].
+					"</td>".
+					"<td>".
+						$data['codigo_cliente'].
+					"</td>".
+					"<td>".
+						$data['nombre'].
+					"</td>".
+					"<td class='subtotal ". $clasificacion . " " . $data['tipo_pago'] . "'>".
+						$data['sub_total'].
+					"</td>".				
+					"<td class='descuento'>".
+						$data['descuento'].
+					"</td>".
+					"<td class='iva'>".
+						"<input type='text' value='". $data['iva'] ."' class='form-control iva_input'>".
+					"</td>".
+					"<td class='ret_ir'>".
+					"<input type='text' class='form-control valor_ret_ir'>".
+					"</td>".
+					"<td>".
+						"<input type='text' class='form-control valor_ret_alma'>".
+					"</td>".	
+					"<td class='pago_neto " .$clasificacion. "'>".
+						$data['pago_neto'].
+					"</td>".
+					"<td class='c_c " .$clasificacion. "'>".
+						$data['cxc'].
+					"</td>".
+					"<td class='" . $data['forma_pago'] ." '>".
+						$data['forma_pago'].
+					"</td>".
+					"<td>".
+						"&nbsp;&nbsp;".
+					"</td>".
+					"<td>".
+						"&nbsp;&nbsp;".
+					"</td>".
+					"<td>".
+						"&nbsp;&nbsp;".
+					"</td>".	
+					"<td>".
+						"<input type='text' class='form-control concepto_factura'>".
+					"</td>"
 				."</tr>";
 		}
 
