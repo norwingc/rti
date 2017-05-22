@@ -105,7 +105,7 @@ class IngresoController extends BaseController {
 					"<td class='no_factura'>".
 						$data['no_factura'].
 					"</td>".
-					"<td>".
+					"<td class='clientes " . $data['tipo_pago'] . "'>".
 						$data['codigo_cliente'].
 					"</td>".
 					"<td>".
@@ -114,7 +114,7 @@ class IngresoController extends BaseController {
 					"<td class='subtotal ". $clasificacion . " " . $data['tipo_pago'] . "'>".
 						$data['sub_total'].
 					"</td>".				
-					"<td class='descuento'>".
+					"<td class='descuento ". $data['tipo_pago'] . "'>".
 						$data['descuento'].
 					"</td>".
 					"<td class='iva'>".
@@ -163,7 +163,7 @@ class IngresoController extends BaseController {
 					"<td class='no_factura'>".
 						$data['no_factura'].
 					"</td>".
-					"<td>".
+					"<td class='clientes " . $data['tipo_pago'] . "'>".
 						$data['codigo_cliente'].
 					"</td>".
 					"<td>".
@@ -172,7 +172,7 @@ class IngresoController extends BaseController {
 					"<td class='subtotal ". $clasificacion . " " . $data['tipo_pago'] . "'>".
 						$data['sub_total'].
 					"</td>".				
-					"<td class='descuento'>".
+					"<td class='descuento ". $data['tipo_pago'] . "'>".
 						$data['descuento'].
 					"</td>".
 					"<td class='iva'>".

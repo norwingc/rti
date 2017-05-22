@@ -29,9 +29,8 @@
             <a href="#"><i class="fa fa-bar-chart"></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
                 <li><a href="{{ URL::to('ReportesDiarios') }}">Ingresar Reporte</a></li>
-                <li><a href="#">Factura Sirius</a></li>
-                <li><a href="#">Recibo Caja Sirius</a></li>               
-                <li><a href="#">Ingreso a Cyscont</a></li>               
+                <li><a href="FacturaSirius">Factura Sirius</a></li>
+                <li><a href="CajaSirius">Recibo Caja Sirius</a></li> 
             </ul>
         </li>       
     </ul>

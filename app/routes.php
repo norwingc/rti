@@ -48,15 +48,17 @@ Route::post('ReportesDiarios', function()
 		Input::file('second_report')->move('files', $file2);
 	}
 
-	return Redirect::to('Ingreso');
+	return Redirect::to('/');
 });
 
-
-Route::get('Ingreso', function(){
+Route::get('FacturaSirius', function(){
 	$result1 = Excel::selectSheets('FacturaSirius')->load('files/FacturaSirius.xlsx',function($reader){})->get();
-	$result2 = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
+	return View::make('reportes.factura_sirius', compact('result1'));
+});
 
-	return View::make('reportes.ingreso', compact('result1', 'result2'));
+Route::get('CajaSirius', function(){
+	$result2 = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
+	return View::make('reportes.caja_sirius', compact('result2'));
 });
 
 Route::get('Ingreso/Referencia/{nombre}', function($referencia){
