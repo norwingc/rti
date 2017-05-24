@@ -689,6 +689,7 @@
 			var clientes = [];	
 			var clientes_comaracion = [];
 			var html = '';
+			var html_total = '';
 		
 			$('.clientes.CREDITO:not(.anul)').each(function(){
 				var row     = $(this).parent(0);
@@ -710,11 +711,24 @@
 			});				
 
 			for(var i=0; i < clientes.length; i++){
-				html += "<tr><td>"+clientes[i][2]+"</td><td>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td></tr>";
+				html += "<tr><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td></tr>";
 			}
 
 
 			$('#table_primer_reporte_contado').append(html);
+
+			var debe = 0;
+			var haber = 0;
+
+			$('#table_primer_reporte_contado .debe').each(function(){
+				debe += Number($(this).html());
+			});
+			$('#table_primer_reporte_contado .haber').each(function(){
+				haber += Number($(this).html());
+			});
+
+			html_total = "<tr><th>Total</th><td>"+Math.round((debe)*100)/100+"</td><td>"+Math.round((haber)*100)/100+"</td></tr>";
+			$('#table_primer_reporte_contado').append(html_total);
 		}
 	}
 

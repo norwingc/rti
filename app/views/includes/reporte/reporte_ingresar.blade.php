@@ -14,27 +14,27 @@
 				<tbody>
 					<tr>					
 						<th>Caja</th>
-						<td id="reporte_ingreso_caja"></td>
+						<td id="reporte_ingreso_caja" class="debe"></td>
 						<td></td>
 					</tr>
 					<tr>					
 						<th>Retencion</th>
-						<td id="reporte_ingreso_retencion"></td>
+						<td id="reporte_ingreso_retencion" class="debe"></td>
 						<td></td>
 					</tr>
 					<tr>					
 						<th>IMI</th>
-						<td id="reporte_ingreso_imi"></td>
+						<td id="reporte_ingreso_imi" class="debe"></td>
 						<td></td>
 					</tr>
 					<tr>					
 						<th>Comision de Tarjeta</th>
-						<td id="reporte_ingreso_comision_tarjeta"></td>
+						<td id="reporte_ingreso_comision_tarjeta" class="debe"></td>
 						<td></td>
 					</tr>
 					<tr>					
 						<th>Descuentos Contado</th>
-						<td id="reporte_ingreso_descuentos_contado"></td>
+						<td id="reporte_ingreso_descuentos_contado" class="debe"></td>
 						<td></td>
 					</tr>
 					<tr>					
@@ -45,68 +45,68 @@
 					<tr>
 						<td>RE</td>
 						<td></td>
-						<td id="cta_RE">0</td>
+						<td id="cta_RE" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>RA</td>
 						<td></td>
-						<td id="cta_RA">0</td>
+						<td id="cta_RA" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>EN</td>
 						<td></td>
-						<td id="cta_EN">0</td>
+						<td id="cta_EN" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>EU</td>
 						<td></td>
-						<td id="cta_EU">0</td>
+						<td id="cta_EU" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>RU</td>
 						<td></td>
-						<td id="cta_RU">0</td>
+						<td id="cta_RU" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>FL</td>
 						<td></td>
-						<td id="cta_FL">0</td>
+						<td id="cta_FL" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>CO</td>
 						<td></td>
-						<td id="cta_CO">0</td>
+						<td id="cta_CO" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>ST</td>
 						<td></td>
-						<td id="cta_ST">0</td>
+						<td id="cta_ST" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>PR</td>
 						<td></td>
-						<td id="cta_PR">0</td>
+						<td id="cta_PR" class="haber">0</td>
 					</tr>
 					<tr>
 						<td>CV</td>
 						<td></td>
-						<td id="cta_CV">0</td>
+						<td id="cta_CV" class="haber">0</td>
 					</tr>
 					<tr>					
 						<th>IVA</th>
 						<td></td>
-						<td id="reporte_ingreso_iva"></td>
+						<td id="reporte_ingreso_iva" class="haber"></td>
 					</tr>					
 					<tr>					
 						<th>Descuento Credito</th>
-						<td id="reporte_ingreso_descuentos_credito"></td>
+						<td id="reporte_ingreso_descuentos_credito" class="debe"></td>
 						<td></td>
 					</tr>
 					<tr>					
 						<th>CxC</th>
 						<td></td>
 						<td></td>
-					</tr>
+					</tr>					
 				</tbody>
 			</table>
 			
