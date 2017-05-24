@@ -727,7 +727,7 @@
 				haber += Number($(this).html());
 			});
 
-			html_total = "<tr><th>Total</th><td>"+Math.round((debe)*100)/100+"</td><td>"+Math.round((haber)*100)/100+"</td></tr>";
+			html_total = "<tr><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
 			$('#table_primer_reporte_contado').append(html_total);
 		}
 	}
