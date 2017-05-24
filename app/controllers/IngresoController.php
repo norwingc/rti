@@ -108,7 +108,7 @@ class IngresoController extends BaseController {
 					"<td class='clientes " . $data['tipo_pago'] . "'>".
 						$data['codigo_cliente'].
 					"</td>".
-					"<td>".
+					"<td class='cliente_nombre'>".
 						$data['nombre'].
 					"</td>".
 					"<td class='subtotal ". $clasificacion . " " . $data['tipo_pago'] . "'>".
@@ -166,7 +166,7 @@ class IngresoController extends BaseController {
 					"<td class='clientes " . $data['tipo_pago'] . "'>".
 						$data['codigo_cliente'].
 					"</td>".
-					"<td>".
+					"<td class='cliente_nombre'>".
 						$data['nombre'].
 					"</td>".
 					"<td class='subtotal ". $clasificacion . " " . $data['tipo_pago'] . "'>".

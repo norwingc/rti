@@ -555,7 +555,7 @@
 		}					
 		
 		calculoTotales();
-	}
+	}	
 
 	function calculoPagoNeto_caja(este){
 		
@@ -664,8 +664,8 @@
 
 	function mostrarReporte(tipo){
 		if(tipo == 'Contado'){
-			$('#primer_reporte').hide();
-			$('#ingreso_contado').show();
+		/*	$('#primer_reporte').hide();
+			$('#ingreso_contado').show();*/
 
 			$('#reporte_ingreso_caja').html($('#pago_neto strong').html());
 			$('#reporte_ingreso_retencion').html(Number($('#ret_ir strong').html()) + Number($('#ret_ir_tarjeta strong').html()));
@@ -687,24 +687,34 @@
 			$('#cta_CV').html($('#cv_total').html());
 
 			var clientes = [];	
+			var clientes_comaracion = [];
+			var html = '';
 		
-			$('.clientes.CREDITO:not(.anul)').each(function(){				
-				if($.inArray(Number($(this).html()), clientes) == -1){								
-					clientes.push(Number($(this).html()));					
-				}
-			});	
-
-			for(var i=0; i<= clientes.length; i++){
-				var cliente_nombre = clientes[i];
-				var cliente_total = clientes[i];
-				$('.table_factura tr').each(function(){
-					var row = $(this);
-					var cliente = row.find('.clientes.CREDITO:not(.anul)').html();
-					if(cliente == cliente_nombre){						
+			$('.clientes.CREDITO:not(.anul)').each(function(){
+				var row     = $(this).parent(0);
+				var cliente = Number($(this).html());					
+				var pago    = Number(row.find('.c_c').html());
 						
+				if($.inArray(Number($(this).html()), clientes_comaracion) == -1){	//no esta en el array			
+					var new_array = [cliente, pago, row.find('.cliente_nombre').html()];	
+					clientes.push(new_array);
+					clientes_comaracion.push(Number($(this).html()));									
+				}else{
+					for(var i=0; i < clientes.length; i++){
+						if(Number($(this).html()) == clientes[i][0]){
+							var valor = clientes[i][1];
+							clientes[i][1] = Number(valor) + Number(pago);
+						}
 					}
-				});
-			}			
+				}
+			});				
+
+			for(var i=0; i < clientes.length; i++){
+				html += "<tr><td>"+clientes[i][2]+"</td><td>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td></tr>";
+			}
+
+
+			$('#table_primer_reporte_contado').append(html);
 		}
 	}
 

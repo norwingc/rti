@@ -96,18 +96,15 @@
 						<th>IVA</th>
 						<td></td>
 						<td id="reporte_ingreso_iva"></td>
+					</tr>					
+					<tr>					
+						<th>Descuento Credito</th>
+						<td id="reporte_ingreso_descuentos_credito"></td>
+						<td></td>
 					</tr>
 					<tr>					
 						<th>CxC</th>
 						<td></td>
-						<td></td>
-					</tr>
-					<tr id="reporte_ingreso_cxc">
-						{{-- aqui va todo   --}}
-					</tr>
-					<tr>					
-						<th>Descuento Credito</th>
-						<td id="reporte_ingreso_descuentos_credito"></td>
 						<td></td>
 					</tr>
 				</tbody>
