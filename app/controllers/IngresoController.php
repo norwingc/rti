@@ -241,47 +241,49 @@ class IngresoController extends BaseController {
 
 		return
 		"<tr>".
-				"<td>".
-					"<button class='btn btn-info btn_view_referencia' data-referencia='".$data['referencia']."'>Ver</button>".
-				"</td>".
-				"<td>".
-					$data['no_cliente'].
-				"</td>".
-				"<td>".
-					$data['descripcion'].
-				"</td>".
-				"<td>".
-					$fecha.
-				"</td>".
-				"<td class='no_referencia'>".
-					$data['referencia'].
-				"</td>".
-				"<td class='pago_caja'>".
-					$data['pago'].
-				"</td>".
-				"<td>".
-					$data['no_factura'].
-				"</td>".			
-				"<td>".
-					"<input type='text' class='form-control valor_ret_ir_caja'>".
-				"</td>".
-				"<td>".
-					"<input type='text' class='form-control valor_ret_alma_caja'>".
-				"</td>".
-				"<td><select class='form-control forma_pago_caja'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option><option value='TRANSFERENCIA'>TRANSFERENCIA</option></select></td>".
-				"<td class='pago_neto_caja'>".
-					$data['pago'].
-				"</td>".
-				"<td class='ret_tarjeta_caja'>".
-					"0".
-				"</td>".
-				"<td>".
-					"<input type='text' class='form-control comision_tarjeta_caja'>".
-				"</td>".
-				"<td class='comision_tarjeta_valor_caja'>".
-					"&nbsp;&nbsp;".
-				"</td>"	
-		."</tr>";	
+			"<td>".
+				"<button class='btn btn-info btn_view_referencia' data-referencia='".$data['referencia']."'>Ver</button>".
+			"</td>".
+			"<td class='clientes'>".
+				$data['no_cliente'].
+			"</td>".
+			"<td class='cliente_nombre'>".
+				$data['descripcion'].
+			"</td>".
+			"<td>".
+				$fecha.
+			"</td>".
+			"<td class='no_referencia'>".
+				$data['referencia'].
+			"</td>".
+			"<td class='pago_caja'>".
+				$data['pago'].
+			"</td>".
+			"<td>".
+				$data['no_factura'].
+			"</td>".			
+			"<td>".
+				"<input type='text' class='form-control valor_ret_ir_caja'>".
+			"</td>".
+			"<td>".
+				"<input type='text' class='form-control valor_ret_alma_caja'>".
+			"</td>".
+			"<td><select class='form-control forma_pago_caja'><option value=''>Seleccionar<option value='TARJETA DE CREDITO'>TARJETA DE CREDITO</option><option value='CHEQUE'>CHEQUE</option><option value='EFECTIVO'>EFECTIVO</option><option value='TRANSFERENCIA'>TRANSFERENCIA</option></select></td>".
+			"<td class='pago_neto_caja'>".
+				$data['pago'].
+			"</td>".
+			"<td class='ret_tarjeta_caja'>".
+				"0".
+			"</td>".
+			"<td>".
+				"<input type='text' class='form-control comision_tarjeta_caja'>".
+			"</td>".
+			"<td class='comision_tarjeta_valor_caja'>".
+				"".				
+			"<td>".
+					"<input type='text' class='form-control concepto_factura'>".
+				"</td>"
+		."</tr>";		
 	}
 
 	/**
@@ -314,38 +316,39 @@ class IngresoController extends BaseController {
 
 		return
 		"<tr>".
-				"<td>".
-					"<button class='btn btn-info btn_view_referencia' data-referencia='".$data['referencia']."'>Ver</button>".
-				"</td>".
-				"<td>".
-					$data['no_cliente'].
-				"</td>".
-				"<td>".
-					$data['descripcion'].
-				"</td>".
-				"<td>".
-					$fecha.
-				"</td>".
-				"<td class='no_referencia'>".
-					$data['referencia'].
-				"</td>".
-				"<td class='pago_caja'>".
-					$data['pago'].
-				"</td>".
-				"<td>".
-					$data['no_factura'].
-				"</td>".			
-				"<td>".
-					$data['subtotal'].
-				"</td>".
-				"<td>".
-					$data['iva'].
-				"</td>".				
-				"<td class='pago_neto_caja'>".
-					$data['pago'].
-				"</td>"			
-				
-		."</tr>";	
+			"<td>".
+				"<button class='btn btn-info btn_view_referencia' data-referencia='".$data['referencia']."'>Ver</button>".
+			"</td>".
+			"<td class='clientes'>".
+				$data['no_cliente'].
+			"</td>".
+			"<td class='cliente_nombre'>".
+				$data['descripcion'].
+			"</td>".
+			"<td>".
+				$fecha.
+			"</td>".
+			"<td class='no_referencia'>".
+				$data['referencia'].
+			"</td>".
+			"<td class='pago_caja'>".
+				$data['pago'].
+			"</td>".
+			"<td>".
+				$data['no_factura'].
+			"</td>".			
+			"<td>".
+				$data['subtotal'].
+			"</td>".
+			"<td>".
+				$data['iva'].
+			"</td>".				
+			"<td class='pago_neto_caja'>".
+				$data['pago'].
+			"<td>".
+					"<input type='text' class='form-control concepto_factura'>".
+				"</td>"
+		."</tr>";
 	}
 
 	/**
@@ -425,12 +428,8 @@ class IngresoController extends BaseController {
 					$data['subtotal'] = round($data['pago'] - $data['iva'], 2);
 
 					array_push($datas, $data);
-
-				}
-
-			  
-			}
-			
+				}			  
+			}			
 		}
 		return $datas;
 	}

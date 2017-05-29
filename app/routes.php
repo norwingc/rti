@@ -61,6 +61,11 @@ Route::get('CajaSirius', function(){
 	return View::make('reportes.caja_sirius', compact('result2'));
 });
 
+Route::get('CajaSiriusNC', function(){
+	$result2 = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();
+	return View::make('reportes.caja_sirius_nc', compact('result2'));
+});
+
 Route::get('Ingreso/Referencia/{nombre}', function($referencia){
 
 	$result = Excel::selectSheets('CajaSirius')->load('files/CajaSirius.xlsx',function($reader){})->get();

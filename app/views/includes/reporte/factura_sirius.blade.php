@@ -1,6 +1,6 @@
 <div class="box box-info" id="primer_reporte">
 	<div class="box-header">
-		<h3 class="box-title"><small>Ingreso a CYSCONTA</small></h3>
+		<h3 class="box-title"><small>Reporte Ingreso de Facturas</small></h3>
 	</div>				
 
 	<div class="box-body">

@@ -31,6 +31,7 @@
                 <li><a href="{{ URL::to('ReportesDiarios') }}">Ingresar Reporte</a></li>
                 <li><a href="FacturaSirius">Factura Sirius</a></li>
                 <li><a href="CajaSirius">Recibo Caja Sirius</a></li> 
+                <li><a href="CajaSiriusNC">Recibo Caja Sirius N/C</a></li> 
             </ul>
         </li>       
     </ul>

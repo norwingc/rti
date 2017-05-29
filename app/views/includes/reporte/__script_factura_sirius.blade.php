@@ -27,62 +27,9 @@
 		$('.comision_tarjeta').focusout(function(){
 			calculoPagoNeto($(this));
 		});
-
-
-		$('.forma_pago_caja').change(function(){
-			calculoPagoNeto_caja($(this));
-		});
-		$('.comision_tarjeta_caja').focusout(function(){				
-			calculoPagoNeto_caja($(this));
-		});
-		$('.valor_ret_ir_caja').focusout(function(){
-			calculoPagoNeto_caja($(this));
-		});
-		$('.valor_ret_alma_caja').focusout(function(){
-			calculoPagoNeto_caja($(this));
-		});
-
-
 		$('.iva_input').focusout(function(){				
 			calculoPagoNeto($(this));
-		});
-
-
-
-		$('.btn_view_referencia').click(function(){
-
-			var title = 'Ver Referencia: ' + $(this).data('referencia');
-			$('.modal-title').html(title);
-			$('#tbody_referencia').html('');
-			var html = "";
-			var referencia_edit = "";
-
-			var referencia = $(this).data('referencia').split('/');	
-			if(referencia.length ==1){
-				referencia_edit = referencia[0];					
-			}else{
-				referencia_edit = referencia[0] +'-'+ referencia[1];					
-			}				
-
-
-			$.get('{{ URL() }}/Ingreso/Referencia/'+ referencia_edit, function(data){						
-				for(var i=0; i< data.datas.length; i++){
-					html = html + "<tr>"+
-						"<td>"+data.datas[i].no_cliente+"</td>"+
-       		        	"<td>"+data.datas[i].descripcion+"</td>"+
-       		        	"<td>"+data.datas[i].fecha+"</td>"+
-       		        	"<td>"+data.datas[i].referencia+"</td>"+
-       		        	"<td>"+data.datas[i].pago+"</td>"+
-       		        	"<td>"+data.datas[i].no_factura+"</td>"+
-       		        	"<td>"+data.datas[i].importe+"</td>"
-					+"</tr>";												
-				}
-
-				$('#tbody_referencia').html(html);
-			});					
-		
-			$('#modalViewReferencia').modal('show');
-		});
+		});	
 
 		$('#btn-mostrar_reporte').click(function(){
 			mostrarReporte('Contado');
@@ -557,115 +504,10 @@
 		calculoTotales();
 	}	
 
-	function calculoPagoNeto_caja(este){
-		
-		var row = $(este).parent(0).parent(0);
-		var referencia = $(row).find('.no_referencia').html();	
-		var referencia_edit = null;
-
-		referencia = referencia.split('/');
-
-		if(referencia.length ==1){
-			referencia_edit = referencia[0];					
-		}else{
-			referencia_edit = referencia[0] +'-'+ referencia[1];					
-		}
-
-		var pago_neto = 0;
-		var pago = 0;
-		var ret_ir = 0;
-		var ret_alma = 0;
-		var ret_tarjeta = 0;
-		var comision = 0;	
-		var comision_tarjeta_valor = 0;	
-		var comision_total = 0;	
-
-		$.get('{{URL()}}/getCaja/'+referencia_edit, function(data){
-			pago = data.data['pago'];
-
-			if($(row).find('.valor_ret_ir_caja').val() != ''){
-				ret_ir = $(row).find('.valor_ret_ir_caja').val();	
-			}
-
-			if($(row).find('.valor_ret_alma_caja').val() != ''){
-				ret_alma = $(row).find('.valor_ret_alma_caja').val();	
-			}
-
-			if($(row).find('.comision_tarjeta_caja').val() != ''){
-
-				comision_tarjeta_valor = Math.round(((pago * $(row).find('.comision_tarjeta_caja').val())/100)*100)/100;
-
-				$(row).find('.comision_tarjeta_valor_caja').html(comision_tarjeta_valor);
-
-				comision = comision_tarjeta_valor;
-			}else{
-				$(row).find('.comision_tarjeta_valor_caja').html('');
-			}
-
-			if($(row).find('.forma_pago_caja').val() == 'TARJETA DE CREDITO'){
-
-				if(comision != 0){
-					comision_total = pago - comision;
-					var retencion_tarjeta = Math.round(( comision_total * 0.015) * 100 )/100;
-
-					ret_tarjeta = retencion_tarjeta;	
-
-					$(row).find('.ret_tarjeta_caja').html(ret_tarjeta);	
-				}
-
-			}else{
-				$(row).find('.ret_tarjeta_caja').html('0');	
-			}
-
-			pago_neto = pago - ret_ir - ret_alma - ret_tarjeta - comision;
-
-			pago_neto = Math.round((pago_neto) * 100) / 100;
-
-
-			$(row).find('.pago_neto_caja').html(pago_neto);	
-		});	
-
-		formaPagoCaja();
-
-	}
-
-	function formaPagoCaja() {
-
-		var forma_pago_transferncia = 0,  forma_pago_efectivo = 0, forma_pago_cheque = 0, forma_pago_tarjeta = 0;
-
-		$('.table_caja').find('.forma_pago_caja').each(function(){
-			var select = $(this).val().trim();
-			var row = $(this).parent(0).parent(0);				
-
-			if(select == 'TARJETA DE CREDITO'){					
-				forma_pago_tarjeta += Number($(row).find('.pago_neto_caja').html());	
-			}
-
-			if(select == 'CHEQUE'){
-				forma_pago_cheque += Number($(row).find('.pago_neto_caja').html());	
-			}
-
-			if(select == 'EFECTIVO'){
-				forma_pago_efectivo += Number($(row).find('.pago_neto_caja').html());	
-			}
-
-			 if(select == 'TRANSFERENCIA'){
-				forma_pago_transferncia += Number($(row).find('.pago_neto_caja').html());	
-			}
-						
-		});
-
-
-		$('#forma_pago_tarjeta_caja').html(Math.round( forma_pago_tarjeta * 100   ) / 100);
-		$('#forma_pago_transferncia_caja').html(Math.round( forma_pago_transferncia * 100   ) / 100);
-		$('#forma_pago_efectivo_caja').html(Math.round( forma_pago_efectivo * 100   ) / 100);
-		$('#forma_pago_cheque_caja').html(Math.round( forma_pago_cheque * 100   ) / 100);
-	}
-
 	function mostrarReporte(tipo){
 		if(tipo == 'Contado'){
-		/*	$('#primer_reporte').hide();
-			$('#ingreso_contado').show();*/
+			$('#primer_reporte').hide();
+			$('#reporte_ingresar_factura').show();
 
 			$('#reporte_ingreso_caja').html($('#pago_neto strong').html());
 			$('#reporte_ingreso_retencion').html(Number($('#ret_ir strong').html()) + Number($('#ret_ir_tarjeta strong').html()));
@@ -687,7 +529,7 @@
 			$('#cta_CV').html($('#cv_total').html());
 
 			var clientes = [];	
-			var clientes_comaracion = [];
+			var clientes_comparacion = [];
 			var html = '';
 			var html_total = '';
 		
@@ -696,10 +538,10 @@
 				var cliente = Number($(this).html());					
 				var pago    = Number(row.find('.c_c').html());
 						
-				if($.inArray(Number($(this).html()), clientes_comaracion) == -1){	//no esta en el array			
+				if($.inArray(Number($(this).html()), clientes_comparacion) == -1){	//no esta en el array			
 					var new_array = [cliente, pago, row.find('.cliente_nombre').html()];	
 					clientes.push(new_array);
-					clientes_comaracion.push(Number($(this).html()));									
+					clientes_comparacion.push(Number($(this).html()));									
 				}else{
 					for(var i=0; i < clientes.length; i++){
 						if(Number($(this).html()) == clientes[i][0]){
@@ -731,7 +573,5 @@
 			$('#table_primer_reporte_contado').append(html_total);
 		}
 	}
-
-	//[77, 5815, 5579, 1671, 4502, 3283]
-
+	
 </script>

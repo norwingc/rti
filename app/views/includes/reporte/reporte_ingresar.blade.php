@@ -1,4 +1,4 @@
-<div class="box box-info" id="primer_reporte">
+<div class="box box-info" id="reporte_ingresar_factura" style="display: none">
 	<div class="box-header">
 		<h3 class="box-title"><small>Reporte de Ingresos Factura</small></h3>
 	</div>				
@@ -112,5 +112,51 @@
 			
 		</div>
 	</div>
-</div>		
+</div>
+
+
+<div class="box box-info" id="reporte_ingresar_caja1" style="display: none">
+	<div class="box-header">
+		<h3 class="box-title"><small>Reporte de Ingresos Caja</small></h3>
+	</div>				
+
+	<div class="box-body">
+		<div class="ingreso_contado">
+			<table class="table table-bordered table-hover" id="table_reporte_caja1" style="width: 50% !important; margin-left: 0;">
+				<thead>	
+					<th style="text-align: center">Cuenta</th>
+					<th style="text-align: center">Debe</th>
+					<th style="text-align: center">Haber</th>
+				</thead>
+				<tbody>
+					<tr>					
+						<th>Caja</th>
+						<td id="reporte_ingreso_caja_caja1" class="debe_caja1"></td>
+						<td></td>
+					</tr>
+					<tr>					
+						<th>Retencion</th>
+						<td id="reporte_ingreso_retencion_caja1" class="debe_caja1"></td>
+						<td></td>
+					</tr>
+					<tr>					
+						<th>IMI</th>
+						<td id="reporte_ingreso_imi_caja1" class="debe_caja1"></td>
+						<td></td>
+					</tr>
+					<tr>					
+						<th>Comision de Tarjeta</th>
+						<td id="reporte_ingreso_comision_tarjeta_caja1" class="debe_caja1"></td>
+						<td></td>
+					</tr>
+					<tr>					
+						<th>CxC</th>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>			
+	</div>
+</div>			
 
