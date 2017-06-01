@@ -26,7 +26,7 @@
 		table:not(.table_modal){
 			width: 1500px !important;
 		}
-		#table_reporte_caja1 th{
+		#table_reporte_caja2 th{
 			text-align: left;
 		}
 	</style>

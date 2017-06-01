@@ -337,17 +337,19 @@ class IngresoController extends BaseController {
 			"<td>".
 				$data['no_factura'].
 			"</td>".			
-			"<td>".
+			"<td class='subtotal_caja'>".
 				$data['subtotal'].
 			"</td>".
-			"<td>".
+			"<td class='iva_caja'>".
 				$data['iva'].
 			"</td>".				
 			"<td class='pago_neto_caja'>".
 				$data['pago'].
+			"</td>".	
+			"<td><select class='form-control clasificaion_ventas'><option value=''>N/A</option><option value='RE'>RE</option><option value='RA'>RA</option><option value='EN'>EN</option><option value='EU'>EU</option><option value='RU'>RU</option><option value='FL'>FL</option><option value='CO'>CO</option><option value='ST'>ST</option><option value='PR'>PR</option><option value='CV'>CV</option></select></td>".
 			"<td>".
-					"<input type='text' class='form-control concepto_factura'>".
-				"</td>"
+				"<input type='text' class='form-control concepto_factura'>".
+			"</td>"			
 		."</tr>";
 	}
 

@@ -160,3 +160,88 @@
 	</div>
 </div>			
 
+
+<div class="box box-info" id="reporte_ingresar_caja2" style="display: none">
+	<div class="box-header">
+		<h3 class="box-title"><small>Reporte de Ingresos Caja</small></h3>
+	</div>				
+
+	<div class="box-body">
+		<div class="ingreso_contado">
+			<table class="table table-bordered table-hover" id="table_reporte_caja2" style="width: 50% !important; margin-left: 0;">
+				<thead>	
+					<th style="text-align: center">Cuenta</th>
+					<th style="text-align: center">Debe</th>
+					<th style="text-align: center">Haber</th>
+				</thead>
+				<tbody>
+					<tr>					
+						<th>iva</th>
+						<td id="reporte_iva_caja1" class="debe_caja2"></td>
+						<td></td>
+					</tr>
+					<tr>					
+						<th>Cuentas de Contado y Credito</th>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>RE</td>
+						<td id="cta_RE_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>RA</td>
+						<td id="cta_RA_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>EN</td>
+						<td id="cta_EN_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>EU</td>
+						<td id="cta_EU_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>RU</td>
+						<td id="cta_RU_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>FL</td>
+						<td id="cta_FL_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>CO</td>
+						<td id="cta_CO_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>ST</td>
+						<td id="cta_ST_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>PR</td>
+						<td id="cta_PR_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>
+					<tr>
+						<td>CV</td>
+						<td id="cta_CV_caja2" class="debe_caja2">0</td>
+						<td></td>						
+					</tr>					
+					<tr>					
+						<th>CxP</th>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>			
+	</div>
+</div>	

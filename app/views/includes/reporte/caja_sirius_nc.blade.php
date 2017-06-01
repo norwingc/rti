@@ -40,6 +40,7 @@
 						<th>subtotal</th>						
 						<th>iva</th>							
 						<th>pago neto</th>
+						<th>Clasificacion</th>
 						<th width="20%">Concepto Factura</th>							
 		            </tr>
 		        </thead>
@@ -50,27 +51,30 @@
 		        	?>			        		        	
 		        </tbody>
 	        </table>
-    	</div>
-    	<div class="container totales_forma_pago">
-    		<div class="col-sm-3">
-				<h3 style="text-align: left;">Forma de Pago</h3>
-				<ul style="text-align: left;">
-					<li>TARJETA DE CREDITO</li>
-					<li>CHEQUE</li>
-					<li>EFECTIVO</li>
-					<li>TRANSFERENCIA</li>											
-				</ul>
-			</div>
-			<div class="col-sm-3">
-				<h3>Total</h3>
-				<ul>
-					<li id="forma_pago_tarjeta_caja"></li>
-					<li id="forma_pago_cheque_caja"></li>
-					<li id="forma_pago_efectivo_caja"></li>
-					<li id="forma_pago_transferncia_caja"></li>
-				</ul>
-			</div>
-		</div>	
+	        <table class="table table-bordered">	
+	        	<thead>
+		            <tr>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>								
+						<th>Total Importe</th>	
+						<th>Subtotal</th>
+						<th>Iva</th>							
+						<th>pago neto</th>	
+		            </tr>
+		        </thead>				        	        	
+	        	<tbody>	
+	        		<tr>
+		        		<td colspan="4"><h4><strong>TOTAL</strong></h4></td>
+			        	<td id="total_importe_caja"><strong></strong></td>
+			        	<td id="tota_sub_total_caja"><strong></strong></td>
+			        	<td id="total_iva_caja"><strong></strong></td>
+			        	<td id="total_pago_neto_caja"><strong></strong></td>			        	
+		        	</tr>		        	
+				</tbody>
+			</table>	
+    	</div>    	
 		<div class="col-md-12 text-center" style="margin-top: 2em">
 			<button class="btn btn-success btn-lg" id="btn-mostrar_reporte_nc">Mostrar Reporte</button>
 		</div>		

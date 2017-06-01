@@ -50,45 +50,34 @@
 		
 			$('#modalViewReferencia').modal('show');
 		});
-		$('#btn-mostrar_reporte').click(function(){
+		$('#btn-mostrar_reporte_nc').click(function(){
 			mostrarReporte();
 		});
 	});	
 
 	function calculoTotales(){
-		var total_pago_caja           = 0;
-		var tota_ret_ir_caja          = 0;
-		var total_ret_alma_caja       = 0;
-		var total_pago_neto_caja      = 0;
-		var total_ret_ir_tarjeta_caja = 0;
-		var total_comision_caja       = 0;
+		var total_importe_caja   = 0;
+		var tota_sub_total_caja  = 0;
+		var total_iva_caja       = 0;
+		var total_pago_neto_caja = 0;		
 
 		$('.table_caja .pago_caja').each(function(){
-			total_pago_caja += Number($(this).html());
+			total_importe_caja += Number($(this).html());
 		});
-		$('.table_caja .valor_ret_ir_caja').each(function(){
-			tota_ret_ir_caja += Number($(this).val());
+		$('.table_caja .subtotal_caja').each(function(){
+			tota_sub_total_caja += Number($(this).html());
 		});
-		$('.table_caja .valor_ret_alma_caja').each(function(){
-			total_ret_alma_caja += Number($(this).val());
+		$('.table_caja .iva_caja').each(function(){
+			total_iva_caja += Number($(this).html());
 		});
 		$('.table_caja .pago_neto_caja').each(function(){
 			total_pago_neto_caja += Number($(this).html());
-		});
-		$('.table_caja .ret_tarjeta_caja').each(function(){
-			total_ret_ir_tarjeta_caja += Number($(this).html());
-		});
-		$('.table_caja .comision_tarjeta_valor_caja').each(function(){
-			total_comision_caja += Number($(this).html());
 		});		
 
-		$('#total_pago_caja strong').html(Math.round((total_pago_caja)*100)/100);
-		$('#tota_ret_ir_caja strong').html(Math.round((tota_ret_ir_caja)*100)/100);
-		$('#total_ret_alma_caja strong').html(Math.round((total_ret_alma_caja)*100)/100);
+		$('#total_importe_caja strong').html(Math.round((total_importe_caja)*100)/100);
+		$('#tota_sub_total_caja strong').html(Math.round((tota_sub_total_caja)*100)/100);
+		$('#total_iva_caja strong').html(Math.round((total_iva_caja)*100)/100);
 		$('#total_pago_neto_caja strong').html(Math.round((total_pago_neto_caja)*100)/100);
-		$('#total_ret_ir_tarjeta_caja strong').html(Math.round((total_ret_ir_tarjeta_caja)*100)/100);
-		$('#total_comision_caja strong').html(Math.round((total_comision_caja)*100)/100);
-		console.log(total_comision_caja);
 	}
 
 
@@ -199,13 +188,85 @@
 
 	function mostrarReporte(){
 		$('#segundo_reporte').hide();
-		$('#reporte_ingresar_caja1').show();
+		$('#reporte_ingresar_caja2').show();
 
-		$('#reporte_ingreso_caja_caja1').html($('#total_pago_neto_caja strong').html());
-		$('#reporte_ingreso_retencion_caja1').html(Number($('#tota_ret_ir_caja strong').html()) + Number($('#total_ret_ir_tarjeta_caja strong').html()));
-		$('#reporte_ingreso_imi_caja1').html($('#total_ret_alma_caja strong').html());
-		$('#reporte_ingreso_comision_tarjeta_caja1').html($('#total_comision_caja strong').html());	
+		$('#reporte_iva_caja1').html($('#total_iva_caja strong').html());
 
+		
+		var RE = 0; 
+		var RA = 0;
+		var EN = 0;
+		var EU = 0;
+		var RU = 0;
+		var FL = 0;
+		var CO = 0;
+		var ST = 0;
+		var PR = 0;
+		var CV = 0;	
+
+		$('.table_caja .clasificaion_ventas').each(function (){
+			if($(this).val() == 'RE'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				RE += subtotal;
+			}
+			if($(this).val() == 'RA'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				RA += subtotal;
+			}
+			if($(this).val() == 'EN'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				EN += subtotal;
+			}
+			if($(this).val() == 'EU'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				EU += subtotal;
+			}
+			if($(this).val() == 'RU'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				RU += subtotal;
+			}
+			if($(this).val() == 'FL'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				FL += subtotal;
+			}
+			if($(this).val() == 'CO'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				CO += subtotal;
+			}
+			if($(this).val() == 'ST'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				ST += subtotal;
+			}
+			if($(this).val() == 'PR'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				PR += subtotal;
+			}
+			if($(this).val() == 'CV'){
+				var row = $(this).parent(0).parent(0);
+				var subtotal = Number(row.find('.subtotal_caja').html());
+				CV += subtotal;
+			}
+		});
+
+		$('#cta_RE_caja2').html(RE);
+		$('#cta_RA_caja2').html(RA);
+		$('#cta_EN_caja2').html(EN);
+		$('#cta_EU_caja2').html(EU);
+		$('#cta_RU_caja2').html(RU);
+		$('#cta_FL_caja2').html(FL);
+		$('#cta_CO_caja2').html(CO);
+		$('#cta_ST_caja2').html(ST);
+		$('#cta_PR_caja2').html(PR);
+		$('#cta_CV_caja2').html(CV);	
 
 		var clientes = [];	
 		var clientes_comparacion = [];
@@ -231,24 +292,25 @@
 			}
 		});	
 
+
 		for(var i=0; i < clientes.length; i++){
-			html += "<tr><td>"+clientes[i][2]+"</td><td></td><td class='haber_caja1'>"+Math.round((clientes[i][1]) *100)/100+"</td></tr>";
+			html += "<tr><td>"+clientes[i][2]+"</td><td></td><td class='haber_caja2'>"+Math.round((clientes[i][1]) *100)/100+"</td></tr>";
 		}
 
-		$('#table_reporte_caja1').append(html);
+		$('#table_reporte_caja2').append(html);
 
 		var debe = 0;
 		var haber = 0;
 
-		$('#table_reporte_caja1 .debe_caja1').each(function(){
+		$('#table_reporte_caja2 .debe_caja2').each(function(){
 			debe += Number($(this).html());
 		});
-		$('#table_reporte_caja1 .haber_caja1').each(function(){
+		$('#table_reporte_caja2 .haber_caja2').each(function(){
 			haber += Number($(this).html());
 		});
 
 		html_total = "<tr><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
-		$('#table_reporte_caja1').append(html_total);
+		$('#table_reporte_caja2').append(html_total);
 	
 	}
 </script>
