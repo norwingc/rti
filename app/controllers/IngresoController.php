@@ -132,7 +132,7 @@ class IngresoController extends BaseController {
 					"<td class='c_c " .$clasificacion. "'>".
 						$data['cxc'].
 					"</td>".
-					"<td class='TARJETA'>".
+					"<td class='TARJETA forma_pago'>".
 						$data['forma_pago'].
 					"</td>".
 					"<td class='ret_tarjeta'>".
@@ -190,7 +190,7 @@ class IngresoController extends BaseController {
 					"<td class='c_c " .$clasificacion. "'>".
 						$data['cxc'].
 					"</td>".
-					"<td class='" . $data['forma_pago'] ." '>".
+					"<td class='" . $data['forma_pago'] ." forma_pago'>".
 						$data['forma_pago'].
 					"</td>".
 					"<td>".
@@ -445,8 +445,6 @@ class IngresoController extends BaseController {
 		$data = null;		
 		$result_factura = false;
 		$result = Excel::selectSheets('FacturaSirius')->load('files/FacturaSirius.xlsx',function($reader){})->get();
-
-
 
 		for ($i=0; $i < $result->count(); $i++) { 
 			if($result[$i]['no_factura'] == $factura){
