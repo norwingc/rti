@@ -8,13 +8,15 @@
 
 		$('.anul').click(function(){				
 			anul($(this));
-		});	
+		});			
+
 
 		findClasificacion();
 
 		$('.select_clasificacion').focusout(function(){
 			findClasificacion();
-		});		
+		});
+		
 
 		$('.valor_ret_ir').focusout(function(){
 			calculoPagoNeto($(this));
@@ -25,12 +27,61 @@
 		$('.comision_tarjeta').focusout(function(){
 			calculoPagoNeto($(this));
 		});
+
+
+		$('.forma_pago_caja').change(function(){
+			calculoPagoNeto_caja($(this));
+		});
+		$('.comision_tarjeta_caja').focusout(function(){				
+			calculoPagoNeto_caja($(this));
+		});
+		$('.valor_ret_ir_caja').focusout(function(){
+			calculoPagoNeto_caja($(this));
+		});
+		$('.valor_ret_alma_caja').focusout(function(){
+			calculoPagoNeto_caja($(this));
+		});
+
+
 		$('.iva_input').focusout(function(){				
 			calculoPagoNeto($(this));
-		});	
+		});
 
-		$('#btn-mostrar_reporte').click(function(){
-			mostrarReporte('Contado');
+
+
+		$('.btn_view_referencia').click(function(){
+
+			var title = 'Ver Referencia: ' + $(this).data('referencia');
+			$('.modal-title').html(title);
+			$('#tbody_referencia').html('');
+			var html = "";
+			var referencia_edit = "";
+
+			var referencia = $(this).data('referencia').split('/');	
+			if(referencia.length ==1){
+				referencia_edit = referencia[0];					
+			}else{
+				referencia_edit = referencia[0] +'-'+ referencia[1];					
+			}				
+
+
+			$.get('{{ URL() }}/Ingreso/Referencia/'+ referencia_edit, function(data){						
+				for(var i=0; i< data.datas.length; i++){
+					html = html + "<tr>"+
+						"<td>"+data.datas[i].no_cliente+"</td>"+
+       		        	"<td>"+data.datas[i].descripcion+"</td>"+
+       		        	"<td>"+data.datas[i].fecha+"</td>"+
+       		        	"<td>"+data.datas[i].referencia+"</td>"+
+       		        	"<td>"+data.datas[i].pago+"</td>"+
+       		        	"<td>"+data.datas[i].no_factura+"</td>"+
+       		        	"<td>"+data.datas[i].importe+"</td>"
+					+"</tr>";												
+				}
+
+				$('#tbody_referencia').html(html);
+			});					
+		
+			$('#modalViewReferencia').modal('show');
 		});
 
 	});
@@ -52,53 +103,38 @@
 
 		$('.table_factura .clasificacion input').each(function(){
 			var no_clasificacion = false;
-			var row = $(this).parent(0);
-			var forma_pago = $(row).parent(0).find('.forma_pago').html();
-			
 
-			if(forma_pago == 'FACTURA INTERNA'){			
+			for(var i=0; i< clasificacion.length; i++){
+				if($(this).val() == clasificacion[i]){
+					no_clasificacion = true;						
+				}
+			}
+			if(no_clasificacion == false){					
+				var row = $(this).parent(0);
+				$(row).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});					
+
 				$(row).parent(0).find('td').each(function(){
-					$(this).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});					
 					$(this).addClass('anul');
-				});
+				})
 			}else{
+				var row = $(this).parent(0);
+				$(row).removeAttr('style');
 
-				if($.inArray($(this).val(), clasificacion) != -1){
-					no_clasificacion = true;
+				$(row).parent(0).find('td').each(function(){
+					$(this).removeClass('anul');
+				});
+
+				var pago = Number($(row).parent(0).find('.pago_neto').html());					
+				var select_clasificacion = $(row).find('.select_clasificacion').val();					
+
+				if(pago != 0){					
+					if(select_clasificacion != ''){
+						$(row).parent(0).find('.pago_neto').addClass(select_clasificacion);	
+					}					
+				}else{
+					$(row).parent(0).find('.c_c').addClass(select_clasificacion);
 				}
-
-				if(no_clasificacion == false){					
-					$(row).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});					
-
-					$(row).parent(0).find('td').each(function(){
-						$(this).addClass('anul');
-					})
-				}else{				
-					$(row).removeAttr('style');
-
-					$(row).parent(0).find('td').each(function(){
-						$(this).removeClass('anul');
-					});
-
-					var pago = Number($(row).parent(0).find('.pago_neto').html());					
-					var select_clasificacion = $(row).find('.select_clasificacion').val();	
-
-					for(var i=0; i<=clasificacion.length; i++){
-						$(row).parent(0).find('.subtotal').removeClass(clasificacion[i]);
-						$(row).parent(0).find('.pago_neto').removeClass(clasificacion[i]);			
-					}
-
-					$(row).parent(0).find('.subtotal').addClass(select_clasificacion);			
-
-					if(pago != 0){					
-						if(select_clasificacion != ''){
-							$(row).parent(0).find('.pago_neto').addClass(select_clasificacion);	
-						}					
-					}else{
-						$(row).parent(0).find('.c_c').addClass(select_clasificacion);
-					}
-				}
-			}	
+			}
 		});
 
 		calculoIvaDescuento();
@@ -116,9 +152,9 @@
 			descuento = Number($(row).find('.descuento').html());
 			iva_total = Math.round((subtotal_iva_descuento * 0.15) *100) /100;
 
-			if(descuento != 0){
-				iva_total = Math.round(((subtotal_iva_descuento - descuento) * 0.15) *100) /100
-			}		
+			if(valor_actual != iva_total){
+				iva_total = valor_actual;
+			}				
 
 			subtotal_iva_descuento = Math.round((subtotal_iva_descuento - descuento + iva_total) *100 ) / 100;
 
@@ -138,8 +174,7 @@
 		var pago_neto              = 0;
 		var c_c                    = 0;
 		var subtotal               = 0;
-		var descuento_contado      = 0;			
-		var descuento_credito      = 0;			
+		var descuento              = 0;			
 		var iva                    = 0;	
 		
 		var ret_ir                 = 0;
@@ -157,35 +192,30 @@
 		$('.subtotal:not(.anul)').each(function(){
 			subtotal += Number($(this).html());
 		});
-		$('.descuento.CONTADO:not(.anul)').each(function(){
-			descuento_contado += Number($(this).html());
-		});
-		$('.descuento.CREDITO:not(.anul)').each(function(){
-			descuento_credito += Number($(this).html());
+		$('.descuento:not(.anul)').each(function(){
+			descuento += Number($(this).html());
 		});
 		$('.iva:not(.anul) input').each(function(){
 			iva += Number($(this).val());
 		});
 		$('.valor_ret_ir:not(.anul)').each(function(){
 			ret_ir += Number($(this).val());
-			console.log($(this).val());
 		});
 		$('.valor_ret_alma:not(.anul)').each(function(){
 			ret_alma += Number($(this).val());
 		});	
 		$('.ret_tarjeta:not(.anul)').each(function(){
-			ret_tarjeta_total += Number($(this).html());
+			ret_tarjeta_total += Number($(this).val());
 		});	
 		$('.comision_tarjeta_valor:not(.anul)').each(function(){
-			comision_tarjeta_total += Number($(this).html());			
+			comision_tarjeta_total += Number($(this).val());
 		});	
 				
 
 		$('#pago_neto strong').html(Math.round(pago_neto * 100) / 100);
 		$('#c_c strong').html(Math.round(c_c * 100) / 100);
 		$('#subtotal strong').html(Math.round(subtotal * 100) / 100);
-		$('#descuento_contado strong').html(Math.round(descuento_contado * 100) / 100);
-		$('#descuento_credito strong').html(Math.round(descuento_credito * 100) / 100);
+		$('#descuento strong').html(Math.round(descuento * 100) / 100);
 		$('#iva strong').html(Math.round(iva * 100) / 100);
 		$('#ret_ir strong').html(Math.round(ret_ir * 100) / 100);
 		$('#ret_alma strong').html(Math.round(ret_alma * 100) / 100);
@@ -441,8 +471,7 @@
 
 	function calculoPagoNeto(este) {
 		
-		var row = $(este).parent(0).parent(0);
-		console.log(row);	
+		var row = $(este).parent(0).parent(0);	
 
 		var no_factura = $(row).find('.no_factura').html();			
 		var clasificacion = $(row).find('.select_clasificacion').val(); 
@@ -499,7 +528,8 @@
 						ret_tarjeta = Math.round((comision_total * 0.015) * 100) /100 ;
 
 						$(row).find('.ret_tarjeta').html(ret_tarjeta);
-					}					
+					}
+					
 				}					
 
 				pago_neto = pago - ret_ir - ret_alma - ret_tarjeta - comision;
@@ -511,82 +541,116 @@
 				}else{
 					$(row).find('.c_c').html(pago_neto);	
 				}
-
-
-				calculoTotales();
 					
-			});			
-		}
-	}	
-
-	function mostrarReporte(tipo){
-		if(tipo == 'Contado'){
-			$('#primer_reporte').hide();
-			$('#reporte_ingresar_factura').show();
-
-			$('#reporte_ingreso_caja').html($('#pago_neto strong').html());
-			$('#reporte_ingreso_retencion').html(Number($('#ret_ir strong').html()) + Number($('#ret_ir_tarjeta strong').html()));
-			$('#reporte_ingreso_imi').html($('#ret_alma strong').html());
-			$('#reporte_ingreso_comision_tarjeta').html($('#comision_tarjeta strong').html());			
-			$('#reporte_ingreso_descuentos_contado').html($('#descuento_contado strong').html());			
-			$('#reporte_ingreso_iva').html($('#iva strong').html());
-			$('#reporte_ingreso_descuentos_credito').html($('#descuento_credito strong').html());
-
-			$('#cta_RE').html($('#re_total').html());
-			$('#cta_RA').html($('#ra_total').html());
-			$('#cta_EN').html($('#en_total').html());
-			$('#cta_EU').html($('#eu_total').html());
-			$('#cta_RU').html($('#ru_total').html());
-			$('#cta_FL').html($('#fl_total').html());
-			$('#cta_CO').html($('#co_total').html());
-			$('#cta_ST').html($('#st_total').html());
-			$('#cta_PR').html($('#pr_total').html());
-			$('#cta_CV').html($('#cv_total').html());
-
-			var clientes = [];	
-			var clientes_comparacion = [];
-			var html = '';
-			var html_total = '';
+			});	
+		}					
 		
-			$('.clientes.CREDITO:not(.anul)').each(function(){
-				var row     = $(this).parent(0);
-				var cliente = Number($(this).html());					
-				var pago    = Number(row.find('.c_c').html());
-						
-				if($.inArray(Number($(this).html()), clientes_comparacion) == -1){	//no esta en el array			
-					var new_array = [cliente, pago, row.find('.cliente_nombre').html()];	
-					clientes.push(new_array);
-					clientes_comparacion.push(Number($(this).html()));									
-				}else{
-					for(var i=0; i < clientes.length; i++){
-						if(Number($(this).html()) == clientes[i][0]){
-							var valor = clientes[i][1];
-							clientes[i][1] = Number(valor) + Number(pago);
-						}
-					}
-				}
-			});				
+		calculoTotales();
+	}
 
-			for(var i=0; i < clientes.length; i++){
-				html += "<tr><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td></tr>";
+	function calculoPagoNeto_caja(este){
+		
+		var row = $(este).parent(0).parent(0);
+		var referencia = $(row).find('.no_referencia').html();	
+		var referencia_edit = null;
+
+		referencia = referencia.split('/');
+
+		if(referencia.length ==1){
+			referencia_edit = referencia[0];					
+		}else{
+			referencia_edit = referencia[0] +'-'+ referencia[1];					
+		}
+
+		var pago_neto = 0;
+		var pago = 0;
+		var ret_ir = 0;
+		var ret_alma = 0;
+		var ret_tarjeta = 0;
+		var comision = 0;	
+		var comision_tarjeta_valor = 0;	
+		var comision_total = 0;	
+
+		$.get('{{URL()}}/getCaja/'+referencia_edit, function(data){
+			pago = data.data['pago'];
+
+			if($(row).find('.valor_ret_ir_caja').val() != ''){
+				ret_ir = $(row).find('.valor_ret_ir_caja').val();	
 			}
 
+			if($(row).find('.valor_ret_alma_caja').val() != ''){
+				ret_alma = $(row).find('.valor_ret_alma_caja').val();	
+			}
 
-			$('#table_primer_reporte_contado').append(html);
+			if($(row).find('.comision_tarjeta_caja').val() != ''){
 
-			var debe = 0;
-			var haber = 0;
+				comision_tarjeta_valor = Math.round(((pago * $(row).find('.comision_tarjeta_caja').val())/100)*100)/100;
 
-			$('#table_primer_reporte_contado .debe').each(function(){
-				debe += Number($(this).html());
-			});
-			$('#table_primer_reporte_contado .haber').each(function(){
-				haber += Number($(this).html());
-			});
+				$(row).find('.comision_tarjeta_valor_caja').html(comision_tarjeta_valor);
 
-			html_total = "<tr><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
-			$('#table_primer_reporte_contado').append(html_total);
-		}
+				comision = comision_tarjeta_valor;
+			}else{
+				$(row).find('.comision_tarjeta_valor_caja').html('');
+			}
+
+			if($(row).find('.forma_pago_caja').val() == 'TARJETA DE CREDITO'){
+
+				if(comision != 0){
+					comision_total = pago - comision;
+					var retencion_tarjeta = Math.round(( comision_total * 0.015) * 100 )/100;
+
+					ret_tarjeta = retencion_tarjeta;	
+
+					$(row).find('.ret_tarjeta_caja').html(ret_tarjeta);	
+				}
+
+			}else{
+				$(row).find('.ret_tarjeta_caja').html('0');	
+			}
+
+			pago_neto = pago - ret_ir - ret_alma - ret_tarjeta - comision;
+
+			pago_neto = Math.round((pago_neto) * 100) / 100;
+
+
+			$(row).find('.pago_neto_caja').html(pago_neto);	
+		});	
+
+		formaPagoCaja();
+
 	}
-	
+
+	function formaPagoCaja() {
+
+		var forma_pago_transferncia = 0,  forma_pago_efectivo = 0, forma_pago_cheque = 0, forma_pago_tarjeta = 0;
+
+		$('.table_caja').find('.forma_pago_caja').each(function(){
+			var select = $(this).val().trim();
+			var row = $(this).parent(0).parent(0);				
+
+			if(select == 'TARJETA DE CREDITO'){					
+				forma_pago_tarjeta += Number($(row).find('.pago_neto_caja').html());	
+			}
+
+			if(select == 'CHEQUE'){
+				forma_pago_cheque += Number($(row).find('.pago_neto_caja').html());	
+			}
+
+			if(select == 'EFECTIVO'){
+				forma_pago_efectivo += Number($(row).find('.pago_neto_caja').html());	
+			}
+
+			 if(select == 'TRANSFERENCIA'){
+				forma_pago_transferncia += Number($(row).find('.pago_neto_caja').html());	
+			}
+						
+		});
+
+
+		$('#forma_pago_tarjeta_caja').html(Math.round( forma_pago_tarjeta * 100   ) / 100);
+		$('#forma_pago_transferncia_caja').html(Math.round( forma_pago_transferncia * 100   ) / 100);
+		$('#forma_pago_efectivo_caja').html(Math.round( forma_pago_efectivo * 100   ) / 100);
+		$('#forma_pago_cheque_caja').html(Math.round( forma_pago_cheque * 100   ) / 100);
+	}
+
 </script>

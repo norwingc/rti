@@ -55,8 +55,8 @@ class IngresoController extends BaseController {
 		}
 
 		if($result['ventas'] != '') {
-			$clasificacion         = $result['enviado_a_3'];
-			$data['clasif_ventas'] = $result['enviado_a_3'];
+			$clasificacion         = strtoupper($result['enviado_a_3']);
+			$data['clasif_ventas'] = strtoupper($result['enviado_a_3']);
 			$data['descuento']     = $result['desc_vtas'];
 			$data['sub_total']     = $result['ventas'];	
 			$data['iva']           = round(($result['ventas'])*.15, 2);	
@@ -141,9 +141,7 @@ class IngresoController extends BaseController {
 					"<td>".
 						"<input type='text' class='form-control comision_tarjeta'>".
 					"</td>".
-					"<td class='comision_tarjeta_valor'>".
-						"&nbsp;&nbsp;".
-					"</td>".
+					"<td class='comision_tarjeta_valor'></td>".
 					"<td>".
 						"<input type='text' class='form-control concepto_factura'>".
 					"</td>"
@@ -199,9 +197,7 @@ class IngresoController extends BaseController {
 					"<td>".
 						"&nbsp;&nbsp;".
 					"</td>".
-					"<td>".
-						"&nbsp;&nbsp;".
-					"</td>".	
+					"<td></td>".	
 					"<td>".
 						"<input type='text' class='form-control concepto_factura'>".
 					"</td>"

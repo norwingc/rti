@@ -38,7 +38,7 @@
 						<td></td>
 					</tr>
 					<tr>					
-						<th>Cuentas de Contado y Crdito</th>
+						<th>Cuentas de Contado y Credito</th>
 						<td></td>
 						<td></td>
 					</tr>
