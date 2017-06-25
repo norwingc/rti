@@ -187,7 +187,10 @@
 	}
 
 	function mostrarReporte(){
-		$('#segundo_reporte').hide();
+		//$('#segundo_reporte').hide();
+		
+		$('.borrar').remove();
+
 		$('#reporte_ingresar_caja2').show();
 
 		$('#reporte_iva_caja1').html($('#total_iva_caja strong').html());
@@ -294,7 +297,7 @@
 
 
 		for(var i=0; i < clientes.length; i++){
-			html += "<tr><td>"+clientes[i][2]+"</td><td></td><td class='haber_caja2'>"+Math.round((clientes[i][1]) *100)/100+"</td></tr>";
+			html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td></td><td class='haber_caja2'>"+Math.round((clientes[i][1]) *100)/100+"</td></tr>";
 		}
 
 		$('#table_reporte_caja2').append(html);
@@ -309,7 +312,7 @@
 			haber += Number($(this).html());
 		});
 
-		html_total = "<tr><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
+		html_total = "<tr class='borrar'><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
 		$('#table_reporte_caja2').append(html_total);
 	
 	}

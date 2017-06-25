@@ -12,7 +12,7 @@
 
 		findClasificacion();
 
-		$('.select_clasificacion').focusout(function(){
+		$('.select_clasificacion').focusout(function(){			
 			findClasificacion();
 		});		
 
@@ -167,8 +167,7 @@
 			iva += Number($(this).val());
 		});
 		$('.valor_ret_ir:not(.anul)').each(function(){
-			ret_ir += Number($(this).val());
-			console.log($(this).val());
+			ret_ir += Number($(this).val());			
 		});
 		$('.valor_ret_alma:not(.anul)').each(function(){
 			ret_alma += Number($(this).val());
@@ -441,8 +440,7 @@
 
 	function calculoPagoNeto(este) {
 		
-		var row = $(este).parent(0).parent(0);
-		console.log(row);	
+		var row = $(este).parent(0).parent(0);		
 
 		var no_factura = $(row).find('.no_factura').html();			
 		var clasificacion = $(row).find('.select_clasificacion').val(); 
@@ -521,7 +519,10 @@
 
 	function mostrarReporte(tipo){
 		if(tipo == 'Contado'){
-			$('#primer_reporte').hide();
+			//$('#primer_reporte').hide();
+			//
+			$('.borrar').remove();
+
 			$('#reporte_ingresar_factura').show();
 
 			$('#reporte_ingreso_caja').html($('#pago_neto strong').html());
@@ -568,7 +569,7 @@
 			});				
 
 			for(var i=0; i < clientes.length; i++){
-				html += "<tr><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td></tr>";
+				html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td><td><input type='text' class='no_cuenta'></td><td><input type='text' class='descripcion_cuenta'></td></tr>";
 			}
 
 
@@ -584,7 +585,7 @@
 				haber += Number($(this).html());
 			});
 
-			html_total = "<tr><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
+			html_total = "<tr class='borrar'><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
 			$('#table_primer_reporte_contado').append(html_total);
 		}
 	}

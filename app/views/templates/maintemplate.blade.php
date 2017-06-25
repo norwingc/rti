@@ -71,6 +71,14 @@
    
     <!-- AdminLTE App -->
     {{ HTML::script('dist/js/app.min.js') }}   
+
+    <script type="text/javascript">
+        $('input[type=text]').keyup (function () {
+           $(this).val($(this).val().toUpperCase()); 
+           console.log($(this).val());
+        })
+    </script>
+
     
 
      @yield('js')
