@@ -74,8 +74,7 @@
 
     <script type="text/javascript">
         $('input[type=text]').keyup (function () {
-           $(this).val($(this).val().toUpperCase()); 
-           console.log($(this).val());
+           $(this).val($(this).val().toUpperCase());            
         })
     </script>
 

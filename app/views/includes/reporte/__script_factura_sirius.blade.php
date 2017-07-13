@@ -33,6 +33,13 @@
 			mostrarReporte('Contado');
 		});
 
+		$('.no_cuenta_reporte').focusout(function(){				
+			getNoCuenta($(this));
+		});	
+		$('.descripcion_cuenta').focusout(function(){				
+			getDescricionCuenta($(this));
+		});
+
 	});
 
 	function findClasificacion() {
@@ -587,7 +594,33 @@
 
 			html_total = "<tr class='borrar'><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
 			$('#table_primer_reporte_contado').append(html_total);
-		}
+		}		
+	}
+
+	function getNoCuenta(input) {
+		var row = $(input).parent(0).parent(0);
+		console.log(row);
+		if(input.val() != ''){
+			$.get('{{ URL() }}/getCuenta/'+input.val(), function(data){
+				if(data.cuenta == 'Cuenta no encontrada'){
+					alert(data.cuenta);
+				}else{
+					$(row).find('descripcion_cuenta').val(data.cuenta.Descripcion);
+				}
+			});
+		}	
 	}
 	
+	function getDescricionCuenta(input) {
+		var row = $(input).parent(0).parent(0);
+		if(input.val() != ''){
+			$.get('{{ URL() }}/getDescripcion/'+input.val(), function(data){
+				if(data.cuenta == 'Descripcion no encontrada'){
+					alert(data.cuenta);
+				}else{
+					$(row).find('no_cuenta_reporte').val(data.cuenta.Cuenta);
+				}
+			});
+		}
+	}
 </script>
