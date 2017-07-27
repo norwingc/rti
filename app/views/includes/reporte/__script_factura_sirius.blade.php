@@ -605,7 +605,7 @@
 				if(data.cuenta == 'Cuenta no encontrada'){
 					alert(data.cuenta);
 				}else{
-					$(row).find('descripcion_cuenta').val(data.cuenta.Descripcion);
+					$(row).find('.descripcion_cuenta').val(data.cuenta.Descripcion);
 				}
 			});
 		}	
@@ -618,7 +618,7 @@
 				if(data.cuenta == 'Descripcion no encontrada'){
 					alert(data.cuenta);
 				}else{
-					$(row).find('no_cuenta_reporte').val(data.cuenta.Cuenta);
+					$(row).find('.no_cuenta_reporte').val(data.cuenta.Cuenta);
 				}
 			});
 		}
