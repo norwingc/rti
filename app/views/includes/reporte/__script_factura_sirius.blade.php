@@ -40,6 +40,11 @@
 			getDescricionCuenta($(this));
 		});
 
+		$('#guadar_reporte_factura').click(function(){
+			guadar_reporte_factura();
+		});
+
+
 	});
 
 	function findClasificacion() {
@@ -592,7 +597,7 @@
 				haber += Number($(this).html());
 			});
 
-			html_total = "<tr class='borrar'><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
+			html_total = "<tr class='borrar'><th>Total</th><td><strong id='total_debe_factura'>"+Math.round((debe)*100)/100+"</strong></td><td><strong id='total_haber_factura'>"+Math.round((haber)*100)/100+"</strong></td></tr>";
 			$('#table_primer_reporte_contado').append(html_total);
 		}		
 	}
@@ -622,5 +627,34 @@
 				}
 			});
 		}
+	}
+
+	function guadar_reporte_factura() {
+		var fecha = $('#fecha_factura').val();
+
+		fecha = fecha.split('-');
+		var mes = fecha[1];
+		var anio = fecha[0];
+
+		var comprobante = {
+			'tipo' : $('#clasificacion_factura').val(),
+			'mes' : mes,
+			'anio' : anio,
+			'fecha' : $('#fecha_factura').val(),
+			'concepto' : $('#concepto_factura').val(),
+			'tipo_documento' : $('#documento_factura').val(),
+			'debe' : $('#total_debe_factura').html(),
+			'haber' : $('#total_haber_factura').html()
+		}
+
+		var send = 'comprobante_tipo=' + comprobante.tipo + '&comprobante_mes=' + comprobante.mes + 
+					'&comprobante_anio=' + comprobante.anio + '&comprobante_fecha=' + comprobante.fecha + 
+					'&comprobante_fecha=' + comprobante.fecha + '&comprobante_concepto=' + comprobante.concepto + 
+					'&comprobante_tipo_documento=' + comprobante.tipo_documento + '&comprobante_debe=' + comprobante.debe +
+					'&comprobante_haber=' + comprobante.haber;
+
+		$.post('{{ URL() }}/Save/Reporte/Factura', send ,function(data){
+			alert('Comprovante Guardado')
+		});		
 	}
 </script>

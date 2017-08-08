@@ -13,9 +13,38 @@
 
 Route::get('test', function()
 {
-	$prueba = DB::table('prueba')->get();
+	$comprobante = new ComprobanteDiario();
+	$comprobante->Tipo = 1; //select de clasificacion
+	$comprobante->Comprobante = 181; // el mas alto del mes y el año colacado
+	$comprobante->Mes = 4; // mes seleccionado
+	$comprobante->Anio = 2017; // año seleccionado
+	$comprobante->Fecha = '04/04/2017'; // tipo timestamp
+	$comprobante->Concepto = 'NA'; // textarea concepto 	
+	$comprobante->Generado = 0;
+	$comprobante->Anulado = 0;
+	$comprobante->Tipo_Documento = 0; //select docuemtos	
+	$comprobante->Consolidacion = 0;
+	$comprobante->Debe = 0; // sumatoria del debe
+	$comprobante->Haber = 0; //sumatoria del haber
+	$comprobante->Cierre = 0;
 
-	return $prueba;
+	$comprobante->save();
+
+
+
+	$detalle = new ComprobanteDiarioDetalle();
+	$detalle->Tipo = 1; //mismo de compovante select
+	$detalle->Comprobante = 181;
+	$detalle->Mes = 4; // mes seleccionado
+	$detalle->Anio = 2017; // año seleccionado
+	$detalle->Cuenta = '1000000000'; // campo no cuenta
+	$detalle->Numero = 1; // hacer sonsecutivo de cuentas
+	$detalle->Movimiento = 1; // 1 debe, 2 haber
+	$detalle->Monto = 1000; // monto de la cuenta
+	//$detalle->MontoUS = 0; // buscar tabla y dividir por el valor 	 
+	$detalle->Concepto = 'NA'; // valor de concepto de la cuenta
+
+	$detalle->save();
 });
 
 
@@ -111,3 +140,32 @@ Route::get('getCaja/{referencia}', 'IngresoController@getCaja');
 
 Route::get('getCuenta/{cuenta}', 'CuentaController@getCuenta');
 Route::get('getDescripcion/{descripcion}', 'CuentaController@getDescripcion');
+
+Route::post('Save/Reporte/Factura', function(){
+	$data = Input::all();
+
+	$no_comprobante = Comprobante::where('Mes', $data['comprobante_mes'])->where('Anio', $data['comprobante_anio'])->orderBy('Comprobante', 'ASC')->first();
+
+
+	$comprobante = new ComprobanteDiario();
+
+	$comprobante->Tipo = $data['comprobante_tipo'];
+	$comprobante->Comprobante =  ($no_comprobante->Comprobante + 1);
+	$comprobante->Mes = $data['comprobante_mes'];
+	$comprobante->Anio = $data['comprobante_anio'];
+	$comprobante->Fecha = $data['comprobante_fecha'];
+	$comprobante->Concepto = $data['comprobante_concepto'];
+	$comprobante->Generado = 0;
+	$comprobante->Anulado = 0;
+	$comprobante->Tipo_Documento = $data['comprobante_tipo_documento'];
+	$comprobante->Consolidacion = 0;
+	$comprobante->Debe = $data['comprobante_debe'];
+	$comprobante->Haber = $data['comprobante_haber'];
+	$comprobante->Cierre = 0;
+
+	$comprobante->save();
+
+	return Response::json(array(
+		'data' => $comprobante
+	));
+});

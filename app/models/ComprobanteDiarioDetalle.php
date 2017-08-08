@@ -1,5 +1,5 @@
 <?php 
-	class ComprovanteDiarioDetalle extends Eloquent {		
+	class ComprobanteDiarioDetalle extends Eloquent {		
 		protected $table = 'Detalle_de_Diario';	
 
 		public $timestamps = false;	

@@ -149,7 +149,10 @@
 					</tr>							
 				</tbody>
 			</table>
-			
+			<div class="text-center">
+				<button class="btn btn-success btn-lg" id="guadar_reporte_factura">Guardar</button>
+			</div>
+
 		</div>
 	</div>
 </div>
