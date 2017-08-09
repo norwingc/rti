@@ -581,7 +581,7 @@
 			});				
 
 			for(var i=0; i < clientes.length; i++){
-				html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td><td><input type='text' class='no_cuenta'></td><td><input type='text' class='descripcion_cuenta'></td></tr>";
+				html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td><td><input type='text' class='no_cuenta_reporte'></td><td><input type='text' class='descripcion_cuenta'></td></tr>";
 			}
 
 
@@ -603,8 +603,7 @@
 	}
 
 	function getNoCuenta(input) {
-		var row = $(input).parent(0).parent(0);
-		console.log(row);
+		var row = $(input).parent(0).parent(0);		
 		if(input.val() != ''){
 			$.get('{{ URL() }}/getCuenta/'+input.val(), function(data){
 				if(data.cuenta == 'Cuenta no encontrada'){
@@ -654,15 +653,43 @@
 					'&comprobante_haber=' + comprobante.haber;
 
 		$.post('{{ URL() }}/Save/Reporte/Factura', send ,function(data){
-			alert('Comprobante Guardado');
+			//alert('Comprobante Guardado');
+			var contador = 1;
 
-
+			
 			$('.tabla_factura_reporte tr').each(function(){
-				console.log($(this));
+				//console.log($(this).find('.no_cuenta_reporte').val());
+				if($(this).find('.no_cuenta_reporte').val() != undefined){
 
-				var detalle_comprobante = {
-					'tipo' : $('#clasificacion_factura').val(),
+					var movimiento = 0;	
+					var monto = 0;				
+
+					if($(this).find('.debe').html() != undefined){
+						movimiento = 1;
+						monto = $(this).find('.debe').html();
+					}else{
+						movimiento = 2;
+						monto = $(this).find('.haber').html();
+					}
+
+					if(monto != undefined){
+						var detalle_comprobante = {
+							'tipo' : $('#clasificacion_factura').val(),
+							'comprobante' : data.data.Comprobante,
+							'mes' : mes,
+							'anio' : anio,
+							'cuenta' : $(this).find('.no_cuenta_reporte').val(),	
+							'numero' : contador,
+							'movimiento' : movimiento,
+							'monto' : monto,
+							'montousa' : monto / 30,
+							'concepto' : $('#concepto_factura').val()
+						}
+
+						contador++;
+					}
 				}
+				
 			});
 
 		});		
