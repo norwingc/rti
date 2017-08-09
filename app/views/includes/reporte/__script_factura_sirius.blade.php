@@ -653,9 +653,8 @@
 					'&comprobante_haber=' + comprobante.haber;
 
 		$.post('{{ URL() }}/Save/Reporte/Factura', send ,function(data){
-			//alert('Comprobante Guardado');
+			alert('Comprobante Guardado');
 			var contador = 1;
-
 			
 			$('.tabla_factura_reporte tr').each(function(){
 				//console.log($(this).find('.no_cuenta_reporte').val());
@@ -685,8 +684,18 @@
 							'montousa' : monto / 30,
 							'concepto' : $('#concepto_factura').val()
 						}
-
 						contador++;
+
+						var send2 = 'detalle_tipo=' + detalle_comprobante.tipo + '&detalle_comprobante=' + detalle_comprobante.comprobante +
+									'&detalle_mes=' +  detalle_comprobante.mes + '&detalle_anio=' + detalle_comprobante.anio + 
+									'&detalle_cuenta=' + detalle_comprobante.cuenta + '&detalle_numero=' + detalle_comprobante.numero + 
+									'&detalle_movimiento=' + detalle_comprobante.movimiento + '&detalle_monto=' + detalle_comprobante.monto + 
+									'&detalle_montousa=' + detalle_comprobante.montousa + '&detalle_concepto=' + detalle_comprobante.concepto;
+
+						$.post('{{ URL() }}/Save/Reporte/DetalleFactura', send2 ,function(data2){
+							//console.log(data2);
+							console.log('detalle guardado')
+						});
 					}
 				}
 				
