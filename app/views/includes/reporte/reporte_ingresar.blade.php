@@ -5,7 +5,7 @@
 
 	<div class="box-body">
 		<div class="ingreso_contado">
-			<table class="table table-bordered table-hover" id="table_primer_reporte_contado" style="width: 50% !important; margin-left: 0;">
+			<table class="table table-bordered table-hover tabla_factura_reporte" id="table_primer_reporte_contado" style="width: 50% !important; margin-left: 0;">
 				<thead>	
 					<th style="text-align: center">Cuenta</th>
 					<th style="text-align: center">Debe</th>

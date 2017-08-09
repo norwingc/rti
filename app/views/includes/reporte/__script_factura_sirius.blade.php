@@ -654,7 +654,17 @@
 					'&comprobante_haber=' + comprobante.haber;
 
 		$.post('{{ URL() }}/Save/Reporte/Factura', send ,function(data){
-			alert('Comprovante Guardado')
+			alert('Comprobante Guardado');
+
+
+			$('.tabla_factura_reporte tr').each(function(){
+				console.log($(this));
+
+				var detalle_comprobante = {
+					'tipo' : $('#clasificacion_factura').val(),
+				}
+			});
+
 		});		
 	}
 </script>

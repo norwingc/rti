@@ -144,13 +144,12 @@ Route::get('getDescripcion/{descripcion}', 'CuentaController@getDescripcion');
 Route::post('Save/Reporte/Factura', function(){
 	$data = Input::all();
 
-	$no_comprobante = Comprobante::where('Mes', $data['comprobante_mes'])->where('Anio', $data['comprobante_anio'])->orderBy('Comprobante', 'ASC')->first();
-
+	//$no_comprobante = ComprobanteDiario::where('Mes', $data['comprobante_mes'])->where('Anio', $data['comprobante_anio'])->orderBy('Comprobante', 'ASC')->first();
 
 	$comprobante = new ComprobanteDiario();
 
 	$comprobante->Tipo = $data['comprobante_tipo'];
-	$comprobante->Comprobante =  ($no_comprobante->Comprobante + 1);
+	$comprobante->Comprobante =  1;//($no_comprobante->Comprobante + 1);
 	$comprobante->Mes = $data['comprobante_mes'];
 	$comprobante->Anio = $data['comprobante_anio'];
 	$comprobante->Fecha = $data['comprobante_fecha'];
@@ -163,9 +162,30 @@ Route::post('Save/Reporte/Factura', function(){
 	$comprobante->Haber = $data['comprobante_haber'];
 	$comprobante->Cierre = 0;
 
-	$comprobante->save();
+	//$comprobante->save();
 
 	return Response::json(array(
 		'data' => $comprobante
 	));
+});
+
+
+Route::post('Save/Reporte/DetalleFactura', function(){
+	$data = Input::all();
+
+
+	$detalle = new ComprobanteDiarioDetalle();
+	$detalle->Tipo = 1; //mismo de compovante select
+	$detalle->Comprobante = 181;
+	$detalle->Mes = 4; // mes seleccionado
+	$detalle->Anio = 2017; // año seleccionado
+	$detalle->Cuenta = '1000000000'; // campo no cuenta
+	$detalle->Numero = 1; // hacer sonsecutivo de cuentas
+	$detalle->Movimiento = 1; // 1 debe, 2 haber
+	$detalle->Monto = 1000; // monto de la cuenta
+	//$detalle->MontoUS = 0; // buscar tabla y dividir por el valor 	 
+	$detalle->Concepto = 'NA'; // valor de concepto de la cuenta
+
+	$detalle->save();
+
 });
