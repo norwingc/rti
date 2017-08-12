@@ -296,12 +296,12 @@
 	}
 
 	function guadar_reporte_caja() {
-		var fecha = $('#fecha_caja').val();
-
-		fecha = fecha.split('-');
-		var mes = fecha[1];
-		var anio = fecha[0];
-		var dia = fecha[2];
+		var fecha         = $('#fecha_caja').val();
+		
+		fecha             = fecha.split('-');
+		var mes           = fecha[1];
+		var anio          = fecha[0];
+		var dia           = fecha[2];
 		var fecha_sistema = dia + '/' + mes + '/' + anio;
 
 

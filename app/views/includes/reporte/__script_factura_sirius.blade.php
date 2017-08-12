@@ -634,10 +634,10 @@
 	function guadar_reporte_factura() {
 		var fecha = $('#fecha_factura').val();
 
-		fecha = fecha.split('-');
-		var mes = fecha[1];
-		var anio = fecha[0];
-		var dia = fecha[2];
+		fecha             = fecha.split('-');
+		var mes           = fecha[1];
+		var anio          = fecha[0];
+		var dia           = fecha[2];
 		var fecha_sistema = dia + '/' + mes + '/' + anio;
 
 		//console.log(fecha);
@@ -669,14 +669,14 @@
 				if($(this).find('.no_cuenta_reporte').val() != undefined){
 
 					var movimiento = 0;	
-					var monto = 0;					
+					var monto      = 0;					
 
 					if($(this).find('.debe').html() != undefined){
 						movimiento = 1;
-						monto = $(this).find('.debe').html();
+						monto      = $(this).find('.debe').html();    
 					}else{
 						movimiento = 2;
-						monto = $(this).find('.haber').html();
+						monto      = $(this).find('.haber').html();
 					}
 
 					if(monto != undefined){

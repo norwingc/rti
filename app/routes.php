@@ -164,15 +164,15 @@ Route::post('Save/Reporte/Factura', function(){
 	$fecha = explode('/', $fecha);
 
 
-	$servicio = "https://servicios.bcn.gob.ni/Tc_Servicio/ServicioTC.asmx?WSDL"; //url del servicio
-	$parametros = array(); //parametros de la llamada
-    $parametros['Dia'] = $fecha[0];
-    $parametros['Mes'] = $fecha[1];
-    $parametros['Ano'] = $fecha[2];
-    $client = new SoapClient($servicio, $parametros);
-    $result = $client->RecuperaTC_Dia($parametros); //llamamos al métdo que nos interesa con los parámetros
-    $cambio = ($result->RecuperaTC_DiaResult);
-	$cambio = round($cambio,5);	
+	$servicio          = "https://servicios.bcn.gob.ni/Tc_Servicio/ServicioTC.asmx?WSDL"; //url del servicio
+	$parametros        = array(); //parametros de la llamada
+	$parametros['Dia'] = $fecha[0];
+	$parametros['Mes'] = $fecha[1];
+	$parametros['Ano'] = $fecha[2];
+	$client            = new SoapClient($servicio, $parametros);
+	$result            = $client->RecuperaTC_Dia($parametros); //llamamos al métdo que nos interesa con los parámetros
+	$cambio            = ($result->RecuperaTC_DiaResult);
+	$cambio            = round($cambio,5);	
 
 	//$cambio = 30;
 	
@@ -181,19 +181,19 @@ Route::post('Save/Reporte/Factura', function(){
 
 	$comprobante = new ComprobanteDiario();
 
-	$comprobante->Tipo = $data['comprobante_tipo'];
-	$comprobante->Comprobante = ($no_comprobante->Comprobante + 1);
-	$comprobante->Mes = $data['comprobante_mes'];
-	$comprobante->Anio = $data['comprobante_anio'];
-	$comprobante->Fecha = $data['comprobante_fecha'];
-	$comprobante->Concepto = $data['comprobante_concepto'];
-	$comprobante->Generado = 0;
-	$comprobante->Anulado = 0;
+	$comprobante->Tipo           = $data['comprobante_tipo'];
+	$comprobante->Comprobante    = ($no_comprobante->Comprobante + 1);
+	$comprobante->Mes            = $data['comprobante_mes'];
+	$comprobante->Anio           = $data['comprobante_anio'];
+	$comprobante->Fecha          = $data['comprobante_fecha'];
+	$comprobante->Concepto       = $data['comprobante_concepto'];
+	$comprobante->Generado       = 0;
+	$comprobante->Anulado        = 0;
 	$comprobante->Tipo_Documento = $data['comprobante_tipo_documento'];
-	$comprobante->Consolidacion = 0;
-	$comprobante->Debe = $data['comprobante_debe'];
-	$comprobante->Haber = $data['comprobante_haber'];
-	$comprobante->Cierre = 0;
+	$comprobante->Consolidacion  = 0;
+	$comprobante->Debe           = $data['comprobante_debe'];
+	$comprobante->Haber          = $data['comprobante_haber'];
+	$comprobante->Cierre         = 0;
 
 	$comprobante->save();
 
@@ -209,16 +209,16 @@ Route::post('Save/Reporte/DetalleFactura', function(){
 
 	$detalle = new ComprobanteDiarioDetalle();
 
-	$detalle->Tipo = $data['detalle_tipo'];
+	$detalle->Tipo        = $data['detalle_tipo'];
 	$detalle->Comprobante = $data['detalle_comprobante'];
-	$detalle->Mes = $data['detalle_mes'];
-	$detalle->Anio = $data['detalle_anio'];
-	$detalle->Cuenta = $data['detalle_cuenta']; 
-	$detalle->Numero = $data['detalle_numero'];
-	$detalle->Movimiento = $data['detalle_movimiento'];
-	$detalle->Monto = $data['detalle_monto'];
-	$detalle->MontoUS = $data['detalle_montousa']; 
-	$detalle->Concepto = $data['detalle_concepto'];
+	$detalle->Mes         = $data['detalle_mes'];
+	$detalle->Anio        = $data['detalle_anio'];
+	$detalle->Cuenta      = $data['detalle_cuenta']; 
+	$detalle->Numero      = $data['detalle_numero'];
+	$detalle->Movimiento  = $data['detalle_movimiento'];
+	$detalle->Monto       = $data['detalle_monto'];
+	$detalle->MontoUS     = $data['detalle_montousa']; 
+	$detalle->Concepto    = $data['detalle_concepto'];
 
 	$detalle->save();
 
