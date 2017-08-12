@@ -141,10 +141,7 @@ class IngresoController extends BaseController {
 					"<td>".
 						"<input type='text' class='form-control comision_tarjeta'>".
 					"</td>".
-					"<td class='comision_tarjeta_valor'></td>".
-					"<td>".
-						"<input type='text' class='form-control concepto_factura'>".
-					"</td>"
+					"<td class='comision_tarjeta_valor'></td>"					
 				."</tr>";
 		}else{
 			return
@@ -197,10 +194,7 @@ class IngresoController extends BaseController {
 					"<td>".
 						"&nbsp;&nbsp;".
 					"</td>".
-					"<td></td>".	
-					"<td>".
-						"<input type='text' class='form-control concepto_factura'>".
-					"</td>"
+					"<td></td>"					
 				."</tr>";
 		}
 
@@ -274,11 +268,7 @@ class IngresoController extends BaseController {
 			"<td>".
 				"<input type='text' class='form-control comision_tarjeta_caja'>".
 			"</td>".
-			"<td class='comision_tarjeta_valor_caja'>".
-				"".				
-			"<td>".
-					"<input type='text' class='form-control concepto_factura'>".
-				"</td>"
+			"<td class='comision_tarjeta_valor_caja'>"			
 		."</tr>";		
 	}
 
@@ -342,10 +332,7 @@ class IngresoController extends BaseController {
 			"<td class='pago_neto_caja'>".
 				$data['pago'].
 			"</td>".	
-			"<td><select class='form-control clasificaion_ventas'><option value=''>N/A</option><option value='RE'>RE</option><option value='RA'>RA</option><option value='EN'>EN</option><option value='EU'>EU</option><option value='RU'>RU</option><option value='FL'>FL</option><option value='CO'>CO</option><option value='ST'>ST</option><option value='PR'>PR</option><option value='CV'>CV</option></select></td>".
-			"<td>".
-				"<input type='text' class='form-control concepto_factura'>".
-			"</td>"			
+			"<td><select class='form-control clasificaion_ventas'><option value=''>N/A</option><option value='RE'>RE</option><option value='RA'>RA</option><option value='EN'>EN</option><option value='EU'>EU</option><option value='RU'>RU</option><option value='FL'>FL</option><option value='CO'>CO</option><option value='ST'>ST</option><option value='PR'>PR</option><option value='CV'>CV</option></select></td>"				
 		."</tr>";
 	}
 

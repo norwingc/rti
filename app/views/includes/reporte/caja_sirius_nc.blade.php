@@ -11,16 +11,36 @@
 				<div class="col-md-6">
 					<div class="col-md-6">
 						<label>Clasif: </label> <input type="text" class="form-control">
-						<label>No de Comprob: </label> <input type="number" class="form-control">
+						<select name="clasificacion_caja_nc" id="clasificacion_caja_nc" class="form-control">
+							<option value="1">Diario</option>
+							<option value="2">Ingresos</option>
+							<option value="3">Rendiciones</option>
+							<option value="4">Factura</option>
+							<option value="5">Ajuste</option>
+							<option value="6">Compras</option>
+							<option value="7">Entradas</option>
+							<option value="8">Salidas</option>
+							<option value="9">Transferencias</option>
+							<option value="10">Cuentas por cobrar</option>
+							<option value="11">Cuentas por pagar</option>
+							<option value="12">Planilla</option>
+						</select>
+						<label>Fecha: </label> <input type="date" class="form-control" id="fecha_caja_nc">	
 					</div>
-					<div class="col-md-6">
-						<label>Fecha: </label> <input type="date" class="form-control">
+					<div class="col-md-6">						
 						<label>Documento: </label> <input type="text" class="form-control">
+						<select name="documento_caja_nc" class="form-control" id="documento_caja_nc">
+							<option value="0">Varios</option>
+							<option value="1">Depositos</option>
+							<option value="2">N/C</option>
+							<option value="3">Cheques</option>
+							<option value="4">N/D</option>
+						</select>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="col-md-6">
-						<label>Concepto: </label> <textarea class="form-control" style="height: 90px"></textarea>
+						<label>Concepto: </label> <textarea class="form-control" style="height: 90px" id="concepto_caja"></textarea>
 					</div>
 				</div>
 			</div>
@@ -40,8 +60,7 @@
 						<th>subtotal</th>						
 						<th>iva</th>							
 						<th>pago neto</th>
-						<th>Clasificacion</th>
-						<th width="20%">Concepto Factura</th>							
+						<th>Clasificacion</th>											
 		            </tr>
 		        </thead>
 		        <tbody>

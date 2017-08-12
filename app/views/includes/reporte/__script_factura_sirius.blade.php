@@ -42,6 +42,7 @@
 		});
 
 		$('#guadar_reporte_factura').click(function(){
+			$(this).button('loading')
 			guadar_reporte_factura();
 		});
 
@@ -688,7 +689,7 @@
 							'numero' : contador,
 							'movimiento' : movimiento,
 							'monto' : monto,
-							'montousa' : monto / data.cambio,
+							'montousa' : Math.round((monto / data.cambio) * 100)/100,
 							'concepto' : $(this).find('.reporte_concepto_factura').val()	
 						}
 						contador++;
@@ -706,7 +707,7 @@
 					}
 				}				
 			});
-			
+			$('#guadar_reporte_factura').button('reset');
 		});
 	}
 </script>

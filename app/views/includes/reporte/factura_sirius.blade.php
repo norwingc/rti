@@ -66,8 +66,7 @@
 						<th>forma de pago</th>
 						<th>Ret ir 1.5%</th>
 						<th>Comision %</th>
-						<th>Comision C$</th>
-						<th width="20%">Concepto Factura</th>
+						<th>Comision C$</th>					
 		            </tr>
 		        </thead>
 		        <tbody>			        	

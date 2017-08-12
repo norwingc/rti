@@ -7,6 +7,8 @@
    			margin: 0 6px 0 6px;
 		}
 	</style>
+
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
 @stop
 
 @section('contenido')
@@ -22,59 +24,47 @@
 <section class="content">	
 	<div class="box box-info">
 		<div class="box-header">
-			<h3 class="box-title"><small>Agregar Cuenta</small></h3>
+			<h3 class="box-title"><small>Catalogo de Cuentas</small></h3>
 		</div>				
 
 		<div class="box-body">	
-			{{ Form::open(array('url' => '', 'class' => 'interview-form form-horizontal')) }}
-
-                <div class="form-group">
-                    <div class="col-sm-4">
-                        <label>No Cuenta</label>
-                        <div>
-                            <input type="text" class="form-control"> 
-                        </div>
-                    </div>  
-                    <div class="col-sm-4">
-                        <label>Descripcion</label>
-                        <div>
-                            <input type="text" class="form-control"> 
-                        </div>
-                    </div>  
-                    <div class="col-sm-4">
-                        <label>Cuenta Cons</label>
-                        <div>
-                            <input type="text" class="form-control"> 
-                        </div>
-                    </div>                   
-                </div>
-                <div class="form-group">
-                	<div class="col-sm-5">
-                		<label>Cuenta</label>
-	                	<div>
-		                	<input type="radio">Activos
-		                	<input type="radio">Pasivos
-		                	<input type="radio">Capital
-		                	<input type="radio">Ingresos
-		                	<input type="radio">Gastos
-		                	<input type="radio">Cta Trans
-		                </div>	
-		            </div>
-		            <div class="col-sm-4">
-		            	<label>Tipo</label>
-	                	<div>
-		                	<input type="radio">Debe
-		                	<input type="radio">haber		                	
-		                </div>	
-		            </div>
-                </div>
-                <div class="col-md-12 text-center" style="margin-top: 2em">
-					<button class="btn btn-success">Guardar Cuenta</button>
-				</div>	
-            {{ Form::close() }}        
+		  
+			<div class="table-responsive">
+				<table id="table" class="table table-bordered table-hover">
+					<thead>
+			            <tr>
+			            	<th>Cuenta</th>								
+							<th>Clasificacion</th>
+							<th>Movimiento</th>
+							<th>Cuenta Padre</th>
+							<th>Descripcion</th>						
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	@foreach ($cuentas as $value)
+			        		<tr>
+			        			<td>{{ $value->Cuenta }}</td>
+			        			<td>{{ $value->Clasificacion }}</td>
+			        			<td>{{ $value->Movimiento }}</td>
+			        			<td>{{ $value->Cuenta_Padre }}</td>
+			        			<td>{{ $value->Descripcion }}</td>
+			        		</tr>
+			        	@endforeach			        	
+			        </tbody>
+			    </table>
+			</div>
 		</div>
 	</div>
 </section>
 <!-- /.content -->
 
+@stop
+
+
+@section('js')
+<!-- DataTables -->
+{{ HTML::script('plugins/datatables/jquery.dataTables.min.js') }}
+<script type="text/javascript">
+    $('#table').DataTable();   
+</script>
 @stop

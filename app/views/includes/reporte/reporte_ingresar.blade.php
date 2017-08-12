@@ -1,13 +1,15 @@
+<style type="text/css">
+	textarea{
+		width: 290px;
+			height: 26px;
+	}
+</style>
+
 <div class="box box-info" id="reporte_ingresar_factura" style="display: none">
 	<div class="box-header">
 		<h3 class="box-title"><small>Reporte de Ingresos Factura</small></h3>
-	</div>				
-	<style type="text/css">
-		#table_primer_reporte_contado textarea{
-			width: 290px;
-   			height: 26px;
-		}
-	</style>
+	</div>			
+	
 	<div class="box-body">
 		<div class="ingreso_contado">
 			<table class="table table-bordered table-hover tabla_factura_reporte" id="table_primer_reporte_contado" style="width: 50% !important; margin-left: 0;">
@@ -195,35 +197,65 @@
 					<th style="text-align: center">Cuenta</th>
 					<th style="text-align: center">Debe</th>
 					<th style="text-align: center">Haber</th>
+					<th style="text-align: center">No Cuenta</th>
+					<th style="text-align: center">Descripcion</th>	
+					<th style="text-align: center">Concepto Factura</th>	
 				</thead>
 				<tbody>
 					<tr>					
 						<th>Caja</th>
 						<td id="reporte_ingreso_caja_caja1" class="debe_caja1"></td>
 						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="1101020001"></td>
+						<td><textarea class="descripcion_cuenta">Caja de Tesoreria  Tienda servicio de Renta</textarea></td>
+						<td><textarea class="reporte_concepto_caja"></textarea></td>
 					</tr>
 					<tr>					
-						<th>Retencion</th>
+						<th>Retencion IR</th>
 						<td id="reporte_ingreso_retencion_caja1" class="debe_caja1"></td>
 						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="1109020002"></td>
+						<td><textarea class="descripcion_cuenta">2% IR Retenido por Clientes CEDIS</textarea></td>
+						<td><textarea class="reporte_concepto_caja"></textarea></td>
+					</tr>
+					<tr>					
+						<th>Retencion IR Tarjeta</th>
+						<td id="reporte_ingreso_retencion_tarjeta_caja1" class="debe_caja1"></td>
+						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="1109020002"></td>
+						<td><textarea class="descripcion_cuenta">2% IR Retenciones por Inst. Bancarias CEDIS</textarea></td>
+						<td><textarea class="reporte_concepto_caja"></textarea></td>
 					</tr>
 					<tr>					
 						<th>IMI</th>
 						<td id="reporte_ingreso_imi_caja1" class="debe_caja1"></td>
 						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="1109030001"></td>
+						<td><textarea lass="descripcion_cuenta">1% IMI RETENIDO POR CLIENTES CEDIS</textarea></td>
+						<td><textarea class="reporte_concepto_caja"></textarea></td>
 					</tr>
 					<tr>					
 						<th>Comision de Tarjeta</th>
 						<td id="reporte_ingreso_comision_tarjeta_caja1" class="debe_caja1"></td>
 						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="6104010007"></td>
+						<td><textarea lass="descripcion_cuenta">cargos por servicio de tarjeta de credito</textarea></td>
+						<td><textarea class="reporte_concepto_caja"></textarea></td>
 					</tr>
 					<tr>					
 						<th>CxC</th>
 						<td></td>
 						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 					</tr>
 				</tbody>
 			</table>
+
+			<div class="text-center">
+				<button class="btn btn-success btn-lg" id="guadar_reporte_caja">Guardar</button>
+			</div>
 		</div>			
 	</div>
 </div>			

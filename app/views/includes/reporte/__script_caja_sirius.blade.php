@@ -16,6 +16,20 @@
 		$('.valor_ret_alma_caja').focusout(function(){
 			calculoPagoNeto_caja($(this));
 		});
+
+		$('.no_cuenta_reporte').focusout(function(){		
+			//console.log('fasdfsdf');		
+			getNoCuenta($(this));
+		});	
+		$('.descripcion_cuenta').focusout(function(){				
+			getDescricionCuenta($(this));
+		});
+
+		$('#guadar_reporte_caja').click(function(){
+			$(this).button('loading')
+			guadar_reporte_caja();
+		});
+
 		$('.btn_view_referencia').click(function(){
 
 			var title = 'Ver Referencia: ' + $(this).data('referencia');
@@ -87,8 +101,7 @@
 		$('#total_ret_alma_caja strong').html(Math.round((total_ret_alma_caja)*100)/100);
 		$('#total_pago_neto_caja strong').html(Math.round((total_pago_neto_caja)*100)/100);
 		$('#total_ret_ir_tarjeta_caja strong').html(Math.round((total_ret_ir_tarjeta_caja)*100)/100);
-		$('#total_comision_caja strong').html(Math.round((total_comision_caja)*100)/100);
-		console.log(total_comision_caja);
+		$('#total_comision_caja strong').html(Math.round((total_comision_caja)*100)/100);		
 	}
 
 
@@ -205,7 +218,8 @@
 		$('#reporte_ingresar_caja1').show();
 
 		$('#reporte_ingreso_caja_caja1').html($('#total_pago_neto_caja strong').html());
-		$('#reporte_ingreso_retencion_caja1').html(Number($('#tota_ret_ir_caja strong').html()) + Number($('#total_ret_ir_tarjeta_caja strong').html()));
+		$('#reporte_ingreso_retencion_caja1').html(Number($('#tota_ret_ir_caja strong').html()));
+		$('#reporte_ingreso_retencion_tarjeta_caja1').html(Number($('#total_ret_ir_tarjeta_caja strong').html()));
 		$('#reporte_ingreso_imi_caja1').html($('#total_ret_alma_caja strong').html());
 		$('#reporte_ingreso_comision_tarjeta_caja1').html($('#total_comision_caja strong').html());	
 
@@ -235,7 +249,7 @@
 		});	
 
 		for(var i=0; i < clientes.length; i++){
-			html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td></td><td class='haber_caja1'>"+Math.round((clientes[i][1]) *100)/100+"</td></tr>";
+			html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td></td><td class='haber_caja1'>"+Math.round((clientes[i][1]) *100)/100+"</td><td><input type='text' class='no_cuenta_reporte' onfocusout='getNoCuenta($(this))'></td><td><textarea class='descripcion_cuenta' onfocusout='getDescricionCuenta($(this))'></textarea></td><td><textarea class='reporte_concepto_caja'></textarea></td></tr>";
 		}
 
 		$('#table_reporte_caja1').append(html);
@@ -250,8 +264,112 @@
 			haber += Number($(this).html());
 		});
 
-		html_total = "<tr class='borrar'><th>Total</th><td><strong>"+Math.round((debe)*100)/100+"</strong></td><td><strong>"+Math.round((haber)*100)/100+"</strong></td></tr>";
+		html_total = "<tr class='borrar'><th>Total</th><td><strong id='total_debe_caja'>"+Math.round((debe)*100)/100+"</strong></td><td><strong id=total_debe_haber>"+Math.round((haber)*100)/100+"</strong></td></tr>";
 		$('#table_reporte_caja1').append(html_total);
 	
+	}
+
+	function getNoCuenta(input) {		
+		var row = $(input).parent(0).parent(0);		
+		if(input.val() != ''){
+			$.get('{{ URL() }}/getCuenta/'+input.val(), function(data){
+				if(data.cuenta == 'Cuenta no encontrada'){
+					alert(data.cuenta);
+				}else{
+					$(row).find('.descripcion_cuenta').val(data.cuenta.Descripcion);
+				}
+			});
+		}	
+	}
+	
+	function getDescricionCuenta(input) {
+		var row = $(input).parent(0).parent(0);
+		if(input.val() != ''){
+			$.get('{{ URL() }}/getDescripcion/'+input.val(), function(data){
+				if(data.cuenta == 'Descripcion no encontrada'){
+					alert(data.cuenta);
+				}else{
+					$(row).find('.no_cuenta_reporte').val(data.cuenta.Cuenta);
+				}
+			});
+		}
+	}
+
+	function guadar_reporte_caja() {
+		var fecha = $('#fecha_caja').val();
+
+		fecha = fecha.split('-');
+		var mes = fecha[1];
+		var anio = fecha[0];
+		var dia = fecha[2];
+		var fecha_sistema = dia + '/' + mes + '/' + anio;
+
+
+		var comprobante = {
+			'tipo' : $('#clasificacion_caja').val(),
+			'mes' : mes,
+			'anio' : anio,
+			'fecha' : fecha_sistema,
+			'concepto' : $('#concepto_caja').val(),
+			'tipo_documento' : $('#documento_caja').val(),
+			'debe' : $('#total_debe_caja').html(),
+			'haber' : $('#total_haber_caja').html(),			
+		}
+
+
+		var send = 'comprobante_tipo=' + comprobante.tipo + '&comprobante_mes=' + comprobante.mes + 
+					'&comprobante_anio=' + comprobante.anio + '&comprobante_fecha=' + comprobante.fecha + 
+					'&comprobante_concepto=' + comprobante.concepto + '&comprobante_tipo_documento=' + comprobante.tipo_documento + 
+					'&comprobante_debe=' + comprobante.debe + '&comprobante_haber=' + comprobante.haber;
+
+		$.post('{{ URL() }}/Save/Reporte/Factura', send ,function(data){
+			alert('Comprobante Guardado');
+			var contador = 1;	
+
+			$('#table_reporte_caja1 tr').each(function(){
+				console.log($(this));
+				if($(this).find('.no_cuenta_reporte').val() != undefined){
+
+					var movimiento = 0;	
+					var monto = 0;					
+
+					if($(this).find('.debe_caja1').html() != undefined){
+						movimiento = 1;
+						monto = $(this).find('.debe_caja1').html();
+					}else{
+						movimiento = 2;
+						monto = $(this).find('.haber_caja1').html();
+					}
+
+					if(monto != undefined){
+						var detalle_comprobante = {
+							'tipo' : $('#clasificacion_caja').val(),
+							'comprobante' : data.comprobante.Comprobante,
+							'mes' : mes,
+							'anio' : anio,
+							'cuenta' : $(this).find('.no_cuenta_reporte').val(),	
+							'numero' : contador,
+							'movimiento' : movimiento,
+							'monto' : monto,
+							'montousa' : Math.round((monto / data.cambio) * 100)/100,
+							'concepto' : $(this).find('.reporte_concepto_caja').val()	
+						}
+						contador++;
+
+						var send2 = 'detalle_tipo=' + detalle_comprobante.tipo + '&detalle_comprobante=' + detalle_comprobante.comprobante +
+									'&detalle_mes=' +  detalle_comprobante.mes + '&detalle_anio=' + detalle_comprobante.anio + 
+									'&detalle_cuenta=' + detalle_comprobante.cuenta + '&detalle_numero=' + detalle_comprobante.numero + 
+									'&detalle_movimiento=' + detalle_comprobante.movimiento + '&detalle_monto=' + detalle_comprobante.monto + 
+									'&detalle_montousa=' + detalle_comprobante.montousa + '&detalle_concepto=' + detalle_comprobante.concepto;
+
+						$.post('{{ URL() }}/Save/Reporte/DetalleFactura', send2 ,function(data2){
+							//console.log(data2);
+							console.log('detalle guardado')
+						});
+					}
+				}
+			});	
+		});
+
 	}
 </script>

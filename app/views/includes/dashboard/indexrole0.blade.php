@@ -43,71 +43,7 @@
 {{ HTML::script('plugins/datatables/jquery.dataTables.min.js') }}
 {{ HTML::script('plugins/datatables/dataTables.bootstrap.min.js') }}
 <script type="text/javascript">
-
-$('#interview-resume').highcharts({
-    title: {
-        text: 'Interviews Year',
-        x: -20 //center
-    },       
-    xAxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    },
-    yAxis: {
-        title: {
-            text: 'Total Interview'
-        },
-        plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080'
-        }]
-    },    
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle',
-        borderWidth: 0
-    },
-    series: [{
-        name: 'Interview',
-        data: [10, 12, 20, 20, 30, 50, 50, 60]       
-    }]
-});
-
-$('#calllog-resume').highcharts({
-    title: {
-        text: 'Call Log Year',
-        x: -20 //center
-    },       
-    xAxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    },
-    yAxis: {
-        title: {
-            text: 'Total Call Log'
-        },
-        plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080'
-        }]
-    },    
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle',
-        borderWidth: 0
-    },
-    series: [{
-        name: 'Interview',
-        data: [10, 12, 10, 12, 8, 20, 18, 28]       
-    }]
-});
-$('#example1').DataTable();
-$('#example2').DataTable();
-
-	
+    $('#example1').DataTable();
+    $('#example2').DataTable();	
 </script>
 @stop

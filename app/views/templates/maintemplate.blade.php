@@ -93,9 +93,7 @@
         $('input[type=text]').keyup (function () {
            $(this).val($(this).val().toUpperCase());            
         })
-    </script>
-
-    
+    </script>   
 
      @yield('js')
 </body>
