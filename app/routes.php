@@ -31,7 +31,6 @@ Route::get('test', function()
 	$comprobante->save();
 
 
-
 	$detalle = new ComprobanteDiarioDetalle();
 	$detalle->Tipo = 1; //mismo de compovante select
 	$detalle->Comprobante = 181;
@@ -146,14 +145,32 @@ Route::get('getCuenta/{cuenta}', 'CuentaController@getCuenta');
 Route::get('getDescripcion/{descripcion}', 'CuentaController@getDescripcion');
 
 Route::post('Save/Reporte/Factura', function(){
+
 	$data = Input::all();
 
-	$no_comprobante = ComprobanteDiario::where('Mes', $data['comprobante_mes'])->where('Anio', $data['comprobante_anio'])->orderBy('Comprobante', 'ASC')->first();
+	$fecha = $data['comprobante_fecha'];
+	$fecha = explode('-', $fecha);
+
+
+	$servicio = "https://servicios.bcn.gob.ni/Tc_Servicio/ServicioTC.asmx?WSDL"; //url del servicio
+	$parametros = array(); //parametros de la llamada
+    $parametros['Dia'] = $fecha[2];
+    $parametros['Mes'] = $fecha[1];
+    $parametros['Ano'] = $fecha[0];
+    $client = new SoapClient($servicio, $parametros);
+    $result = $client->RecuperaTC_Dia($parametros); //llamamos al métdo que nos interesa con los parámetros
+    $cambio = ($result->RecuperaTC_DiaResult);
+	$cambio = round($cambio,5);	
+
+	//$cambio = 30;
+	
+
+	$no_comprobante = ComprobanteDiario::where('Mes', $data['comprobante_mes'])->where('Anio', $data['comprobante_anio'])->orderBy('Comprobante', 'DES')->first();
 
 	$comprobante = new ComprobanteDiario();
 
 	$comprobante->Tipo = $data['comprobante_tipo'];
-	$comprobante->Comprobante =  ($no_comprobante->Comprobante + 1);
+	$comprobante->Comprobante = ($no_comprobante->Comprobante + 1);
 	$comprobante->Mes = $data['comprobante_mes'];
 	$comprobante->Anio = $data['comprobante_anio'];
 	$comprobante->Fecha = $data['comprobante_fecha'];
@@ -168,8 +185,9 @@ Route::post('Save/Reporte/Factura', function(){
 
 	$comprobante->save();
 
-	return Response::json(array(
-		'data' => $comprobante
+	return Response::json(array(		
+		'cambio' => $cambio,
+		'comprobante' => $comprobante
 	));
 });
 

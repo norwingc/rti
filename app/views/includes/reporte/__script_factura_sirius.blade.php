@@ -643,18 +643,17 @@
 			'concepto' : $('#concepto_factura').val(),
 			'tipo_documento' : $('#documento_factura').val(),
 			'debe' : $('#total_debe_factura').html(),
-			'haber' : $('#total_haber_factura').html()
+			'haber' : $('#total_haber_factura').html(),			
 		}
 
 		var send = 'comprobante_tipo=' + comprobante.tipo + '&comprobante_mes=' + comprobante.mes + 
 					'&comprobante_anio=' + comprobante.anio + '&comprobante_fecha=' + comprobante.fecha + 
-					'&comprobante_fecha=' + comprobante.fecha + '&comprobante_concepto=' + comprobante.concepto + 
-					'&comprobante_tipo_documento=' + comprobante.tipo_documento + '&comprobante_debe=' + comprobante.debe +
-					'&comprobante_haber=' + comprobante.haber;
+					'&comprobante_concepto=' + comprobante.concepto + '&comprobante_tipo_documento=' + comprobante.tipo_documento + 
+					'&comprobante_debe=' + comprobante.debe + '&comprobante_haber=' + comprobante.haber;
 
 		$.post('{{ URL() }}/Save/Reporte/Factura', send ,function(data){
 			alert('Comprobante Guardado');
-			var contador = 1;
+			var contador = 1;			
 			
 			$('.tabla_factura_reporte tr').each(function(){
 				//console.log($(this).find('.no_cuenta_reporte').val());
@@ -674,14 +673,14 @@
 					if(monto != undefined){
 						var detalle_comprobante = {
 							'tipo' : $('#clasificacion_factura').val(),
-							'comprobante' : data.data.Comprobante,
+							'comprobante' : data.comprobante.Comprobante,
 							'mes' : mes,
 							'anio' : anio,
 							'cuenta' : $(this).find('.no_cuenta_reporte').val(),	
 							'numero' : contador,
 							'movimiento' : movimiento,
 							'monto' : monto,
-							'montousa' : monto / 30,
+							'montousa' : monto / data.cambio,
 							'concepto' : $('#concepto_factura').val()
 						}
 						contador++;
@@ -697,10 +696,9 @@
 							console.log('detalle guardado')
 						});
 					}
-				}
-				
+				}				
 			});
-
+			
 		});		
 	}
 </script>
