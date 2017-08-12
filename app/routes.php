@@ -177,12 +177,12 @@ Route::post('Save/Reporte/Factura', function(){
 	//$cambio = 30;
 	
 
-	//$no_comprobante = ComprobanteDiario::where('Mes', $data['comprobante_mes'])->where('Anio', $data['comprobante_anio'])->orderBy('Comprobante', 'DES')->first();
+	$no_comprobante = ComprobanteDiario::where('Mes', $data['comprobante_mes'])->where('Anio', $data['comprobante_anio'])->orderBy('Comprobante', 'DES')->first();
 
 	$comprobante = new ComprobanteDiario();
 
 	$comprobante->Tipo = $data['comprobante_tipo'];
-	$comprobante->Comprobante = 1;//($no_comprobante->Comprobante + 1);
+	$comprobante->Comprobante = ($no_comprobante->Comprobante + 1);
 	$comprobante->Mes = $data['comprobante_mes'];
 	$comprobante->Anio = $data['comprobante_anio'];
 	$comprobante->Fecha = $data['comprobante_fecha'];
@@ -195,7 +195,7 @@ Route::post('Save/Reporte/Factura', function(){
 	$comprobante->Haber = $data['comprobante_haber'];
 	$comprobante->Cierre = 0;
 
-	//$comprobante->save();
+	$comprobante->save();
 
 	return Response::json(array(		
 		'cambio' => $cambio,
@@ -220,7 +220,7 @@ Route::post('Save/Reporte/DetalleFactura', function(){
 	$detalle->MontoUS = $data['detalle_montousa']; 
 	$detalle->Concepto = $data['detalle_concepto'];
 
-	//$detalle->save();
+	$detalle->save();
 
 	return Response::json(array(
 		'data' => $detalle

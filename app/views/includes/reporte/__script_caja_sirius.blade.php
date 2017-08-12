@@ -327,7 +327,7 @@
 			var contador = 1;	
 
 			$('#table_reporte_caja1 tr').each(function(){
-				console.log($(this));
+				//console.log($(this));
 				if($(this).find('.no_cuenta_reporte').val() != undefined){
 
 					var movimiento = 0;	
@@ -369,6 +369,7 @@
 					}
 				}
 			});	
+			$('#guadar_reporte_caja').button('reset');
 		});
 
 	}

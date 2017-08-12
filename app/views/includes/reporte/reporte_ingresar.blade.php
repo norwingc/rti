@@ -273,75 +273,120 @@
 					<th style="text-align: center">Cuenta</th>
 					<th style="text-align: center">Debe</th>
 					<th style="text-align: center">Haber</th>
+					<th style="text-align: center">No Cuenta</th>
+					<th style="text-align: center">Descripcion</th>	
+					<th style="text-align: center">Concepto Factura</th>	
 				</thead>
 				<tbody>
 					<tr>					
 						<th>iva</th>
 						<td id="reporte_iva_caja1" class="debe_caja2"></td>
 						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="2104010001"></td>
+						<td><textarea class="descripcion_cuenta">IVA DEBITO FISCAL CEDIS</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>
 					</tr>
 					<tr>					
 						<th>Cuentas de Contado y Credito</th>
+						<td></td>
+						<td></td>
+						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td>RE</td>
 						<td id="cta_RE_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>	
+						<td><input type="text" class="no_cuenta_reporte" value="4101010001"></td>
+						<td><textarea class="descripcion_cuenta">RENTA DE EQUIPOS MENORES DE CONSTRUCCION</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>					
 					</tr>
 					<tr>
 						<td>RA</td>
 						<td id="cta_RA_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="4101010002"></td>
+						<td><textarea class="descripcion_cuenta">REPUESTOS Y ACCESORIOS NUEVOS</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>						
 					</tr>
 					<tr>
 						<td>EN</td>
 						<td id="cta_EN_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="4101010004"></td>
+						<td><textarea class="descripcion_cuenta">EQUIPOS NUEVOS</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>					
 					</tr>
 					<tr>
 						<td>EU</td>
 						<td id="cta_EU_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>
+						<td><input type="text" class="no_cuenta_reporte" value="4101010005"></td>
+						<td><textarea class="descripcion_cuenta">EQUIPOS USADOS</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>
 					</tr>
 					<tr>
 						<td>RU</td>
 						<td id="cta_RU_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>		
+						<td><input type="text" class="no_cuenta_reporte" value="4101010003"></td>
+						<td><textarea class="descripcion_cuenta">REPUESTOS Y ACCESORIOS USADOS</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>				
 					</tr>
 					<tr>
 						<td>FL</td>
 						<td id="cta_FL_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>			
+						<td><input type="text" class="no_cuenta_reporte" value="4101010006"></td>
+						<td><textarea class="descripcion_cuenta">SERVICIO DE TRANSPORTE</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>			
 					</tr>
 					<tr>
 						<td>CO</td>
 						<td id="cta_CO_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>	
+						<td><input type="text" class="no_cuenta_reporte" value="4101010008"></td>
+						<td><textarea class="descripcion_cuenta">SUMINISTRO DE COMBUSTIBLE</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>					
 					</tr>
 					<tr>
 						<td>ST</td>
 						<td id="cta_ST_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>	
+						<td><input type="text" class="no_cuenta_reporte" value="4101010007"></td>
+						<td><textarea class="descripcion_cuenta">SERVICIO DE TALLER</textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>					
 					</tr>
 					<tr>
 						<td>PR</td>
 						<td id="cta_PR_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>	
+						<td><input type="text" class="no_cuenta_reporte"></td>
+						<td><textarea class="descripcion_cuenta"></textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>					
 					</tr>
 					<tr>
 						<td>CV</td>
 						<td id="cta_CV_caja2" class="debe_caja2">0</td>
-						<td></td>						
+						<td></td>	
+						<td><input type="text" class="no_cuenta_reporte"></td>
+						<td><textarea class="descripcion_cuenta"></textarea></td>
+						<td><textarea class="reporte_concepto_caja_nc"></textarea></td>					
 					</tr>					
 					<tr>					
 						<th>CxP</th>
 						<td></td>
 						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 					</tr>
 				</tbody>
 			</table>
+			<div class="text-center">
+				<button class="btn btn-success btn-lg" id="guadar_reporte_caja_nc">Guardar</button>
+			</div>
 		</div>			
 	</div>
 </div>	
