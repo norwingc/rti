@@ -33,7 +33,8 @@
 			mostrarReporte('Contado');
 		});
 
-		$('.no_cuenta_reporte').focusout(function(){				
+		$('.no_cuenta_reporte').focusout(function(){		
+			//console.log('fasdfsdf');		
 			getNoCuenta($(this));
 		});	
 		$('.descripcion_cuenta').focusout(function(){				
@@ -538,12 +539,13 @@
 			$('#reporte_ingresar_factura').show();
 
 			$('#reporte_ingreso_caja').html($('#pago_neto strong').html());
-			$('#reporte_ingreso_retencion').html(Number($('#ret_ir strong').html()) + Number($('#ret_ir_tarjeta strong').html()));
+			$('#reporte_ingreso_retencion').html(Number($('#ret_ir strong').html()));
+			$('#reporte_ingreso_retencion_tarjeta').html(Number($('#ret_ir_tarjeta strong').html()));
 			$('#reporte_ingreso_imi').html($('#ret_alma strong').html());
 			$('#reporte_ingreso_comision_tarjeta').html($('#comision_tarjeta strong').html());			
-			$('#reporte_ingreso_descuentos_contado').html($('#descuento_contado strong').html());			
+			$('#reporte_ingreso_descuentos_contado').html(Number($('#descuento_contado strong').html()) +  Number($('#descuento_credito strong').html()));			
 			$('#reporte_ingreso_iva').html($('#iva strong').html());
-			$('#reporte_ingreso_descuentos_credito').html($('#descuento_credito strong').html());
+			//$('#reporte_ingreso_descuentos_credito').html($('#descuento_credito strong').html());
 
 			$('#cta_RE').html($('#re_total').html());
 			$('#cta_RA').html($('#ra_total').html());
@@ -581,7 +583,7 @@
 			});				
 
 			for(var i=0; i < clientes.length; i++){
-				html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td><td><input type='text' class='no_cuenta_reporte'></td><td><input type='text' class='descripcion_cuenta'></td></tr>";
+				html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td><td><input type='text' class='no_cuenta_reporte' onfocusout='getNoCuenta($(this))'></td><td><textarea class='descripcion_cuenta' onfocusout='getDescricionCuenta($(this))'></textarea></td><td><textarea class='reporte_concepto_factura'></textarea></td></tr>";
 			}
 
 
@@ -602,7 +604,7 @@
 		}		
 	}
 
-	function getNoCuenta(input) {
+	function getNoCuenta(input) {		
 		var row = $(input).parent(0).parent(0);		
 		if(input.val() != ''){
 			$.get('{{ URL() }}/getCuenta/'+input.val(), function(data){
@@ -634,12 +636,16 @@
 		fecha = fecha.split('-');
 		var mes = fecha[1];
 		var anio = fecha[0];
+		var dia = fecha[2];
+		var fecha_sistema = dia + '/' + mes + '/' + anio;
+
+		//console.log(fecha);
 
 		var comprobante = {
 			'tipo' : $('#clasificacion_factura').val(),
 			'mes' : mes,
 			'anio' : anio,
-			'fecha' : $('#fecha_factura').val(),
+			'fecha' : fecha_sistema,
 			'concepto' : $('#concepto_factura').val(),
 			'tipo_documento' : $('#documento_factura').val(),
 			'debe' : $('#total_debe_factura').html(),
@@ -651,6 +657,8 @@
 					'&comprobante_concepto=' + comprobante.concepto + '&comprobante_tipo_documento=' + comprobante.tipo_documento + 
 					'&comprobante_debe=' + comprobante.debe + '&comprobante_haber=' + comprobante.haber;
 
+		//console.log(comprobante);
+		
 		$.post('{{ URL() }}/Save/Reporte/Factura', send ,function(data){
 			alert('Comprobante Guardado');
 			var contador = 1;			
@@ -660,7 +668,7 @@
 				if($(this).find('.no_cuenta_reporte').val() != undefined){
 
 					var movimiento = 0;	
-					var monto = 0;				
+					var monto = 0;					
 
 					if($(this).find('.debe').html() != undefined){
 						movimiento = 1;
@@ -681,7 +689,7 @@
 							'movimiento' : movimiento,
 							'monto' : monto,
 							'montousa' : monto / data.cambio,
-							'concepto' : $('#concepto_factura').val()
+							'concepto' : $(this).find('.reporte_concepto_factura').val()	
 						}
 						contador++;
 
@@ -699,6 +707,6 @@
 				}				
 			});
 			
-		});		
+		});
 	}
 </script>

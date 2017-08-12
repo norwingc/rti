@@ -1,4 +1,4 @@
- <nav class="navbar navbar-static-top" role="navigation">
+<nav class="navbar navbar-static-top" role="navigation">
     <!-- Sidebar toggle button-->
     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
@@ -12,15 +12,15 @@
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <!-- The user image in the navbar-->
-                    <img src="{{asset('dist/img/avatar04.png')}}" class="user-image" alt="User Image">
+                    <img src="{{asset('img/logo.png')}}" class="user-image" alt="User Image">
                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                    <span class="hidden-xs">Norwin Guerrero</span>
+                    <span class="hidden-xs">RTI</span>
                 </a>
                 <ul class="dropdown-menu">
                     <!-- The user image in the menu -->
                     <li class="user-header">
-                        <img src="{{asset('img/avatar04.png')}}" class="img-circle" alt="User Image">
-                        <p>Norwin Guerrero - Web Developer<small>Member since Nov. 2012</small></p>
+                        <img src="{{asset('img/logo.png')}}" class="img-circle" alt="User Image">
+                        <p>RTI</p>
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">

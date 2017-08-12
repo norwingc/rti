@@ -47,7 +47,17 @@ Route::get('test', function()
 });
 
 Route::get('test2', function(){
-	
+	$servicio = "https://servicios.bcn.gob.ni/Tc_Servicio/ServicioTC.asmx?WSDL"; //url del servicio
+	$parametros = array(); //parametros de la llamada
+    $parametros['Dia'] = '12';
+    $parametros['Mes'] = '08';
+    $parametros['Ano'] = '2017';
+    $client = new SoapClient($servicio, $parametros);
+    $result = $client->RecuperaTC_Dia($parametros); //llamamos al métdo que nos interesa con los parámetros
+    $cambio = ($result->RecuperaTC_DiaResult);
+	$cambio = round($cambio,5);	
+
+	return $cambio;
 });
 
 
@@ -149,14 +159,14 @@ Route::post('Save/Reporte/Factura', function(){
 	$data = Input::all();
 
 	$fecha = $data['comprobante_fecha'];
-	$fecha = explode('-', $fecha);
+	$fecha = explode('/', $fecha);
 
 
 	$servicio = "https://servicios.bcn.gob.ni/Tc_Servicio/ServicioTC.asmx?WSDL"; //url del servicio
 	$parametros = array(); //parametros de la llamada
-    $parametros['Dia'] = $fecha[2];
+    $parametros['Dia'] = $fecha[0];
     $parametros['Mes'] = $fecha[1];
-    $parametros['Ano'] = $fecha[0];
+    $parametros['Ano'] = $fecha[2];
     $client = new SoapClient($servicio, $parametros);
     $result = $client->RecuperaTC_Dia($parametros); //llamamos al métdo que nos interesa con los parámetros
     $cambio = ($result->RecuperaTC_DiaResult);

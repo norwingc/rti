@@ -28,6 +28,26 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+
+    <style type="text/css">
+        .logo-lg img{
+            width: 30% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .skin-green .main-header .navbar{
+           background-color: #feca08; 
+        }
+        .skin-green .main-header .logo{
+            background-color: black;
+        }
+        .skin-green .main-header .logo:hover{
+             background-color: black;
+        }
+        .skin-green .main-header .navbar .sidebar-toggle:hover{
+            background-color: #feca08; 
+        }
+    </style>
 </head>    
 
 <body class="hold-transition skin-green sidebar-mini fixed">
@@ -36,10 +56,7 @@
 	<header class="main-header">
 		<!-- Logo -->
 		<a href="{{ URL::to('/') }}" class="logo">
-			<!-- mini logo for sidebar mini 50x50 pixels -->
-			<span class="logo-mini"><img src="{{ asset('img/logo.png') }}" alt="Logo"></span>
-			<!-- logo for regular state and mobile devices -->
-			<span class="logo-lg"><img src="{{ asset('img/logo.png') }}" alt="Logo"></span>
+			
 		</a>
         <!-- Header Navbar -->
         @include('includes.nav.__headrole0')
