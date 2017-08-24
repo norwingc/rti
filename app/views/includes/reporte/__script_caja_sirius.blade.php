@@ -264,7 +264,7 @@
 			haber += Number($(this).html());
 		});
 
-		html_total = "<tr class='borrar'><th>Total</th><td><strong id='total_debe_caja'>"+Math.round((debe)*100)/100+"</strong></td><td><strong id=total_debe_haber>"+Math.round((haber)*100)/100+"</strong></td></tr>";
+		html_total = "<tr class='borrar'><th>Total</th><td><strong id='total_debe_caja'>"+Math.round((debe)*100)/100+"</strong></td><td><strong id=total_haber_caja>"+Math.round((haber)*100)/100+"</strong></td></tr>";
 		$('#table_reporte_caja1').append(html_total);
 	
 	}
