@@ -275,16 +275,16 @@
 			}
 		});
 
-		$('#cta_RE_caja2').html(RE);
-		$('#cta_RA_caja2').html(RA);
-		$('#cta_EN_caja2').html(EN);
-		$('#cta_EU_caja2').html(EU);
-		$('#cta_RU_caja2').html(RU);
-		$('#cta_FL_caja2').html(FL);
-		$('#cta_CO_caja2').html(CO);
-		$('#cta_ST_caja2').html(ST);
-		$('#cta_PR_caja2').html(PR);
-		$('#cta_CV_caja2').html(CV);	
+		$('#cta_RE_caja2_con').html(RE);
+		$('#cta_RA_caja2_con').html(RA);
+		$('#cta_EN_caja2_con').html(EN);
+		$('#cta_EU_caja2_con').html(EU);
+		$('#cta_RU_caja2_con').html(RU);
+		$('#cta_FL_caja2_con').html(FL);
+		$('#cta_CO_caja2_con').html(CO);
+		$('#cta_ST_caja2_con').html(ST);
+		$('#cta_PR_caja2_con').html(PR);
+		$('#cta_CV_caja2_con').html(CV);	
 
 		var clientes = [];	
 		var clientes_comparacion = [];

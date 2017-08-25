@@ -548,16 +548,26 @@
 			$('#reporte_ingreso_iva').html($('#iva strong').html());
 			//$('#reporte_ingreso_descuentos_credito').html($('#descuento_credito strong').html());
 
-			$('#cta_RE').html($('#re_total').html());
-			$('#cta_RA').html($('#ra_total').html());
-			$('#cta_EN').html($('#en_total').html());
-			$('#cta_EU').html($('#eu_total').html());
-			$('#cta_RU').html($('#ru_total').html());
-			$('#cta_FL').html($('#fl_total').html());
-			$('#cta_CO').html($('#co_total').html());
-			$('#cta_ST').html($('#st_total').html());
-			$('#cta_PR').html($('#pr_total').html());
-			$('#cta_CV').html($('#cv_total').html());
+			$('#cta_RE_con').html($('#re_contado').html());
+			$('#cta_RE_cre').html($('#re_credito').html());
+			$('#cta_RA_con').html($('#ra_contado').html());
+			$('#cta_RA_cre').html($('#ra_credito').html());
+			$('#cta_EN_con').html($('#en_contado').html());
+			$('#cta_EN_cre').html($('#en_credito').html());
+			$('#cta_EU_con').html($('#eu_contado').html());
+			$('#cta_EU_cre').html($('#eu_credito').html());
+			$('#cta_RU_con').html($('#ru_contado').html());
+			$('#cta_RU_cre').html($('#ru_credito').html());
+			$('#cta_FL_con').html($('#fl_contado').html());
+			$('#cta_FL_cre').html($('#fl_credito').html());
+			$('#cta_CO_con').html($('#co_contado').html());
+			$('#cta_CO_cre').html($('#co_credito').html());
+			$('#cta_ST_con').html($('#st_contado').html());
+			$('#cta_ST_cre').html($('#st_credito').html());
+			$('#cta_PR_con').html($('#pr_contado').html());
+			$('#cta_PR_cre').html($('#pr_credito').html());
+			$('#cta_CV_con').html($('#cv_contado').html());
+			$('#cta_CV_cre').html($('#cv_credito').html());
 
 			var clientes = [];	
 			var clientes_comparacion = [];
