@@ -1,20 +1,20 @@
-<script type="text/javascript" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>	
+<script type="text/javascript" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
-	
+
 	$(document).ready(function(){
 		$('.myTable').DataTable({
 			 paging: false
 		});
 
-		$('.anul').click(function(){				
+		$('.anul').click(function(){
 			anul($(this));
-		});	
+		});
 
 		findClasificacion();
 
-		$('.select_clasificacion').focusout(function(){			
+		$('.select_clasificacion').focusout(function(){
 			findClasificacion();
-		});		
+		});
 
 		$('.valor_ret_ir').focusout(function(){
 			calculoPagoNeto($(this));
@@ -25,19 +25,19 @@
 		$('.comision_tarjeta').focusout(function(){
 			calculoPagoNeto($(this));
 		});
-		$('.iva_input').focusout(function(){				
+		$('.iva_input').focusout(function(){
 			calculoPagoNeto($(this));
-		});	
+		});
 
 		$('#btn-mostrar_reporte').click(function(){
 			mostrarReporte('Contado');
 		});
 
-		$('.no_cuenta_reporte').focusout(function(){		
-			//console.log('fasdfsdf');		
+		$('.no_cuenta_reporte').focusout(function(){
+			//console.log('fasdfsdf');
 			getNoCuenta($(this));
-		});	
-		$('.descripcion_cuenta').focusout(function(){				
+		});
+		$('.descripcion_cuenta').focusout(function(){
 			getDescricionCuenta($(this));
 		});
 
@@ -45,8 +45,6 @@
 			$(this).button('loading')
 			guadar_reporte_factura();
 		});
-
-
 	});
 
 	function findClasificacion() {
@@ -61,18 +59,18 @@
 			'CO',
 			'ST',
 			'PR',
-			'CV'			
+			'CV'
 		];
 
 		$('.table_factura .clasificacion input').each(function(){
 			var no_clasificacion = false;
 			var row = $(this).parent(0);
 			var forma_pago = $(row).parent(0).find('.forma_pago').html();
-			
 
-			if(forma_pago == 'FACTURA INTERNA'){			
+
+			if(forma_pago == 'FACTURA INTERNA'){
 				$(row).parent(0).find('td').each(function(){
-					$(this).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});					
+					$(this).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});
 					$(this).addClass('anul');
 				});
 			}else{
@@ -81,47 +79,47 @@
 					no_clasificacion = true;
 				}
 
-				if(no_clasificacion == false){					
-					$(row).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});					
+				if(no_clasificacion == false){
+					$(row).css({'background-color':'rgba(256,100,100,.5)', 'color':'white', 'font-weight':'bold'});
 
 					$(row).parent(0).find('td').each(function(){
 						$(this).addClass('anul');
 					})
-				}else{				
+				}else{
 					$(row).removeAttr('style');
 
 					$(row).parent(0).find('td').each(function(){
 						$(this).removeClass('anul');
 					});
 
-					var pago = Number($(row).parent(0).find('.pago_neto').html());					
-					var select_clasificacion = $(row).find('.select_clasificacion').val();	
+					var pago = Number($(row).parent(0).find('.pago_neto').html());
+					var select_clasificacion = $(row).find('.select_clasificacion').val();
 
 					for(var i=0; i<=clasificacion.length; i++){
 						$(row).parent(0).find('.subtotal').removeClass(clasificacion[i]);
-						$(row).parent(0).find('.pago_neto').removeClass(clasificacion[i]);			
+						$(row).parent(0).find('.pago_neto').removeClass(clasificacion[i]);
 					}
 
-					$(row).parent(0).find('.subtotal').addClass(select_clasificacion);			
+					$(row).parent(0).find('.subtotal').addClass(select_clasificacion);
 
-					if(pago != 0){					
+					if(pago != 0){
 						if(select_clasificacion != ''){
-							$(row).parent(0).find('.pago_neto').addClass(select_clasificacion);	
-						}					
+							$(row).parent(0).find('.pago_neto').addClass(select_clasificacion);
+						}
 					}else{
 						$(row).parent(0).find('.c_c').addClass(select_clasificacion);
 					}
 				}
-			}	
+			}
 		});
 
 		calculoIvaDescuento();
-	}		
+	}
 
 	function calculoIvaDescuento(){
 
 		$('.iva_input').each(function(){
-			var iva_total = 0;	
+			var iva_total = 0;
 			var descuento = 0;
 			var row = $(this).parent(0).parent(0);
 			var subtotal_iva_descuento = Number($(row).find('.subtotal').html());
@@ -132,42 +130,46 @@
 
 			if(descuento != 0){
 				iva_total = Math.round(((subtotal_iva_descuento - descuento) * 0.15) *100) /100
-			}		
+			}
+
+			if($(this).val() == '' || $(this).val() == 0){
+				iva_total = 0;
+			}
 
 			subtotal_iva_descuento = Math.round((subtotal_iva_descuento - descuento + iva_total) *100 ) / 100;
 
 			$(this).val(iva_total);
 
 			if(Number($(row).find('.c_c').html()) == 0){
-				$(row).find('.pago_neto').html(subtotal_iva_descuento);	
+				$(row).find('.pago_neto').html(subtotal_iva_descuento);
 			}else{
-				$(row).find('.c_c').html(subtotal_iva_descuento);	
-			}						
-		});	
+				$(row).find('.c_c').html(subtotal_iva_descuento);
+			}
+		});
 		calculoTotales();
 	}
 
-	function calculoTotales() {			
+	function calculoTotales() {
 
 		var pago_neto              = 0;
 		var c_c                    = 0;
 		var subtotal               = 0;
-		var descuento_contado      = 0;			
-		var descuento_credito      = 0;			
-		var iva                    = 0;	
-		
+		var descuento_contado      = 0;
+		var descuento_credito      = 0;
+		var iva                    = 0;
+
 		var ret_ir                 = 0;
 		var ret_alma               = 0;
-		
+
 		var ret_tarjeta_total      = 0;
-		var comision_tarjeta_total = 0; 
+		var comision_tarjeta_total = 0;
 
 		$('.pago_neto:not(.anul)').each(function(){
 			pago_neto = pago_neto + Number($(this).html());
 		});
 		$('.c_c:not(.anul)').each(function(){
 			c_c += Number($(this).html());
-		});	
+		});
 		$('.subtotal:not(.anul)').each(function(){
 			subtotal += Number($(this).html());
 		});
@@ -181,18 +183,17 @@
 			iva += Number($(this).val());
 		});
 		$('.valor_ret_ir:not(.anul)').each(function(){
-			ret_ir += Number($(this).val());			
+			ret_ir += Number($(this).val());
 		});
 		$('.valor_ret_alma:not(.anul)').each(function(){
 			ret_alma += Number($(this).val());
-		});	
+		});
 		$('.ret_tarjeta:not(.anul)').each(function(){
 			ret_tarjeta_total += Number($(this).html());
-		});	
+		});
 		$('.comision_tarjeta_valor:not(.anul)').each(function(){
-			comision_tarjeta_total += Number($(this).html());			
-		});	
-				
+			comision_tarjeta_total += Number($(this).html());
+		});
 
 		$('#pago_neto strong').html(Math.round(pago_neto * 100) / 100);
 		$('#c_c strong').html(Math.round(c_c * 100) / 100);
@@ -203,7 +204,7 @@
 		$('#ret_ir strong').html(Math.round(ret_ir * 100) / 100);
 		$('#ret_alma strong').html(Math.round(ret_alma * 100) / 100);
 		$('#ret_ir_tarjeta strong').html(Math.round(ret_tarjeta_total * 100) / 100);
-		$('#comision_tarjeta strong').html(Math.round(comision_tarjeta_total * 100) / 100);			
+		$('#comision_tarjeta strong').html(Math.round(comision_tarjeta_total * 100) / 100);
 
 		clasificacion_ventas();
 	}
@@ -214,14 +215,14 @@
 		var re_contado = 0;
 
 		$('.subtotal.RE:not(.anul)').each(function(){
-			re_total += Number($(this).html());			
+			re_total += Number($(this).html());
 		});
 		$('.CONTADO.RE:not(.anul)').each(function(){
-			re_contado += Number($(this).html());			
+			re_contado += Number($(this).html());
 		});
 		$('.CREDITO.RE:not(.anul)').each(function(){
 			re_credito += Number($(this).html());
-		});	
+		});
 
 		$('#re_total').html(Math.round(re_total * 100) / 100);
 		$('#re_credito').html(Math.round(re_credito * 100) / 100);
@@ -230,16 +231,16 @@
 		var ra_total   = 0;
 		var ra_credito = 0;
 		var ra_contado = 0;
-		
+
 		$('.subtotal.RA:not(.anul)').each(function(){
-			ra_total += Number($(this).html());			
+			ra_total += Number($(this).html());
 		});
 		$('.CONTADO.RA:not(.anul)').each(function(){
-			ra_contado += Number($(this).html());			
+			ra_contado += Number($(this).html());
 		});
 		$('.CREDITO.RA:not(.anul)').each(function(){
 			ra_credito += Number($(this).html());
-		});	
+		});
 
 		$('#ra_total').html(Math.round(ra_total * 100) / 100);
 		$('#ra_credito').html(Math.round(ra_credito * 100) / 100);
@@ -248,16 +249,16 @@
 		var en_total   = 0;
 		var en_credito = 0;
 		var en_contado = 0;
-		
+
 		$('.subtotal.EN:not(.anul)').each(function(){
-			en_total += Number($(this).html());			
+			en_total += Number($(this).html());
 		});
 		$('.CONTADO.EN:not(.anul)').each(function(){
-			en_contado += Number($(this).html());			
+			en_contado += Number($(this).html());
 		});
 		$('.CREDITO.EN:not(.anul)').each(function(){
 			en_credito += Number($(this).html());
-		});	
+		});
 
 		$('#en_total').html(Math.round(en_total * 100) / 100);
 		$('#en_credito').html(Math.round(en_credito * 100) / 100);
@@ -266,16 +267,16 @@
 		var eu_total   = 0;
 		var eu_credito = 0;
 		var eu_contado = 0;
-		
+
 		$('.subtotal.EU:not(.anul)').each(function(){
-			eu_total += Number($(this).html());			
+			eu_total += Number($(this).html());
 		});
 		$('.CONTADO.EU:not(.anul)').each(function(){
-			eu_contado += Number($(this).html());			
+			eu_contado += Number($(this).html());
 		});
 		$('.CREDITO.EU:not(.anul)').each(function(){
 			eu_credito += Number($(this).html());
-		});	
+		});
 
 		$('#eu_total').html(Math.round(eu_total * 100) / 100);
 		$('#eu_credito').html(Math.round(eu_credito * 100) / 100);
@@ -284,16 +285,16 @@
 		var ru_total   = 0;
 		var ru_credito = 0;
 		var ru_contado = 0;
-		
+
 		$('.subtotal.RU:not(.anul)').each(function(){
-			ru_total += Number($(this).html());			
+			ru_total += Number($(this).html());
 		});
 		$('.CONTADO.RU:not(.anul)').each(function(){
-			ru_contado += Number($(this).html());			
+			ru_contado += Number($(this).html());
 		});
 		$('.CREDITO.RU:not(.anul)').each(function(){
 			ru_credito += Number($(this).html());
-		});	
+		});
 
 		$('#ru_total').html(Math.round(ru_total * 100) / 100);
 		$('#ru_credito').html(Math.round(ru_credito * 100) / 100);
@@ -302,16 +303,16 @@
 		var fl_total   = 0;
 		var fl_credito = 0;
 		var fl_contado = 0;
-		
+
 		$('.subtotal.FL:not(.anul)').each(function(){
-			fl_total += Number($(this).html());			
+			fl_total += Number($(this).html());
 		});
 		$('.CONTADO.FL:not(.anul)').each(function(){
-			fl_contado += Number($(this).html());			
+			fl_contado += Number($(this).html());
 		});
 		$('.CREDITO.FL:not(.anul)').each(function(){
 			fl_credito += Number($(this).html());
-		});	
+		});
 
 		$('#fl_total').html(Math.round(fl_total * 100) / 100);
 		$('#fl_credito').html(Math.round(fl_credito * 100) / 100);
@@ -320,16 +321,16 @@
 		var co_total   = 0;
 		var co_credito = 0;
 		var co_contado = 0;
-		
+
 		$('.subtotal.CO:not(.anul)').each(function(){
-			co_total += Number($(this).html());			
+			co_total += Number($(this).html());
 		});
 		$('.CONTADO.CO:not(.anul)').each(function(){
-			co_contado += Number($(this).html());			
+			co_contado += Number($(this).html());
 		});
 		$('.CREDITO.CO:not(.anul)').each(function(){
 			co_credito += Number($(this).html());
-		});	
+		});
 
 		$('#co_total').html(Math.round(co_total * 100) / 100);
 		$('#co_credito').html(Math.round(co_credito * 100) / 100);
@@ -338,16 +339,16 @@
 		var st_total   = 0;
 		var st_credito = 0;
 		var st_contado = 0;
-		
+
 		$('.subtotal.ST:not(.anul)').each(function(){
-			st_total += Number($(this).html());			
+			st_total += Number($(this).html());
 		});
 		$('.CONTADO.ST:not(.anul)').each(function(){
-			st_contado += Number($(this).html());			
+			st_contado += Number($(this).html());
 		});
 		$('.CREDITO.ST:not(.anul)').each(function(){
 			st_credito += Number($(this).html());
-		});	
+		});
 
 		$('#st_total').html(Math.round(st_total * 100) / 100);
 		$('#st_credito').html(Math.round(st_credito * 100) / 100);
@@ -356,16 +357,16 @@
 		var pr_total   = 0;
 		var pr_credito = 0;
 		var pr_contado = 0;
-		
+
 		$('.subtotal.PR:not(.anul)').each(function(){
-			pr_total += Number($(this).html());			
+			pr_total += Number($(this).html());
 		});
 		$('.CONTADO.PR:not(.anul)').each(function(){
-			pr_contado += Number($(this).html());			
+			pr_contado += Number($(this).html());
 		});
 		$('.CREDITO.PR:not(.anul)').each(function(){
 			pr_credito += Number($(this).html());
-		});	
+		});
 
 		$('#pr_total').html(Math.round(pr_total * 100) / 100);
 		$('#pr_credito').html(Math.round(pr_credito * 100) / 100);
@@ -374,16 +375,16 @@
 		var cv_total   = 0;
 		var cv_credito = 0;
 		var cv_contado = 0;
-		
+
 		$('.subtotal.CV:not(.anul)').each(function(){
-			cv_total += Number($(this).html());			
+			cv_total += Number($(this).html());
 		});
 		$('.CONTADO.CV:not(.anul)').each(function(){
-			cv_contado += Number($(this).html());			
+			cv_contado += Number($(this).html());
 		});
 		$('.CREDITO.CV:not(.anul)').each(function(){
 			cv_credito += Number($(this).html());
-		});	
+		});
 
 		$('#cv_total').html(Math.round(cv_total * 100) / 100);
 		$('#cv_credito').html(Math.round(cv_credito * 100) / 100);
@@ -397,22 +398,22 @@
 
 		$('.table_factura').find('.TARJETA').each(function(){
 			var row = $(this).parent(0);
-			forma_pago_tarjeta += Number($(row).find('.pago_neto').html());				
+			forma_pago_tarjeta += Number($(row).find('.pago_neto').html());
 		});
 
 		$('.table_factura').find('.TRANSFERENCIA').each(function(){
 			var row = $(this).parent(0);
-			forma_pago_transferncia += Number($(row).find('.pago_neto').html());				
+			forma_pago_transferncia += Number($(row).find('.pago_neto').html());
 		});
 
 		$('.table_factura').find('.CHEQUE').each(function(){
 			var row = $(this).parent(0);
-			forma_pago_cheque += Number($(row).find('.pago_neto').html());				
+			forma_pago_cheque += Number($(row).find('.pago_neto').html());
 		});
 
 		$('.table_factura').find('.EFECTIVO').each(function(){
 			var row = $(this).parent(0);
-			forma_pago_efectivo += Number($(row).find('.pago_neto').html());				
+			forma_pago_efectivo += Number($(row).find('.pago_neto').html());
 		});
 
 		$('#forma_pago_tarjeta').html(Math.round( forma_pago_tarjeta * 100   ) / 100);
@@ -438,7 +439,7 @@
 			});
 
 			$(row).find('.select_clasificacion').val('');
-			
+
 		}else{
 			var row = $(este).parent(0).parent(0);
 			$(row).removeAttr('style');
@@ -453,22 +454,22 @@
 	}
 
 	function calculoPagoNeto(este) {
-		
-		var row = $(este).parent(0).parent(0);		
 
-		var no_factura = $(row).find('.no_factura').html();			
-		var clasificacion = $(row).find('.select_clasificacion').val(); 
-		var url = '{{URL()}}/getFactura/' +no_factura+'/' + clasificacion;	
-		var iva = $(row).find('.iva').find('input').val();				
-		var descuento = Number($(row).find('.descuento').html());			
+		var row = $(este).parent(0).parent(0);
+
+		var no_factura = $(row).find('.no_factura').html();
+		var clasificacion = $(row).find('.select_clasificacion').val();
+		var url = '{{URL()}}/getFactura/' +no_factura+'/' + clasificacion;
+		var iva = $(row).find('.iva').find('input').val();
+		var descuento = Number($(row).find('.descuento').html());
 
 		var pago_neto = 0;
 		var pago = 0;
 		var ret_ir = 0;
 		var ret_alma = 0;
 		var ret_tarjeta = 0;
-		var comision = 0;	
-		var comision_tarjeta_valor = 0;	
+		var comision = 0;
+		var comision_tarjeta_valor = 0;
 		var comision_total = 0;
 
 		if(clasificacion != ""){
@@ -481,12 +482,12 @@
 				//pago = data.data['pago_neto'];
 
 				if($(row).find('.valor_ret_ir').val() != ''){
-					ret_ir = $(row).find('.valor_ret_ir').val();	
+					ret_ir = $(row).find('.valor_ret_ir').val();
 				}
 
 				if($(row).find('.valor_ret_alma').val() != ''){
-					ret_alma = $(row).find('.valor_ret_alma').val();	
-				}	
+					ret_alma = $(row).find('.valor_ret_alma').val();
+				}
 
 				if($(row).find('.comision_tarjeta').val() != ''){
 
@@ -498,38 +499,34 @@
 
 						comision = comision_tarjeta_valor;
 					}
-					
+
 				}else{
 					$(row).find('.comision_tarjeta_valor').html('');
 				}
 
-
 				if($(row).find('.ret_tarjeta').html() != undefined){
-
 					if(comision != 0){
-						comision_total = pago - comision;
+						comision_total = (pago - (ret_ir + ret_alma)) - comision;
 						ret_tarjeta = Math.round((comision_total * 0.015) * 100) /100 ;
-
 						$(row).find('.ret_tarjeta').html(ret_tarjeta);
-					}					
-				}					
+					}
+				}
 
 				pago_neto = pago - ret_ir - ret_alma - ret_tarjeta - comision;
 
 				pago_neto = Math.round((pago_neto) * 100) / 100;
 
 				if(Number($(row).find('.c_c').html()) == 0){
-					$(row).find('.pago_neto').html(pago_neto);	
+					$(row).find('.pago_neto').html(pago_neto);
 				}else{
-					$(row).find('.c_c').html(pago_neto);	
+					$(row).find('.c_c').html(pago_neto);
 				}
 
-
 				calculoTotales();
-					
-			});			
+
+			});
 		}
-	}	
+	}
 
 	function mostrarReporte(tipo){
 		if(tipo == 'Contado'){
@@ -543,8 +540,8 @@
 			$('#reporte_ingreso_retencion').html(Number($('#ret_ir strong').html()));
 			$('#reporte_ingreso_retencion_tarjeta').html(Number($('#ret_ir_tarjeta strong').html()));
 			$('#reporte_ingreso_imi').html($('#ret_alma strong').html());
-			$('#reporte_ingreso_comision_tarjeta').html($('#comision_tarjeta strong').html());			
-			$('#reporte_ingreso_descuentos_contado').html(Number($('#descuento_contado strong').html()) +  Number($('#descuento_credito strong').html()));			
+			$('#reporte_ingreso_comision_tarjeta').html($('#comision_tarjeta strong').html());
+			$('#reporte_ingreso_descuentos_contado').html(Number($('#descuento_contado strong').html()) +  Number($('#descuento_credito strong').html()));
 			$('#reporte_ingreso_iva').html($('#iva strong').html());
 			//$('#reporte_ingreso_descuentos_credito').html($('#descuento_credito strong').html());
 
@@ -569,20 +566,20 @@
 			$('#cta_CV_con').html($('#cv_contado').html());
 			$('#cta_CV_cre').html($('#cv_credito').html());
 
-			var clientes = [];	
+			var clientes = [];
 			var clientes_comparacion = [];
 			var html = '';
 			var html_total = '';
-		
+
 			$('.clientes.CREDITO:not(.anul)').each(function(){
 				var row     = $(this).parent(0);
-				var cliente = Number($(this).html());					
+				var cliente = Number($(this).html());
 				var pago    = Number(row.find('.c_c').html());
-						
-				if($.inArray(Number($(this).html()), clientes_comparacion) == -1){	//no esta en el array			
-					var new_array = [cliente, pago, row.find('.cliente_nombre').html()];	
+
+				if($.inArray(Number($(this).html()), clientes_comparacion) == -1){	//no esta en el array
+					var new_array = [cliente, pago, row.find('.cliente_nombre').html()];
 					clientes.push(new_array);
-					clientes_comparacion.push(Number($(this).html()));									
+					clientes_comparacion.push(Number($(this).html()));
 				}else{
 					for(var i=0; i < clientes.length; i++){
 						if(Number($(this).html()) == clientes[i][0]){
@@ -591,12 +588,11 @@
 						}
 					}
 				}
-			});				
+			});
 
 			for(var i=0; i < clientes.length; i++){
 				html += "<tr class='borrar'><td>"+clientes[i][2]+"</td><td class='debe'>"+Math.round((clientes[i][1]) *100)/100+"</td><td></td><td><input type='text' class='no_cuenta_reporte' onfocusout='getNoCuenta($(this))'></td><td><textarea class='descripcion_cuenta' onfocusout='getDescricionCuenta($(this))'></textarea></td><td><textarea class='reporte_concepto_factura'></textarea></td></tr>";
 			}
-
 
 			$('#table_primer_reporte_contado').append(html);
 
@@ -612,11 +608,11 @@
 
 			html_total = "<tr class='borrar'><th>Total</th><td><strong id='total_debe_factura'>"+Math.round((debe)*100)/100+"</strong></td><td><strong id='total_haber_factura'>"+Math.round((haber)*100)/100+"</strong></td></tr>";
 			$('#table_primer_reporte_contado').append(html_total);
-		}		
+		}
 	}
 
-	function getNoCuenta(input) {		
-		var row = $(input).parent(0).parent(0);		
+	function getNoCuenta(input) {
+		var row = $(input).parent(0).parent(0);
 		if(input.val() != ''){
 			$.get('{{ URL() }}/getCuenta/'+input.val(), function(data){
 				if(data.cuenta == 'Cuenta no encontrada'){
@@ -625,9 +621,9 @@
 					$(row).find('.descripcion_cuenta').val(data.cuenta.Descripcion);
 				}
 			});
-		}	
+		}
 	}
-	
+
 	function getDescricionCuenta(input) {
 		var row = $(input).parent(0).parent(0);
 		if(input.val() != ''){
@@ -651,7 +647,6 @@
 		var fecha_sistema = dia + '/' + mes + '/' + anio;
 
 		//console.log(fecha);
-
 		var comprobante = {
 			'tipo' : $('#clasificacion_factura').val(),
 			'mes' : mes,
@@ -660,54 +655,54 @@
 			'concepto' : $('#concepto_factura').val(),
 			'tipo_documento' : $('#documento_factura').val(),
 			'debe' : $('#total_debe_factura').html(),
-			'haber' : $('#total_haber_factura').html(),			
+			'haber' : $('#total_haber_factura').html(),
 		}
 
-		var send = 'comprobante_tipo=' + comprobante.tipo + '&comprobante_mes=' + comprobante.mes + 
-					'&comprobante_anio=' + comprobante.anio + '&comprobante_fecha=' + comprobante.fecha + 
-					'&comprobante_concepto=' + comprobante.concepto + '&comprobante_tipo_documento=' + comprobante.tipo_documento + 
+		var send = 'comprobante_tipo=' + comprobante.tipo + '&comprobante_mes=' + comprobante.mes +
+					'&comprobante_anio=' + comprobante.anio + '&comprobante_fecha=' + comprobante.fecha +
+					'&comprobante_concepto=' + comprobante.concepto + '&comprobante_tipo_documento=' + comprobante.tipo_documento +
 					'&comprobante_debe=' + comprobante.debe + '&comprobante_haber=' + comprobante.haber;
 
 		//console.log(comprobante);
-		
+
 		$.post('{{ URL() }}/Save/Reporte/Factura', send ,function(data){
 			alert('Comprobante Guardado');
-			var contador = 1;			
-			
+			var contador = 1;
+
 			$('.tabla_factura_reporte tr').each(function(){
 				//console.log($(this).find('.no_cuenta_reporte').val());
 				if($(this).find('.no_cuenta_reporte').val() != undefined){
 
-					var movimiento = 0;	
-					var monto      = 0;					
+					var movimiento = 0;
+					var monto      = 0;
 
 					if($(this).find('.debe').html() != undefined){
 						movimiento = 1;
-						monto      = $(this).find('.debe').html();    
+						monto      = $(this).find('.debe').html();
 					}else{
 						movimiento = 2;
 						monto      = $(this).find('.haber').html();
 					}
 
-					if(monto != undefined){
+					if(monto != undefined || monto != 0){
 						var detalle_comprobante = {
 							'tipo' : $('#clasificacion_factura').val(),
 							'comprobante' : data.comprobante.Comprobante,
 							'mes' : mes,
 							'anio' : anio,
-							'cuenta' : $(this).find('.no_cuenta_reporte').val(),	
+							'cuenta' : $(this).find('.no_cuenta_reporte').val(),
 							'numero' : contador,
 							'movimiento' : movimiento,
 							'monto' : monto,
 							'montousa' : Math.round((monto / data.cambio) * 100)/100,
-							'concepto' : $(this).find('.reporte_concepto_factura').val()	
+							'concepto' : $(this).find('.reporte_concepto_factura').val()
 						}
 						contador++;
 
 						var send2 = 'detalle_tipo=' + detalle_comprobante.tipo + '&detalle_comprobante=' + detalle_comprobante.comprobante +
-									'&detalle_mes=' +  detalle_comprobante.mes + '&detalle_anio=' + detalle_comprobante.anio + 
-									'&detalle_cuenta=' + detalle_comprobante.cuenta + '&detalle_numero=' + detalle_comprobante.numero + 
-									'&detalle_movimiento=' + detalle_comprobante.movimiento + '&detalle_monto=' + detalle_comprobante.monto + 
+									'&detalle_mes=' +  detalle_comprobante.mes + '&detalle_anio=' + detalle_comprobante.anio +
+									'&detalle_cuenta=' + detalle_comprobante.cuenta + '&detalle_numero=' + detalle_comprobante.numero +
+									'&detalle_movimiento=' + detalle_comprobante.movimiento + '&detalle_monto=' + detalle_comprobante.monto +
 									'&detalle_montousa=' + detalle_comprobante.montousa + '&detalle_concepto=' + detalle_comprobante.concepto;
 
 						$.post('{{ URL() }}/Save/Reporte/DetalleFactura', send2 ,function(data2){
@@ -715,7 +710,7 @@
 							console.log('detalle guardado')
 						});
 					}
-				}				
+				}
 			});
 			$('#guadar_reporte_factura').button('reset');
 		});
